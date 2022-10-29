@@ -12,6 +12,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import AwsomeIcon from "react-native-vector-icons/MaterialIcons";
 import Account from "./src/screens/AccountScreen";
 import {TouchableOpacity} from "react-native";
+import LoginScreen from "./src/screens/auth/LoginScreen";
+import SignupScreen from "./src/screens/auth/SignupScreen";
 
 const CustomTabButton = ({onPress, focused}: any) => (
     <TouchableOpacity
@@ -119,6 +121,16 @@ const App = () => {
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
                 <Stack.Navigator>
+                    <Stack.Screen
+                        name="Login"
+                        component={LoginScreen}
+                        options={{headerShown: false}}
+                    />
+                    <Stack.Screen
+                        name="Signup"
+                        component={SignupScreen}
+                        options={{headerShown: false}}
+                    />
                     <Stack.Screen
                         name="Home"
                         component={LandingScreen}
