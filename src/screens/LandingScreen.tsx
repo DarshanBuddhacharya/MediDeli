@@ -11,7 +11,7 @@ const LandingScreen = ({navigation}: any) => {
 
     if (position) {
         setTimeout(() => {
-            navigation.navigate("BottomNavi", {screen: "HomeNavigation"});
+            navigation.navigate("BottomNavi", {screen: "Home"});
         }, 1000);
     }
     return (

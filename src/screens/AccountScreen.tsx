@@ -1,12 +1,12 @@
 import React from "react";
 import {Text, View} from "react-native";
 
-const Settings = () => {
+const Account = () => {
     return (
         <View>
-            <Text>Settings</Text>
+            <Text>Account</Text>
         </View>
     );
 };
 
-export default Settings;
+export default Account;

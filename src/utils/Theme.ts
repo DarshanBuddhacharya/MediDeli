@@ -1,7 +1,7 @@
 import { extendTheme, NativeBaseProvider } from "native-base";
 // 2. Extend the theme to include custom colors, fonts, etc
 export const theme = extendTheme({
-    color: {
+    colors: {
         primary: {
             50: '#fef2f3',
             100: '#fde3e5',

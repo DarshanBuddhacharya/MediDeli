@@ -1,18 +1,33 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Fragment, useEffect, useState} from "react";
-import {Button, StatusBar, Text, useColorScheme, View} from "react-native";
+import {StatusBar, useColorScheme} from "react-native";
 
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import Geolocation from "@react-native-community/geolocation";
-import {useLocation} from "./src/hooks/use-location";
 import LandingScreen from "./src/screens/LandingScreen";
-import {createSwitchNavigator} from "react-navigation";
-import {NativeBaseProvider} from "native-base";
+import {Box, NativeBaseProvider, Text, View} from "native-base";
 import {theme} from "./src/utils/Theme";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import HomeScreen from "./src/screens/HomeScreen";
-import Settings from "./src/screens/Settings";
+import Icon from "react-native-vector-icons/Ionicons";
+import AwsomeIcon from "react-native-vector-icons/MaterialIcons";
+import Account from "./src/screens/AccountScreen";
+import {TouchableOpacity} from "react-native";
+
+const CustomTabButton = ({onPress, focused}: any) => (
+    <TouchableOpacity
+        style={{top: -15, justifyContent: "center", alignItems: "center"}}
+        onPress={onPress}>
+        <Box
+            height={70}
+            width={70}
+            bg={"primary.500"}
+            alignItems={"center"}
+            borderRadius={10}
+            justifyContent={"center"}>
+            <AwsomeIcon name={"add-shopping-cart"} size={30} color={"white"} />
+        </Box>
+    </TouchableOpacity>
+);
 
 const App = () => {
     // Geolocation.getCurrentPosition(info => console.log(info));
@@ -25,13 +40,67 @@ const App = () => {
     const Tab = createBottomTabNavigator();
     const TabNavigation = () => {
         return (
-            <Tab.Navigator>
+            <Tab.Navigator
+                screenOptions={({route}) => ({
+                    tabBarIcon: ({focused, color, size}) => {
+                        let iconName: any;
+
+                        if (route.name === "Home") {
+                            iconName = focused ? "home" : "home-outline";
+                        } else if (route.name === "Account") {
+                            iconName = focused ? "person" : "person-outline";
+                        } else if (route.name === "WishList") {
+                            iconName = focused ? "heart" : "heart-outline";
+                        } else if (route.name === "Cart") {
+                            iconName = focused ? "cart" : "cart-outline";
+                        } else if (route.name === "Shop") {
+                            iconName = focused ? "cart" : "cart-outline";
+                        }
+
+                        return (
+                            <Icon name={iconName} size={size} color={color} />
+                        );
+                    },
+                    tabBarActiveTintColor: "red",
+                    tabBarInactiveTintColor: "gray",
+                    tabBarStyle: {
+                        position: "absolute",
+                        alignItems: "center",
+                        bottom: 15,
+                        left: 15,
+                        right: 15,
+                        elevation: 0,
+                        borderRadius: 15,
+                        height: 70,
+                        paddingBottom: 10,
+                    },
+                    tabBarLabelStyle: {
+                        fontSize: 12,
+                    },
+                })}>
                 <Tab.Screen
-                    name="HomeNavigation"
+                    name="Home"
                     component={HomeScreen}
                     options={{headerShown: false}}
                 />
-                <Tab.Screen name="Settings" component={Settings} />
+                <Tab.Screen
+                    name="WishList"
+                    component={HomeScreen}
+                    options={{headerShown: false}}
+                />
+                <Tab.Screen
+                    name="Shop"
+                    component={HomeScreen}
+                    options={{
+                        tabBarButton: props => <CustomTabButton {...props} />,
+                    }}
+                />
+                <Tab.Screen
+                    name="Cart"
+                    component={HomeScreen}
+                    options={{headerShown: false}}
+                />
+                <Tab.Screen name="Account" component={Account} />
             </Tab.Navigator>
         );
     };
