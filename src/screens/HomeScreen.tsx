@@ -1,7 +1,7 @@
-import {Avatar, Box, Flex, Stack, Text} from "native-base";
+import {Avatar, Box, Flex, Heading, Stack, Text} from "native-base";
 import React from "react";
-import {ScrollView} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import {Image, ScrollView} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import CategoryCard from "../components/CategoryCard";
 import {Container} from "../components/common/Container";
 import SearchBar from "../components/common/SearchBar";
@@ -26,7 +26,7 @@ const HomeScreen = () => {
                         Hello There, Ram Baran Yadav
                         <Flex direction="row">
                             <Icon
-                                name="ios-location-outline"
+                                name="location-on"
                                 color={"white"}
                                 size={24}
                             />
@@ -61,6 +61,48 @@ const HomeScreen = () => {
                         <ItemCard />
                     </Stack>
                 </ScrollView>
+                <Flex
+                    alignSelf="center"
+                    justifyContent={"space-between"}
+                    direction="row"
+                    bg="primary.800"
+                    shadow={2}
+                    p={5}
+                    rounded="xl"
+                    width="100%"
+                    display={"flex"}>
+                    <Box _text={{color: "white"}}>
+                        <Heading color={"white"} mb={3}>
+                            MediDeli
+                        </Heading>
+                        <Flex direction="row" alignItems={"center"}>
+                            <Icon name="storefront" color={"white"} size={19} />
+                            <Text color={"white"} marginLeft={2}>
+                                Test, test, Kathmandu
+                            </Text>
+                        </Flex>
+                        <Flex direction="row" alignItems={"center"}>
+                            <Icon
+                                name="local-phone"
+                                color={"white"}
+                                size={19}
+                            />
+                            <Text color={"white"} marginLeft={2}>
+                                +(977) 9846983685
+                            </Text>
+                        </Flex>
+                        <Flex direction="row" alignItems={"center"}>
+                            <Icon name="email" color={"white"} size={19} />
+                            <Text color={"white"} marginLeft={2}>
+                                mediDeli@gmail.com
+                            </Text>
+                        </Flex>
+                    </Box>
+                    <Image
+                        source={require("../../assets/Images/logo.png")}
+                        style={{width: 120, height: 120}}
+                    />
+                </Flex>
             </ScrollView>
         </Container>
     );
