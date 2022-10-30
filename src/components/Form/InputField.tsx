@@ -41,9 +41,9 @@ const InputField = ({
                 fontSize={15}
                 keyboardType={keyboardType}
                 maxLength={maxLength}
-                borderColor={touch && error ? "primary.600" : "grey"}
+                borderColor={error && touch ? "primary.600" : "grey"}
             />
-            {error && (
+            {touch && error && (
                 <Flex direction="row" alignItems={"center"} mt={1}>
                     <Icon name="info-outline" size={20} color="#d52d3a" />
                     <Text color={"primary.600"} marginLeft={2}>

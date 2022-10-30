@@ -15,7 +15,7 @@ import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
 
-const CustomTabButton = ({onPress, focused}: any) => (
+const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
         style={{top: -15, justifyContent: "center", alignItems: "center"}}
         onPress={onPress}>

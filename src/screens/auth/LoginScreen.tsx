@@ -1,5 +1,5 @@
 import {Formik} from "formik";
-import {Box, Flex, Pressable, Text} from "native-base";
+import {Box, Checkbox, Flex, Pressable, Text} from "native-base";
 import React from "react";
 import {Image} from "react-native";
 import {Container} from "../../components/common/Container";
@@ -11,12 +11,13 @@ import {loginFormSchema} from "../../validation/LoginValidation";
 
 export type RootStackParamList = {
     Signup: undefined;
+    Home: undefined;
 };
 
 const LoginScreen = ({
     navigation,
 }: {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Signup">;
+    navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
     return (
         <Container>
@@ -29,7 +30,9 @@ const LoginScreen = ({
             <Formik
                 initialValues={{phone: "", password: ""}}
                 validationSchema={loginFormSchema}
-                onSubmit={values => console.log(values)}>
+                onSubmit={values => {
+                    console.log(values), navigation.navigate("Home");
+                }}>
                 {({
                     handleChange,
                     setFieldTouched,
@@ -59,6 +62,9 @@ const LoginScreen = ({
                             error={errors.password}
                             placeHolder={"Password"}
                         />
+                        <Checkbox value="true" my={2}>
+                            Remember me
+                        </Checkbox>
                         <Pressable mt={2}>
                             <Text>Forgot Password?</Text>
                         </Pressable>

@@ -25,7 +25,7 @@ const PasswordField = ({
                     <Icon
                         name={icon}
                         size={24}
-                        color={error && touch ? "#d52d3a" : "grey"}
+                        color={touch && error ? "#d52d3a" : "grey"}
                         style={{marginLeft: 10}}
                     />
                 }
@@ -45,7 +45,7 @@ const PasswordField = ({
                 fontSize={15}
                 borderColor={touch && error ? "primary.600" : "grey"}
             />
-            {error && (
+            {touch && error && (
                 <Flex direction="row" alignItems={"center"} mt={1}>
                     <ComIcon name="info-outline" size={20} color="#d52d3a" />
                     <Text color={"primary.600"} marginLeft={2}>
