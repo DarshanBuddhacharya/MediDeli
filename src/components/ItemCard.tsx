@@ -27,30 +27,11 @@ export const ItemCard = () => {
                         <Image
                             resizeMode="cover"
                             source={{
-                                uri: "https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+                                uri: "https://media.istockphoto.com/photos/buying-convenient-food-picture-id1371981344",
                             }}
                             alt="Picture of a Flower"
                         />
                     </AspectRatio>
-                    {/* <Center
-                        bg="violet.500"
-                        _dark={{
-                            bg: "violet.400",
-                        }}
-                        _text={{
-                            color: "warmGray.50",
-                            fontWeight: "700",
-                            fontSize: "xs",
-                        }}
-                        position="absolute"
-                        top="0"
-                        overflow={"visible"}
-                        right={"0"}
-                        rounded="lg"
-                        px="3"
-                        py="1.5">
-                        PHOTOS
-                    </Center> */}
                 </Box>
                 <Stack p="4" space={3}>
                     <Stack space={2}>

@@ -14,6 +14,7 @@ import Account from "./src/screens/AccountScreen";
 import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
+import DetailScreen from "./src/screens/DetailScreen";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -39,6 +40,24 @@ const App = () => {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
 
+    const Stack = createNativeStackNavigator();
+
+    const HomeStack = () => {
+        return (
+            <Stack.Navigator initialRouteName="Detail">
+                <Stack.Screen
+                    name="Index"
+                    component={HomeScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="Detail"
+                    component={DetailScreen}
+                    options={{headerShown: false}}
+                />
+            </Stack.Navigator>
+        );
+    };
     const Tab = createBottomTabNavigator();
     const TabNavigation = () => {
         return (
@@ -82,7 +101,7 @@ const App = () => {
                 })}>
                 <Tab.Screen
                     name="Home"
-                    component={HomeScreen}
+                    component={HomeStack}
                     options={{headerShown: false}}
                 />
                 <Tab.Screen
@@ -106,7 +125,7 @@ const App = () => {
             </Tab.Navigator>
         );
     };
-    const Stack = createNativeStackNavigator();
+
     // const config = {
     //     dependencies: {
     //         "linear-gradient": require("react-native-linear-gradient").default,
@@ -120,7 +139,7 @@ const App = () => {
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
-                <Stack.Navigator>
+                <Stack.Navigator initialRouteName="BottomNavi">
                     <Stack.Screen
                         name="Login"
                         component={LoginScreen}
