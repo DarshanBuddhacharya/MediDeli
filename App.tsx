@@ -17,6 +17,7 @@ import SignupScreen from "./src/screens/auth/SignupScreen";
 import DetailScreen from "./src/screens/DetailScreen";
 import {CheckoutCard} from "./src/components/common/CheckoutCard";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
+import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -46,7 +47,7 @@ const App = () => {
 
     const HomeStack = () => {
         return (
-            <Stack.Navigator initialRouteName="Detail">
+            <Stack.Navigator>
                 <Stack.Screen
                     name="Index"
                     component={HomeScreen}
@@ -55,6 +56,23 @@ const App = () => {
                 <Stack.Screen
                     name="Detail"
                     component={DetailScreen}
+                    options={{headerShown: false}}
+                />
+            </Stack.Navigator>
+        );
+    };
+
+    const CheckoutStack = () => {
+        return (
+            <Stack.Navigator initialRouteName="Checkout">
+                <Stack.Screen
+                    name="Checkout"
+                    component={CheckoutScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="Delivery"
+                    component={DeliveryLocation}
                     options={{headerShown: false}}
                 />
             </Stack.Navigator>
@@ -120,7 +138,7 @@ const App = () => {
                 />
                 <Tab.Screen
                     name="Cart"
-                    component={CheckoutScreen}
+                    component={CheckoutStack}
                     options={{headerShown: false}}
                 />
                 <Tab.Screen name="Account" component={Account} />

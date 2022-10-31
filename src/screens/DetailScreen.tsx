@@ -94,7 +94,7 @@ const DetailScreen = () => {
                         </Text>
                         <CartQuantity />
                     </Flex>
-                    <Button>Buy Now</Button>
+                    <Button link={"Checkout"}>Buy Now</Button>
                     <Box p={4}>
                         <Text fontWeight="400">Reviews</Text>
                         <ReviewCard />

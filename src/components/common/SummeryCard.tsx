@@ -2,7 +2,21 @@ import {Box, Flex, Heading, Text} from "native-base";
 import React from "react";
 import Button from "./Button";
 
-export const SummeryCard = () => {
+type SummeryCardProps = {
+    gross_total: number;
+    delivery_fee: number;
+    discount: number;
+    total: number;
+    link: string;
+};
+
+export const SummeryCard = ({
+    gross_total,
+    delivery_fee,
+    discount,
+    total,
+    link,
+}: SummeryCardProps) => {
     return (
         <Box
             rounded="lg"
@@ -23,24 +37,24 @@ export const SummeryCard = () => {
                 borderColor={"primary.600"}>
                 <Flex direction="row" justifyContent={"space-between"}>
                     <Text>Gross Total</Text>
-                    <Text color={"gray.500"}>Rs. 140</Text>
+                    <Text color={"gray.500"}>Rs. {gross_total}</Text>
                 </Flex>
                 <Flex direction="row" justifyContent={"space-between"}>
                     <Text>Delivery fee</Text>
-                    <Text color={"gray.500"}>Rs. 50</Text>
+                    <Text color={"gray.500"}>Rs. {delivery_fee}</Text>
                 </Flex>
                 <Flex direction="row" justifyContent={"space-between"}>
                     <Text>Discount</Text>
-                    <Text color={"gray.500"}>Rs. 50</Text>
+                    <Text color={"gray.500"}>Rs. {discount}</Text>
                 </Flex>
             </Box>
             <Flex direction="row" justifyContent={"space-between"}>
                 <Text fontSize={20} fontWeight={600}>
                     Total
                 </Text>
-                <Text color={"gray.800"}>Rs. 150</Text>
+                <Text color={"gray.800"}>Rs. {total}</Text>
             </Flex>
-            <Button>Procced</Button>
+            <Button link={link}>Procced</Button>
         </Box>
     );
 };

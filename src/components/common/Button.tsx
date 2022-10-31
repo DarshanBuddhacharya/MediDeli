@@ -1,7 +1,16 @@
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {Box, Pressable, Text} from "native-base";
 import React from "react";
 
-const Button = ({children}: {children: React.ReactNode}) => {
+const Button = ({
+    children,
+    link,
+}: {
+    children: React.ReactNode;
+    link: string;
+}) => {
+    const navigation: any = useNavigation();
     return (
         <Pressable
             android_ripple={{
@@ -13,7 +22,8 @@ const Button = ({children}: {children: React.ReactNode}) => {
             justifyContent={"center"}
             borderRadius={10}
             mx={4}
-            h={10}>
+            h={10}
+            onPress={() => navigation.push(link)}>
             <Text color={"white"}>{children}</Text>
         </Pressable>
     );
