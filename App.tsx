@@ -18,6 +18,7 @@ import DetailScreen from "./src/screens/DetailScreen";
 import {CheckoutCard} from "./src/components/common/CheckoutCard";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
+import {WishListScreen} from "./src/screens/WishListScreen";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -126,7 +127,7 @@ const App = () => {
                 />
                 <Tab.Screen
                     name="WishList"
-                    component={HomeScreen}
+                    component={WishListScreen}
                     options={{headerShown: false}}
                 />
                 <Tab.Screen

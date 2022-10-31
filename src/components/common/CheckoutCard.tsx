@@ -3,6 +3,8 @@ import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CartQuantity} from "./CartQuantity";
 import {Container} from "./Container";
+import {TrashButton} from "./TrashButton";
+import {WishListButton} from "./WishListButton";
 
 export const CheckoutCard = () => {
     return (
@@ -42,8 +44,17 @@ export const CheckoutCard = () => {
                         Mama Earth
                     </Text>
                     <Text fontWeight="400">
-                        {`Lorem ipsum dolor sit amet consectetur, adipisicin elit.hfhfhgf fdsfds`}
+                        {`Lorem ipsum dolor sit amet consectetu`}
                     </Text>
+                    <Flex
+                        direction="row"
+                        width={"90%"}
+                        alignItems={"center"}
+                        mb={2}
+                        justifyContent={"space-between"}>
+                        <Icon name="star" size={18} />
+                        <WishListButton />
+                    </Flex>
                 </Box>
             </Box>
             <Box
@@ -69,7 +80,7 @@ export const CheckoutCard = () => {
                             radius: 15,
                         }}
                         mr={4}>
-                        <Icon name="trash" size={24} color={"#d52d3a"} />
+                        <TrashButton />
                     </Pressable>
                     <CartQuantity />
                 </Flex>
