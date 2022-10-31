@@ -15,6 +15,8 @@ import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
 import DetailScreen from "./src/screens/DetailScreen";
+import {CheckoutCard} from "./src/components/common/CheckoutCard";
+import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -118,7 +120,7 @@ const App = () => {
                 />
                 <Tab.Screen
                     name="Cart"
-                    component={HomeScreen}
+                    component={CheckoutScreen}
                     options={{headerShown: false}}
                 />
                 <Tab.Screen name="Account" component={Account} />
