@@ -160,7 +160,7 @@ const App = () => {
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
-                <Stack.Navigator initialRouteName="BottomNavi">
+                <Stack.Navigator>
                     <Stack.Screen
                         name="Login"
                         component={LoginScreen}

@@ -1,9 +1,11 @@
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import axios from "axios";
 import {Formik} from "formik";
-import {Box, Flex, Pressable, Text} from "native-base";
+import {Box, Flex, Pressable, Text, useToast} from "native-base";
 import React from "react";
 import {Image, ScrollView} from "react-native";
 import {Container} from "../../components/common/Container";
+import {ToastAlert} from "../../components/common/ToastAlert";
 import {FormButton} from "../../components/Form/FormButton";
 import InputField from "../../components/Form/InputField";
 import PasswordField from "../../components/Form/PasswordField";
@@ -19,6 +21,7 @@ const SignupScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
 }) => {
+    const toast = useToast();
     return (
         <Container>
             <ScrollView>
@@ -29,9 +32,32 @@ const SignupScreen = ({
                     />
                 </Box>
                 <Formik
-                    initialValues={{full_name: "", phone: "", password: ""}}
+                    initialValues={{
+                        full_name: "",
+                        phone: "",
+                        password: "",
+                        password2: "",
+                    }}
                     validationSchema={SignupFormSchema}
-                    onSubmit={values => console.log(values)}>
+                    onSubmit={async values => {
+                        const response = await axios
+                            .post(
+                                "http://192.168.1.65:8000/api/v1/register/",
+                                values,
+                            )
+                            .then(function (response) {
+                                console.log(response.data.message);
+                                // navigation.navigate("Login");
+                            })
+                            .catch(function (error) {
+                                toast.show({
+                                    render: ({id}) => {
+                                        return <ToastAlert id={id} />;
+                                    },
+                                });
+                                console.log(error.response.data);
+                            });
+                    }}>
                     {({
                         handleChange,
                         setFieldTouched,
@@ -68,6 +94,15 @@ const SignupScreen = ({
                                 value={values.password}
                                 touch={touched.password}
                                 error={errors.password}
+                                placeHolder={"Password"}
+                            />
+                            <PasswordField
+                                icon={"key-variant"}
+                                onChangeText={handleChange("password2")}
+                                onBlur={() => setFieldTouched("password2")}
+                                value={values.password2}
+                                touch={touched.password2}
+                                error={errors.password2}
                                 placeHolder={"Password"}
                             />
                             <FormButton onPress={handleSubmit}>
