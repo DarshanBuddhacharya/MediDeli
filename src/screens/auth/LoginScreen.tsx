@@ -1,6 +1,6 @@
 import {Formik} from "formik";
 import {Box, Checkbox, Flex, Pressable, Text} from "native-base";
-import React from "react";
+import React, {useContext} from "react";
 import {Image} from "react-native";
 import {Container} from "../../components/common/Container";
 import {FormButton} from "../../components/Form/FormButton";
@@ -8,6 +8,8 @@ import InputField from "../../components/Form/InputField";
 import PasswordField from "../../components/Form/PasswordField";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {loginFormSchema} from "../../validation/LoginValidation";
+import axios from "axios";
+import {AuthContext} from "../../Store/auth-context";
 
 export type RootStackParamList = {
     Signup: undefined;
@@ -19,6 +21,7 @@ const LoginScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
+    const authCtx = useContext(AuthContext);
     return (
         <Container>
             <Box alignItems={"center"} mt={5}>
@@ -30,8 +33,13 @@ const LoginScreen = ({
             <Formik
                 initialValues={{phone: "", password: ""}}
                 validationSchema={loginFormSchema}
-                onSubmit={values => {
-                    console.log(values), navigation.navigate("Home");
+                onSubmit={async values => {
+                    const response = await axios
+                        .post("http://192.168.1.65:8000/api/v1/login/", values)
+                        .then(res =>
+                            authCtx.authenticate(res.data.token.access),
+                        )
+                        .catch(error => console.log(error.response.data));
                 }}>
                 {({
                     handleChange,

@@ -1,11 +1,15 @@
-import React from "react";
-import {Text, View} from "react-native";
+import {Box, Pressable, Text} from "native-base";
+import React, {useContext} from "react";
+import {AuthContext} from "../Store/auth-context";
 
 const Account = () => {
+    const authCntx = useContext(AuthContext);
     return (
-        <View>
-            <Text>Account</Text>
-        </View>
+        <Box>
+            <Pressable onPress={authCntx.logout}>
+                <Text>Logout</Text>
+            </Pressable>
+        </Box>
     );
 };
 

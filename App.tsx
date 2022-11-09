@@ -19,6 +19,8 @@ import {CheckoutCard} from "./src/components/common/CheckoutCard";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 import {WishListScreen} from "./src/screens/WishListScreen";
+import AuthContextProvider, {AuthContext} from "./src/Store/auth-context";
+import {useContext} from "react";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -36,6 +38,149 @@ const CustomTabButton = ({onPress}: any) => (
     </TouchableOpacity>
 );
 
+const HomeStack = () => {
+    const Stack = createNativeStackNavigator();
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Index"
+                component={HomeScreen}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="Detail"
+                component={DetailScreen}
+                options={{headerShown: false}}
+            />
+        </Stack.Navigator>
+    );
+};
+
+const CheckoutStack = () => {
+    const Stack = createNativeStackNavigator();
+    return (
+        <Stack.Navigator initialRouteName="Checkout">
+            <Stack.Screen
+                name="Checkout"
+                component={CheckoutScreen}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="Delivery"
+                component={DeliveryLocation}
+                options={{headerShown: false}}
+            />
+        </Stack.Navigator>
+    );
+};
+
+const TabNavigation = () => {
+    const Tab = createBottomTabNavigator();
+    const authCntx = useContext(AuthContext);
+    console.log("that", authCntx);
+    return (
+        <Tab.Navigator
+            screenOptions={({route}) => ({
+                tabBarIcon: ({focused, color, size}) => {
+                    let iconName: any;
+
+                    if (route.name === "Home") {
+                        iconName = focused ? "home" : "home-outline";
+                    } else if (route.name === "Account") {
+                        iconName = focused ? "person" : "person-outline";
+                    } else if (route.name === "WishList") {
+                        iconName = focused ? "heart" : "heart-outline";
+                    } else if (route.name === "Cart") {
+                        iconName = focused ? "cart" : "cart-outline";
+                    } else if (route.name === "Shop") {
+                        iconName = focused ? "cart" : "cart-outline";
+                    }
+
+                    return <Icon name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: "red",
+                tabBarInactiveTintColor: "gray",
+                tabBarStyle: {
+                    position: "absolute",
+                    alignItems: "center",
+                    bottom: 15,
+                    left: 15,
+                    right: 15,
+                    elevation: 0,
+                    borderRadius: 15,
+                    height: 70,
+                    paddingBottom: 10,
+                },
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+            })}>
+            <Tab.Screen
+                name="Home"
+                component={HomeStack}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name="WishList"
+                component={WishListScreen}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name="Shop"
+                component={HomeScreen}
+                options={{
+                    tabBarButton: props => <CustomTabButton {...props} />,
+                }}
+            />
+            <Tab.Screen
+                name="Cart"
+                component={CheckoutStack}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen name="Account" component={Account} />
+        </Tab.Navigator>
+    );
+};
+
+const Navigation = () => {
+    const authCntx = useContext(AuthContext);
+    const Stack = createNativeStackNavigator();
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                {!authCntx.isAuthenticated && (
+                    <>
+                        <Stack.Screen
+                            name="Login"
+                            component={LoginScreen}
+                            options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name="Signup"
+                            component={SignupScreen}
+                            options={{headerShown: false}}
+                        />
+                    </>
+                )}
+                {authCntx.isAuthenticated && (
+                    <>
+                        <Stack.Screen
+                            name="Home"
+                            component={LandingScreen}
+                            options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name="BottomNavi"
+                            component={TabNavigation}
+                            options={{headerShown: false}}
+                        />
+                    </>
+                )}
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+};
+
 const App = () => {
     // Geolocation.getCurrentPosition(info => console.log(info));
     const isDarkMode = useColorScheme() === "dark";
@@ -44,145 +189,20 @@ const App = () => {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
 
-    const Stack = createNativeStackNavigator();
-
-    const HomeStack = () => {
-        return (
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Index"
-                    component={HomeScreen}
-                    options={{headerShown: false}}
-                />
-                <Stack.Screen
-                    name="Detail"
-                    component={DetailScreen}
-                    options={{headerShown: false}}
-                />
-            </Stack.Navigator>
-        );
-    };
-
-    const CheckoutStack = () => {
-        return (
-            <Stack.Navigator initialRouteName="Checkout">
-                <Stack.Screen
-                    name="Checkout"
-                    component={CheckoutScreen}
-                    options={{headerShown: false}}
-                />
-                <Stack.Screen
-                    name="Delivery"
-                    component={DeliveryLocation}
-                    options={{headerShown: false}}
-                />
-            </Stack.Navigator>
-        );
-    };
-    const Tab = createBottomTabNavigator();
-    const TabNavigation = () => {
-        return (
-            <Tab.Navigator
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
-                        let iconName: any;
-
-                        if (route.name === "Home") {
-                            iconName = focused ? "home" : "home-outline";
-                        } else if (route.name === "Account") {
-                            iconName = focused ? "person" : "person-outline";
-                        } else if (route.name === "WishList") {
-                            iconName = focused ? "heart" : "heart-outline";
-                        } else if (route.name === "Cart") {
-                            iconName = focused ? "cart" : "cart-outline";
-                        } else if (route.name === "Shop") {
-                            iconName = focused ? "cart" : "cart-outline";
-                        }
-
-                        return (
-                            <Icon name={iconName} size={size} color={color} />
-                        );
-                    },
-                    tabBarActiveTintColor: "red",
-                    tabBarInactiveTintColor: "gray",
-                    tabBarStyle: {
-                        position: "absolute",
-                        alignItems: "center",
-                        bottom: 15,
-                        left: 15,
-                        right: 15,
-                        elevation: 0,
-                        borderRadius: 15,
-                        height: 70,
-                        paddingBottom: 10,
-                    },
-                    tabBarLabelStyle: {
-                        fontSize: 12,
-                    },
-                })}>
-                <Tab.Screen
-                    name="Home"
-                    component={HomeStack}
-                    options={{headerShown: false}}
-                />
-                <Tab.Screen
-                    name="WishList"
-                    component={WishListScreen}
-                    options={{headerShown: false}}
-                />
-                <Tab.Screen
-                    name="Shop"
-                    component={HomeScreen}
-                    options={{
-                        tabBarButton: props => <CustomTabButton {...props} />,
-                    }}
-                />
-                <Tab.Screen
-                    name="Cart"
-                    component={CheckoutStack}
-                    options={{headerShown: false}}
-                />
-                <Tab.Screen name="Account" component={Account} />
-            </Tab.Navigator>
-        );
-    };
-
     // const config = {
     //     dependencies: {
     //         "linear-gradient": require("react-native-linear-gradient").default,
     //     },
     // };
-
     return (
         <NativeBaseProvider theme={theme}>
-            <NavigationContainer>
+            <AuthContextProvider>
                 <StatusBar
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
-                <Stack.Navigator>
-                    <Stack.Screen
-                        name="Login"
-                        component={LoginScreen}
-                        options={{headerShown: false}}
-                    />
-                    <Stack.Screen
-                        name="Signup"
-                        component={SignupScreen}
-                        options={{headerShown: false}}
-                    />
-                    <Stack.Screen
-                        name="Home"
-                        component={LandingScreen}
-                        options={{headerShown: false}}
-                    />
-                    <Stack.Screen
-                        name="BottomNavi"
-                        component={TabNavigation}
-                        options={{headerShown: false}}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+                <Navigation />
+            </AuthContextProvider>
         </NativeBaseProvider>
     );
 };
