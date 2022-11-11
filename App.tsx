@@ -20,7 +20,10 @@ import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 import {WishListScreen} from "./src/screens/WishListScreen";
 import AuthContextProvider, {AuthContext} from "./src/Store/auth-context";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import {REACT_APP_DEV_MODE} from "@env";
 
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
@@ -77,7 +80,6 @@ const CheckoutStack = () => {
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
     const authCntx = useContext(AuthContext);
-    console.log("that", authCntx);
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -181,6 +183,40 @@ const Navigation = () => {
     );
 };
 
+const Root = () => {
+    const [isTryingLogin, setIsTryingLogin] = useState(true);
+
+    const authCtx = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchToken = async () => {
+            const storedAccess = await AsyncStorage.getItem("access");
+            const storedRefresh = await AsyncStorage.getItem("refresh");
+            const response = axios
+                .post(`${REACT_APP_DEV_MODE}refresh/`, {
+                    refresh: storedRefresh,
+                })
+                .then(res => console.log(res.data))
+                .catch(err => {
+                    console.log("taht", err.response.data), authCtx.logout();
+                });
+            if (storedAccess && storedRefresh) {
+                authCtx.authenticate({
+                    access: storedAccess,
+                    refresh: storedRefresh,
+                });
+            }
+            setIsTryingLogin(false);
+        };
+        fetchToken();
+    }, []);
+
+    if (isTryingLogin) {
+        return <Text>Loading</Text>;
+    }
+    return <Navigation />;
+};
+
 const App = () => {
     // Geolocation.getCurrentPosition(info => console.log(info));
     const isDarkMode = useColorScheme() === "dark";
@@ -201,7 +237,7 @@ const App = () => {
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
-                <Navigation />
+                <Root />
             </AuthContextProvider>
         </NativeBaseProvider>
     );

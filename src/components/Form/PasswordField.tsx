@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Pressable} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ComIcon from "react-native-vector-icons/MaterialIcons";
-import {InputFieldProps} from "../../types/InputFieldProps";
+import {InputFieldProps} from "../../../types/InputFieldProps";
 
 const PasswordField = ({
     label,

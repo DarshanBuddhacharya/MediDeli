@@ -1,6 +1,6 @@
 import {Box, Button, Pressable, Text} from "native-base";
 import React from "react";
-import {FormButtonProps} from "../../types/FormButtonProps";
+import {FormButtonProps} from "../../../types/FormButtonProps";
 
 export const FormButton = ({onPress, children}: FormButtonProps) => {
     return (

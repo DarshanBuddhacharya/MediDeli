@@ -10,6 +10,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {loginFormSchema} from "../../validation/LoginValidation";
 import axios from "axios";
 import {AuthContext} from "../../Store/auth-context";
+import {REACT_APP_DEV_MODE} from "@env";
 
 export type RootStackParamList = {
     Signup: undefined;
@@ -35,10 +36,8 @@ const LoginScreen = ({
                 validationSchema={loginFormSchema}
                 onSubmit={async values => {
                     const response = await axios
-                        .post("http://192.168.1.65:8000/api/v1/login/", values)
-                        .then(res =>
-                            authCtx.authenticate(res.data.token.access),
-                        )
+                        .post(`${REACT_APP_DEV_MODE}login/`, values)
+                        .then(res => authCtx.authenticate(res.data.token))
                         .catch(error => console.log(error.response.data));
                 }}>
                 {({

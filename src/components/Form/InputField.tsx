@@ -8,7 +8,7 @@ import {
 } from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import {InputFieldProps} from "../../types/InputFieldProps";
+import {InputFieldProps} from "../../../types/InputFieldProps";
 
 const InputField = ({
     label,
