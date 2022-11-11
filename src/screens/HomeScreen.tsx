@@ -7,8 +7,11 @@ import {Container} from "../components/common/Container";
 import SearchBar from "../components/common/SearchBar";
 import Title from "../components/common/Title";
 import {ItemCard} from "../components/ItemCard";
+import getProduct from "../hooks/get-products";
+import {axiosClient} from "../utils/axiosClient";
 
 const HomeScreen = () => {
+    const {loading, data} = getProduct();
     return (
         <Container>
             <ScrollView>
@@ -55,10 +58,9 @@ const HomeScreen = () => {
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
-                        <ItemCard />
-                        <ItemCard />
-                        <ItemCard />
-                        <ItemCard />
+                        {data?.result.map((data, key) => (
+                            <ItemCard data={data} key={key} />
+                        ))}
                     </Stack>
                 </ScrollView>
                 <Flex

@@ -12,8 +12,9 @@ import {
 } from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import {ProductProps} from "../../types/ProductProps";
 
-export const ItemCard = () => {
+export const ItemCard = ({data}: {data: ProductProps["result"][0]}) => {
     return (
         <Box>
             <Box
@@ -36,7 +37,7 @@ export const ItemCard = () => {
                 <Stack p="4" space={3}>
                     <Stack space={2}>
                         <Heading size="sm" ml="-1">
-                            The Garden City
+                            {data?.product_name}
                         </Heading>
                         <Text
                             fontSize="xs"
@@ -51,9 +52,7 @@ export const ItemCard = () => {
                             mt="-1">
                             Beauty
                         </Text>
-                        <Text fontWeight="400">
-                            Bengaluru (also called Bangalore)
-                        </Text>
+                        <Text fontWeight="400">{data?.description}</Text>
                     </Stack>
 
                     <Flex
@@ -66,7 +65,7 @@ export const ItemCard = () => {
                                 color: "warmGray.200",
                             }}
                             fontWeight="400">
-                            Rs.400
+                            Rs. {data?.price}
                         </Text>
                         <HStack space={1} alignItems="center">
                             <Icon

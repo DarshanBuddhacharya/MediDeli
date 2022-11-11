@@ -43,7 +43,7 @@ const AuthContextProvider = ({children}: {children: React.ReactNode}) => {
                 .post(`${REACT_APP_DEV_MODE}refresh/`, {
                     refresh: authToken.refresh,
                 })
-                .then(res => setAuthToken(res.data))
+                .then(res => authenticate(res.data))
                 .catch(err => {
                     console.log("taht", err.response.data), logout();
                 });
