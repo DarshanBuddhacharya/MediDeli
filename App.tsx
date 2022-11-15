@@ -14,7 +14,7 @@ import Account from "./src/screens/AccountScreen";
 import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
-import DetailScreen from "./src/screens/DetailScreen";
+import DetailScreen from "./src/screens/DetailPages/DetailScreen";
 import {CheckoutCard} from "./src/components/common/CheckoutCard";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";

@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 export const PhoneValidation = Yup.string()
-    .min(10, 'Username is too short - should be 6 chars minimum.')
+    .min(10, 'Phone number is too short - should be 6 chars minimum.')
     .required('Required field');
 
 export const passwordValidate = Yup.string()

@@ -13,11 +13,11 @@ import {
 } from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import {Container} from "../components/common/Container";
+import {Container} from "../../components/common/Container";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import Button from "../components/common/Button";
-import ReviewCard from "../components/common/ReviewCard";
-import {CartQuantity} from "../components/common/CartQuantity";
+import Button from "../../components/common/Button";
+import ReviewCard from "../../components/common/ReviewCard";
+import {CartQuantity} from "../../components/common/CartQuantity";
 
 const DetailScreen = () => {
     return (

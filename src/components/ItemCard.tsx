@@ -24,20 +24,20 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                 borderColor="coolGray.200"
                 borderWidth="1">
                 {data?.image && (
-                    <Box w={170}>
-                        <AspectRatio ratio={1}>
-                            <Image
-                                resizeMode="cover"
-                                source={{uri: `${data.image}`}}
-                                alt="Picture of a Flower"
-                            />
-                        </AspectRatio>
+                    <Box w={"100%"} justifyContent="center">
+                        <Image
+                            h={160}
+                            resizeMode="contain"
+                            source={{uri: `${data.image}`}}
+                            alt={data.image}
+                            background="white"
+                        />
                     </Box>
                 )}
 
                 <Stack p="4" space={3}>
                     <Stack space={2}>
-                        <Heading size="sm" ml="-1">
+                        <Heading size="sm" ml="-1" numberOfLines={2}>
                             {data?.product?.product_name}
                         </Heading>
                         <Text
@@ -53,7 +53,7 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                             mt="-1">
                             {data?.product?.brand?.brand_name}
                         </Text>
-                        <Text fontWeight="400">
+                        <Text fontWeight="400" numberOfLines={2}>
                             {data?.product?.description}
                         </Text>
                     </Stack>
