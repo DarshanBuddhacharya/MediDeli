@@ -1,4 +1,4 @@
-import {Avatar, Box, Flex, Heading, Stack, Text} from "native-base";
+import {Avatar, Box, Flex, Heading, Skeleton, Stack, Text} from "native-base";
 import React from "react";
 import {Image, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -7,11 +7,12 @@ import {Container} from "../components/common/Container";
 import SearchBar from "../components/common/SearchBar";
 import Title from "../components/common/Title";
 import {ItemCard} from "../components/ItemCard";
-import getProduct from "../hooks/get-products";
-import {axiosClient} from "../utils/axiosClient";
+import {useCategory} from "../hooks/use-category";
+import {useProduct} from "../hooks/use-products";
 
 const HomeScreen = () => {
-    const {loading, data} = getProduct();
+    const {loading: productLoading, data: productData} = useProduct();
+    const {loading: categoryLoading, data: categoryData} = useCategory();
     return (
         <Container>
             <ScrollView>
@@ -40,25 +41,34 @@ const HomeScreen = () => {
                         bg="green.500"
                         source={{
                             uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                        }}></Avatar>
+                        }}
+                    />
                 </Flex>
 
                 <Title title={"Top Categories"} />
 
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
-                        <CategoryCard />
-                        <CategoryCard />
-                        <CategoryCard />
-                        <CategoryCard />
-                        <CategoryCard />
+                        {categoryLoading &&
+                            Array.from({length: 4}).map((_, index) => (
+                                <Skeleton
+                                    h="100"
+                                    w="90"
+                                    rounded="lg"
+                                    key={index}
+                                />
+                            ))}
+                        {!categoryLoading &&
+                            categoryData?.results?.map((data, index) => (
+                                <CategoryCard key={index} data={data} />
+                            ))}
                     </Stack>
                 </ScrollView>
                 <SearchBar />
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
-                        {data?.result.map((data, key) => (
+                        {productData?.results?.map((data, key) => (
                             <ItemCard data={data} key={key} />
                         ))}
                     </Stack>

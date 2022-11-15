@@ -1,3 +1,4 @@
+import {REACT_APP_DEV_MODE} from "@env";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import axios from "axios";
 import {Formik} from "formik";
@@ -41,13 +42,10 @@ const SignupScreen = ({
                     validationSchema={SignupFormSchema}
                     onSubmit={async values => {
                         const response = await axios
-                            .post(
-                                "http://192.168.1.65:8000/api/v1/register/",
-                                values,
-                            )
+                            .post(`${REACT_APP_DEV_MODE}register/`, values)
                             .then(function (response) {
                                 console.log(response.data.message);
-                                // navigation.navigate("Login");
+                                navigation.navigate("Login");
                             })
                             .catch(function (error) {
                                 toast.show({

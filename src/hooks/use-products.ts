@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ProductProps } from '../../types/ProductProps';
 import { axiosClient } from '../utils/axiosClient';
 
-const getProduct = () => {
+export const useProduct = () => {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<ProductProps>()
 
@@ -24,5 +24,3 @@ const getProduct = () => {
 
     return { loading, data }
 };
-
-export default getProduct;

@@ -14,7 +14,7 @@ import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../types/ProductProps";
 
-export const ItemCard = ({data}: {data: ProductProps["result"][0]}) => {
+export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
     return (
         <Box>
             <Box
@@ -23,21 +23,22 @@ export const ItemCard = ({data}: {data: ProductProps["result"][0]}) => {
                 overflow="hidden"
                 borderColor="coolGray.200"
                 borderWidth="1">
-                <Box w={170}>
-                    <AspectRatio ratio={1}>
-                        <Image
-                            resizeMode="cover"
-                            source={{
-                                uri: "https://media.istockphoto.com/photos/buying-convenient-food-picture-id1371981344",
-                            }}
-                            alt="Picture of a Flower"
-                        />
-                    </AspectRatio>
-                </Box>
+                {data?.image && (
+                    <Box w={170}>
+                        <AspectRatio ratio={1}>
+                            <Image
+                                resizeMode="cover"
+                                source={{uri: `${data.image}`}}
+                                alt="Picture of a Flower"
+                            />
+                        </AspectRatio>
+                    </Box>
+                )}
+
                 <Stack p="4" space={3}>
                     <Stack space={2}>
                         <Heading size="sm" ml="-1">
-                            {data?.product_name}
+                            {data?.product?.product_name}
                         </Heading>
                         <Text
                             fontSize="xs"
@@ -50,9 +51,11 @@ export const ItemCard = ({data}: {data: ProductProps["result"][0]}) => {
                             fontWeight="500"
                             ml="-0.5"
                             mt="-1">
-                            Beauty
+                            {data?.product?.brand?.brand_name}
                         </Text>
-                        <Text fontWeight="400">{data?.description}</Text>
+                        <Text fontWeight="400">
+                            {data?.product?.description}
+                        </Text>
                     </Stack>
 
                     <Flex
