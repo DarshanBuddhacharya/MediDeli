@@ -7,6 +7,7 @@ import {Container} from "../components/common/Container";
 import SearchBar from "../components/common/SearchBar";
 import Title from "../components/common/Title";
 import {ItemCard} from "../components/ItemCard";
+import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
 import {useCategory} from "../hooks/use-category";
 import {useProduct} from "../hooks/use-products";
 
@@ -68,9 +69,14 @@ const HomeScreen = () => {
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
-                        {productData?.results?.map((data, key) => (
-                            <ItemCard data={data} key={key} />
-                        ))}
+                        {productLoading &&
+                            Array.from({length: 4}).map((_, index) => (
+                                <ProductSkeleton key={index} />
+                            ))}
+                        {!productLoading &&
+                            productData?.results?.map((data, key) => (
+                                <ItemCard data={data} key={key} />
+                            ))}
                     </Stack>
                 </ScrollView>
                 <Flex

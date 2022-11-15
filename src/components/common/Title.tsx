@@ -11,7 +11,7 @@ const Title = ({title}: TitleProps) => {
         <Flex direction="row" justifyContent={"space-between"} mt={5} mb={2}>
             <Text>{title}</Text>
             <Text>
-                View More <Icon name={"arrow-forward-sharp"} />
+                <Icon name={"arrow-forward-sharp"} color={"red"} size={24} />
             </Text>
         </Flex>
     );
