@@ -2,6 +2,7 @@ import {Avatar, Box, Flex, Heading, Skeleton, Stack, Text} from "native-base";
 import React from "react";
 import {Image, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import {ProductProps} from "../../types/ProductProps";
 import CategoryCard from "../components/CategoryCard";
 import {Container} from "../components/common/Container";
 import SearchBar from "../components/common/SearchBar";
@@ -12,7 +13,8 @@ import {useCategory} from "../hooks/use-category";
 import {useProduct} from "../hooks/use-products";
 
 const HomeScreen = () => {
-    const {loading: productLoading, data: productData} = useProduct();
+    const {loading: productLoading, data: productData} =
+        useProduct<ProductProps>();
     const {loading: categoryLoading, data: categoryData} = useCategory();
     return (
         <Container>

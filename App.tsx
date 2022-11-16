@@ -25,6 +25,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
 
+type HomeStackNavigator = {
+    Index: undefined;
+    DetailScreen: {userId: string};
+};
+
 const CustomTabButton = ({onPress}: any) => (
     <TouchableOpacity
         style={{top: -15, justifyContent: "center", alignItems: "center"}}
@@ -42,7 +47,7 @@ const CustomTabButton = ({onPress}: any) => (
 );
 
 const HomeStack = () => {
-    const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator<HomeStackNavigator>();
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -51,7 +56,7 @@ const HomeStack = () => {
                 options={{headerShown: false}}
             />
             <Stack.Screen
-                name="Detail"
+                name="DetailScreen"
                 component={DetailScreen}
                 options={{headerShown: false}}
             />
