@@ -3,17 +3,24 @@ import React, { useEffect, useState } from 'react'
 import { ProductProps } from '../../types/ProductProps';
 import { axiosClient } from '../utils/axiosClient';
 
-export const useProduct = <T>(id?: string) => {
+type ProductItemProps = {
+    id?: string,
+    query?: string;
+}
+
+
+export const useProduct = <T>({ id, query }: ProductItemProps) => {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<T>()
 
     const fetchApi = async () => {
         try {
-            const { data } = await axiosClient.get<T>(id ? `products/${id}` : 'products/')
+            const { data } = await axiosClient.get<T>(id ? `products/${id}` : `products/?${query}`)
             setData(data)
             setLoading(false)
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
 
     };

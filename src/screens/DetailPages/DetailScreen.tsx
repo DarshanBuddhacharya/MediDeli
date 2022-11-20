@@ -37,7 +37,9 @@ const DetailScreen = () => {
     const route = useRoute<Props>();
     const productId = route.params.productId;
 
-    const {data, loading} = useProduct<ProductProps["results"][0]>(productId);
+    const {data, loading} = useProduct<ProductProps["results"][0]>({
+        id: productId,
+    });
 
     const [read, setRead] = useState(true);
 

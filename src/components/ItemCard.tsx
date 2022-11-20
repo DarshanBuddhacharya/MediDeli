@@ -25,9 +25,9 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-        <Box>
+        <Box mb={2} mr={1}>
             <Box
-                maxWidth={190}
+                w={180}
                 rounded="lg"
                 overflow="hidden"
                 borderColor="coolGray.200"

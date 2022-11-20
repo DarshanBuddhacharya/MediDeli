@@ -15,7 +15,6 @@ import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
 import DetailScreen from "./src/screens/DetailPages/DetailScreen";
-import {CheckoutCard} from "./src/components/common/CheckoutCard";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 import {WishListScreen} from "./src/screens/WishListScreen";
@@ -24,9 +23,15 @@ import {useContext, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
+import {ListingScreen} from "./src/screens/ListingScreen";
+
+import {Provider} from "react-redux";
+
+import {store} from "./store";
 
 type HomeStackNavigator = {
     Index: undefined;
+    ListingScreen: undefined;
     DetailScreen: {userId: string};
 };
 
@@ -60,6 +65,11 @@ const HomeStack = () => {
                 component={DetailScreen}
                 options={{headerShown: false}}
             />
+            <Stack.Screen
+                name="ListingScreen"
+                component={ListingScreen}
+                options={{headerShown: false}}
+            />
         </Stack.Navigator>
     );
 };
@@ -84,7 +94,6 @@ const CheckoutStack = () => {
 
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
-    const authCntx = useContext(AuthContext);
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -237,13 +246,15 @@ const App = () => {
     // };
     return (
         <NativeBaseProvider theme={theme}>
-            <AuthContextProvider>
-                <StatusBar
-                    barStyle={isDarkMode ? "light-content" : "dark-content"}
-                    backgroundColor={backgroundStyle.backgroundColor}
-                />
-                <Root />
-            </AuthContextProvider>
+            <Provider store={store}>
+                <AuthContextProvider>
+                    <StatusBar
+                        barStyle={isDarkMode ? "light-content" : "dark-content"}
+                        backgroundColor={backgroundStyle.backgroundColor}
+                    />
+                    <Root />
+                </AuthContextProvider>
+            </Provider>
         </NativeBaseProvider>
     );
 };

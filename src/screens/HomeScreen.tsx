@@ -14,7 +14,7 @@ import {useProduct} from "../hooks/use-products";
 
 const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
-        useProduct<ProductProps>();
+        useProduct<ProductProps>({query: "limit=8"});
     const {loading: categoryLoading, data: categoryData} = useCategory();
     return (
         <Container>
@@ -70,7 +70,7 @@ const HomeScreen = () => {
                 <SearchBar />
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
-                    <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
+                    <Stack direction={"row"} mb="2.5" mt="1.5" space={1}>
                         {productLoading &&
                             Array.from({length: 4}).map((_, index) => (
                                 <ProductSkeleton key={index} />
