@@ -18,9 +18,10 @@ import Button from "../../components/common/Button";
 import ReviewCard from "../../components/common/ReviewCard";
 import {CartQuantity} from "../../components/common/CartQuantity";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useRoute} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {useProduct} from "../../hooks/use-products";
 import {ProductProps} from "../../../types/ProductProps";
+import {GoBackBtn} from "../../components/common/GoBackBtn";
 
 type RootStackParamList = {
     DetailScreen: {productId: string};
@@ -42,6 +43,7 @@ const DetailScreen = () => {
 
     return (
         <Container>
+            <GoBackBtn is_relative />
             <ScrollView>
                 <Box
                     rounded="lg"
