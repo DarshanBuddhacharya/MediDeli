@@ -10,13 +10,14 @@ export interface CartState {
     totalItems: number;
 }
 
-const jsonUser = storage.getString('cart')
+const jsonCart = storage.getString('cart')
+const jsonTotal = storage.getString('totalCart')
 
-const userObject = JSON.parse(jsonUser ? jsonUser : '')
+const cartObject = JSON.parse(jsonCart ? jsonCart : '')
 
 const initialState: CartState = {
-    cartItems: userObject ? userObject : [],
-    totalItems: 0
+    cartItems: cartObject ? cartObject : [],
+    totalItems: jsonTotal ? parseInt(jsonTotal) : 0
 }
 
 export const CartSlice = createSlice({
@@ -25,34 +26,39 @@ export const CartSlice = createSlice({
     reducers: {
         clear: (state) => {
             state.cartItems = [];
+            state.totalItems = 0
+            storage.set("cart", JSON.stringify(state.cartItems));
+            storage.set("totalCart", JSON.stringify(state.totalItems));
         },
         add: (state, { payload }) => {
             const cartItem = state.cartItems.findIndex((item) => item.id === payload.id);
             if (cartItem >= 0) {
                 state.cartItems[cartItem].amount += 1;
+                state.totalItems += 1;
             } else {
                 state.cartItems.push({ ...payload, amount: 1 })
+                state.totalItems += 1;
             }
             storage.set("cart", JSON.stringify(state.cartItems));
+            storage.set("totalCart", JSON.stringify(state.totalItems));
         },
         remove: (state, { payload }) => {
             const cartItem = state.cartItems.find((item) => item.id === payload.id)
             const cartIndex = state.cartItems.findIndex((item) => item.id === payload.id)
             if (cartItem && cartItem?.amount > 1) {
                 state.cartItems[cartIndex].amount -= 1;
-            }
-            else {
-                const nextCartItems = state.cartItems.filter(
-                    (item) => item.id !== payload.id
-                );
-                state.cartItems = nextCartItems
+                state.totalItems -= 1;
             }
             storage.set("cart", JSON.stringify(state.cartItems));
+            storage.set("totalCart", JSON.stringify(state.totalItems));
         },
         clearById: (state, { payload }) => {
+            const cartIndex = state.cartItems.findIndex(item => item.id === payload)
+            state.totalItems = state.totalItems - state.cartItems[cartIndex].amount
             const clearedCart = state.cartItems.filter(item => item.id !== payload)
             state.cartItems = clearedCart
-            storage.set('cart', JSON.stringify(state.cartItems))
+            storage.set("cart", JSON.stringify(state.cartItems));
+            storage.set("totalCart", JSON.stringify(state.totalItems));
         }
     },
 })

@@ -9,7 +9,6 @@ export const GoBackBtn = ({is_relative}: {is_relative?: boolean}) => {
         <Pressable
             flexDirection={"row"}
             position={is_relative ? `relative` : `absolute`}
-            pt={5}
             onPress={() => navigation.goBack()}>
             <Icon name="chevron-back" color={"#d52d3a"} size={24} />
             <Text>Back</Text>

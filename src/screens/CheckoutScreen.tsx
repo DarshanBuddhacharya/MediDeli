@@ -4,9 +4,11 @@ import {Box, Center, Heading, Pressable, ScrollView, Text} from "native-base";
 import React, {useEffect} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CheckoutCard} from "../components/common/CheckoutCard";
+import {ClearButton} from "../components/common/ClearButton";
 import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
 import {SummeryCard} from "../components/common/SummeryCard";
+import {TrashButton} from "../components/common/TrashButton";
 import cartSlice from "../features/cartSlice";
 import {useAppSelector} from "../features/hooks";
 
@@ -28,15 +30,19 @@ export const CheckoutScreen = () => {
                 h={"100%"}
                 borderWidth="1">
                 <ScrollView>
-                    <Box>
-                        <GoBackBtn />
-                        <Center>
-                            <Heading mt={5}>Checkout</Heading>
-                        </Center>
-                        {cartItems?.map((item, index) => (
-                            <CheckoutCard key={index} item={item} />
-                        ))}
+                    <Box
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                        pt={5}
+                        px={2}>
+                        <GoBackBtn is_relative />
+                        <Heading>Checkout</Heading>
+                        <ClearButton />
                     </Box>
+                    {cartItems?.map((item, index) => (
+                        <CheckoutCard key={index} item={item} />
+                    ))}
                 </ScrollView>
                 <SummeryCard
                     gross_total={150}

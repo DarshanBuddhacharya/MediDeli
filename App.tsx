@@ -28,7 +28,7 @@ import {ListingScreen} from "./src/screens/ListingScreen";
 import {Provider, useDispatch} from "react-redux";
 
 import {store} from "./store";
-import {useAppDispatch} from "./src/features/hooks";
+import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 
 type HomeStackNavigator = {
     Index: undefined;
@@ -95,6 +95,7 @@ const CheckoutStack = () => {
 
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
+    const count = useAppSelector(state => state.cart.totalItems);
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -152,7 +153,10 @@ const TabNavigation = () => {
             <Tab.Screen
                 name="Cart"
                 component={CheckoutStack}
-                options={{headerShown: false}}
+                options={{
+                    headerShown: false,
+                    tabBarBadge: count ? count : undefined,
+                }}
             />
             <Tab.Screen name="Account" component={Account} />
         </Tab.Navigator>

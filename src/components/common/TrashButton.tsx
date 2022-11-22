@@ -47,7 +47,10 @@ export const TrashButton = ({clearId}: {clearId: string}) => {
                             </Button>
                             <Button
                                 colorScheme="danger"
-                                onPress={() => dispatch(clearById(clearId))}>
+                                onPress={() => {
+                                    dispatch(clearById(clearId));
+                                    onClose();
+                                }}>
                                 Clear
                             </Button>
                         </Button.Group>
