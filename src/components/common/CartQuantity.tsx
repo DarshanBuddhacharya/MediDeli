@@ -2,7 +2,7 @@ import {Flex, Input, Pressable} from "native-base";
 import React, {useEffect, useState} from "react";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import {useAppDispatch, useAppSelector} from "../../features/hooks";
-import {add} from "../../features/cartSlice";
+import {add, remove} from "../../features/cartSlice";
 import {useCart} from "../../hooks/use-cart";
 import {ProductProps} from "../../../types/ProductProps";
 
@@ -18,10 +18,6 @@ type CartQuantityProps = {
 
 export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
     const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //     dispatch(addByCart(quantity));
-    // }, [handleQuantityChange]);
 
     return (
         <Flex direction="row" alignItems="center">
@@ -39,7 +35,7 @@ export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
                 _disabled={{bg: "primary.200"}}
                 h={is_small ? 8 : 10}
                 w={is_small ? 8 : 10}
-                onPress={() => dispatch(add(cartItems))}>
+                onPress={() => dispatch(remove(cartItems))}>
                 <MatIcon
                     name={"cart-minus"}
                     size={is_small ? 18 : 24}
@@ -67,6 +63,7 @@ export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
                 bg={"primary.500"}
                 alignItems={"center"}
                 justifyContent={"center"}
+                onPress={() => dispatch(add(cartItems))}
                 borderRadius={10}
                 h={is_small ? 8 : 10}
                 w={is_small ? 8 : 10}>

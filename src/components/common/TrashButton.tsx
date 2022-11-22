@@ -1,9 +1,13 @@
 import {Popover, Button, Pressable, useDisclose} from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import {clearById} from "../../features/cartSlice";
+import {useAppDispatch} from "../../features/hooks";
 
-export const TrashButton = () => {
+export const TrashButton = ({clearId}: {clearId: string}) => {
     const {isOpen, onClose, onOpen} = useDisclose();
+
+    const dispatch = useAppDispatch();
     return (
         <>
             <Popover
@@ -41,7 +45,11 @@ export const TrashButton = () => {
                                 onPress={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="danger">Clear</Button>
+                            <Button
+                                colorScheme="danger"
+                                onPress={() => dispatch(clearById(clearId))}>
+                                Clear
+                            </Button>
                         </Button.Group>
                     </Popover.Footer>
                 </Popover.Content>

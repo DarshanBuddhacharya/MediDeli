@@ -82,7 +82,7 @@ export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
                             radius: 15,
                         }}
                         mr={4}>
-                        <TrashButton />
+                        <TrashButton clearId={item?.id} />
                     </Pressable>
                     <CartQuantity is_small={false} cartItems={item} />
                 </Flex>
