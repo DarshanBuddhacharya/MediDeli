@@ -25,9 +25,10 @@ import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
 import {ListingScreen} from "./src/screens/ListingScreen";
 
-import {Provider} from "react-redux";
+import {Provider, useDispatch} from "react-redux";
 
 import {store} from "./store";
+import {useAppDispatch} from "./src/features/hooks";
 
 type HomeStackNavigator = {
     Index: undefined;
@@ -200,12 +201,15 @@ const Navigation = () => {
 const Root = () => {
     const [isTryingLogin, setIsTryingLogin] = useState(true);
 
+    const dispatch = useAppDispatch();
+
     const authCtx = useContext(AuthContext);
 
     useEffect(() => {
         const fetchToken = async () => {
             const storedAccess = await AsyncStorage.getItem("access");
             const storedRefresh = await AsyncStorage.getItem("refresh");
+            const cart = await AsyncStorage.getItem("cart");
             const response = axios
                 .post(`${REACT_APP_DEV_MODE}refresh/`, {
                     refresh: storedRefresh,

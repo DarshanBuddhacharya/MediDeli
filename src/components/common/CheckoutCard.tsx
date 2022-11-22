@@ -1,12 +1,13 @@
 import {Box, Flex, Heading, Image, Pressable, Text} from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import {ProductProps} from "../../../types/ProductProps";
 import {CartQuantity} from "./CartQuantity";
 import {Container} from "./Container";
 import {TrashButton} from "./TrashButton";
 import {WishListButton} from "./WishListButton";
 
-export const CheckoutCard = () => {
+export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
     return (
         <Box
             rounded="lg"
@@ -16,19 +17,20 @@ export const CheckoutCard = () => {
             m={4}
             borderBottomWidth={"1"}>
             <Box w={"100%"} flexDirection={"row"}>
-                <Image
-                    resizeMode="cover"
-                    rounded="lg"
-                    w={110}
-                    h={110}
-                    source={{
-                        uri: "https://media.istockphoto.com/photos/buying-convenient-food-picture-id1371981344",
-                    }}
-                    alt="Picture of a Flower"
-                />
+                {item?.image && (
+                    <Image
+                        resizeMode="cover"
+                        rounded="lg"
+                        w={110}
+                        h={110}
+                        source={{uri: `${item?.image}`}}
+                        alt="Picture of a Flower"
+                    />
+                )}
+
                 <Box ml={3} w={"65%"} h={"100%"}>
-                    <Heading size="sm" ml="-1">
-                        The Garden City
+                    <Heading size="sm" ml="-1" numberOfLines={2}>
+                        {item?.product?.product_name}
                     </Heading>
                     <Text
                         fontSize="xs"
@@ -41,7 +43,7 @@ export const CheckoutCard = () => {
                         fontWeight="500"
                         ml="-0.5"
                         mt="-1">
-                        Mama Earth
+                        {item?.product?.brand?.brand_name}
                     </Text>
                     <Text fontWeight="400">
                         {`Lorem ipsum dolor sit amet consectetu`}
@@ -67,7 +69,7 @@ export const CheckoutCard = () => {
                         color: "warmGray.200",
                     }}
                     fontWeight="400">
-                    Rs.400
+                    Rs.{item?.price}
                 </Text>
                 <Flex
                     direction="row"
@@ -82,7 +84,7 @@ export const CheckoutCard = () => {
                         mr={4}>
                         <TrashButton />
                     </Pressable>
-                    <CartQuantity />
+                    <CartQuantity is_small={false} cartItems={item} />
                 </Flex>
             </Box>
         </Box>

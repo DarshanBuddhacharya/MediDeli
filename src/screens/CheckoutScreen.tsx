@@ -1,17 +1,22 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {Box, Center, Heading, Pressable, ScrollView, Text} from "native-base";
-import React from "react";
+import React, {useEffect} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CheckoutCard} from "../components/common/CheckoutCard";
 import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
 import {SummeryCard} from "../components/common/SummeryCard";
+import cartSlice from "../features/cartSlice";
+import {useAppSelector} from "../features/hooks";
 
 export type RootStackParamList = {
     Delivery: undefined;
 };
 
 export const CheckoutScreen = () => {
+    const cartItems = useAppSelector(state => state.cart.cartItems);
+
     return (
         <Container>
             <Box
@@ -28,10 +33,9 @@ export const CheckoutScreen = () => {
                         <Center>
                             <Heading mt={5}>Checkout</Heading>
                         </Center>
-                        <CheckoutCard />
-                        <CheckoutCard />
-                        <CheckoutCard />
-                        <CheckoutCard />
+                        {cartItems?.map((item, index) => (
+                            <CheckoutCard key={index} item={item} />
+                        ))}
                     </Box>
                 </ScrollView>
                 <SummeryCard

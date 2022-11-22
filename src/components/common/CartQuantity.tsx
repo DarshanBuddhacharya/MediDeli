@@ -2,11 +2,26 @@ import {Flex, Input, Pressable} from "native-base";
 import React, {useEffect, useState} from "react";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import {useAppDispatch, useAppSelector} from "../../features/hooks";
-import {addToCart, removeFromCart, addByCart} from "../../features/cartSlice";
+import {add} from "../../features/cartSlice";
+import {useCart} from "../../hooks/use-cart";
+import {ProductProps} from "../../../types/ProductProps";
 
-export const CartQuantity = () => {
-    const count = useAppSelector(state => state.cart.totalItems);
+type QuantityHandlerProps = {
+    handle: "add" | "remove" | "update";
+    id: string;
+};
+
+type CartQuantityProps = {
+    is_small: boolean;
+    cartItems: ProductProps["results"][0];
+};
+
+export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
     const dispatch = useAppDispatch();
+
+    // useEffect(() => {
+    //     dispatch(addByCart(quantity));
+    // }, [handleQuantityChange]);
 
     return (
         <Flex direction="row" alignItems="center">
@@ -20,38 +35,27 @@ export const CartQuantity = () => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 borderRadius={10}
-                isDisabled={count <= 1 ? true : false}
+                isDisabled={cartItems.amount <= 1 ? true : false}
                 _disabled={{bg: "primary.200"}}
-                h={10}
-                w={10}
-                onPress={() => dispatch(removeFromCart())}>
-                <MatIcon name={"cart-minus"} size={24} color={"white"} />
+                h={is_small ? 8 : 10}
+                w={is_small ? 8 : 10}
+                onPress={() => dispatch(add(cartItems))}>
+                <MatIcon
+                    name={"cart-minus"}
+                    size={is_small ? 18 : 24}
+                    color={"white"}
+                />
             </Pressable>
             <Input
-                w={50}
-                mx={2}
+                w={is_small ? 12 : 50}
+                mx={is_small ? 0 : 2}
                 variant="Outline"
-                placeholder={count.toString()}
+                placeholder={cartItems?.amount?.toString()}
+                value={cartItems?.amount?.toString()}
                 alignItems={"center"}
                 justifyContent={"center"}
-                fontSize={18}
+                fontSize={is_small ? 16 : 18}
                 keyboardType={"numeric"}
-                onChange={e =>
-                    parseInt(e.nativeEvent.text) <= 0 ||
-                    isNaN(parseInt(e.nativeEvent.text))
-                        ? 1
-                        : parseInt(e.nativeEvent.text)
-                }
-                onEndEditing={e =>
-                    dispatch(
-                        addByCart(
-                            parseInt(e.nativeEvent.text) <= 0 ||
-                                isNaN(parseInt(e.nativeEvent.text))
-                                ? 1
-                                : parseInt(e.nativeEvent.text),
-                        ),
-                    )
-                }
                 textAlign="center"
             />
             <Pressable
@@ -64,10 +68,13 @@ export const CartQuantity = () => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 borderRadius={10}
-                h={10}
-                w={10}
-                onPress={() => dispatch(addToCart())}>
-                <MatIcon name={"cart-plus"} size={24} color={"white"} />
+                h={is_small ? 8 : 10}
+                w={is_small ? 8 : 10}>
+                <MatIcon
+                    name={"cart-plus"}
+                    size={is_small ? 18 : 24}
+                    color={"white"}
+                />
             </Pressable>
         </Flex>
     );

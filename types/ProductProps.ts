@@ -31,5 +31,6 @@ export type ProductProps = {
         }
         image: string
         price: string
+        amount: number
     }>
 }

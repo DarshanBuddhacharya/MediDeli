@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {
@@ -16,6 +17,8 @@ import {
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../types/ProductProps";
+import {useAppSelector} from "../features/hooks";
+import {CartQuantity} from "./common/CartQuantity";
 
 export type RootStackParamList = {
     DetailScreen: {productId: string};
@@ -24,6 +27,8 @@ export type RootStackParamList = {
 export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+    const cartItem = useAppSelector(state => state.cart.cartItems);
     return (
         <Box mb={2} mr={1}>
             <Box
@@ -57,6 +62,11 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                 </Pressable>
                 <Stack p="4" space={3}>
                     <Pressable
+                        onPress={() =>
+                            navigation.navigate("DetailScreen", {
+                                productId: data?.id,
+                            })
+                        }
                         android_ripple={{
                             color: "#fde3e5",
                             radius: 150,
@@ -97,9 +107,12 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                             </Text>
                         </Flex>
                     </Pressable>
-                    <HStack space={1} alignItems="center">
+                    <HStack
+                        space={1}
+                        alignItems="center"
+                        justifyContent={"space-between"}>
                         <Icon name="heart-outline" size={20} color={"red"} />
-                        <Icon name="cart-outline" size={20} color={"red"} />
+                        <CartQuantity is_small cartItems={data} />
                     </HStack>
                 </Stack>
             </Box>
