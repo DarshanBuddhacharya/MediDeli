@@ -6,11 +6,6 @@ import {add, remove} from "../../features/cartSlice";
 import {useCart} from "../../hooks/use-cart";
 import {ProductProps} from "../../../types/ProductProps";
 
-type QuantityHandlerProps = {
-    handle: "add" | "remove" | "update";
-    id: string;
-};
-
 type CartQuantityProps = {
     is_small: boolean;
     cartItems: ProductProps["results"][0];
@@ -31,7 +26,7 @@ export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 borderRadius={10}
-                isDisabled={cartItems.amount <= 1 ? true : false}
+                isDisabled={cartItems?.amount <= 1 ? true : false}
                 _disabled={{bg: "primary.200"}}
                 h={is_small ? 8 : 10}
                 w={is_small ? 8 : 10}

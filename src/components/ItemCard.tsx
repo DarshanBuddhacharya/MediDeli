@@ -17,7 +17,8 @@ import {
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../types/ProductProps";
-import {useAppSelector} from "../features/hooks";
+import {useAppDispatch, useAppSelector} from "../features/hooks";
+import {change} from "../features/wishListSlice";
 import {CartQuantity} from "./common/CartQuantity";
 
 export type RootStackParamList = {
@@ -28,7 +29,8 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
     const navigation =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-    const cartItem = useAppSelector(state => state.cart.cartItems);
+    const dispatch = useAppDispatch();
+
     return (
         <Box mb={2} mr={1}>
             <Box
@@ -111,7 +113,18 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                         space={1}
                         alignItems="center"
                         justifyContent={"space-between"}>
-                        <Icon name="heart-outline" size={20} color={"red"} />
+                        <Pressable
+                            onPress={() => dispatch(change(data))}
+                            android_ripple={{
+                                color: "#fde3e5",
+                                borderless: true,
+                            }}>
+                            <Icon
+                                name="heart-outline"
+                                size={20}
+                                color={"red"}
+                            />
+                        </Pressable>
                         <CartQuantity is_small cartItems={data} />
                     </HStack>
                 </Stack>

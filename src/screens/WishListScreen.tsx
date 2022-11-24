@@ -5,12 +5,17 @@ import React from "react";
 import {CheckoutCard} from "../components/common/CheckoutCard";
 import {Container} from "../components/common/Container";
 import {RootStackParamList} from "./CheckoutScreen";
+import {useAppSelector} from "../features/hooks";
+import {GoBackBtn} from "../components/common/GoBackBtn";
+import {ClearButton} from "../components/common/ClearButton";
+import {ClearWishBtn} from "../components/common/ClearWishBtn";
 
 export const WishListScreen = ({
     navigation,
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
+    const wishListItems = useAppSelector(state => state.wishList.wishlistItems);
     return (
         <Container>
             <Box
@@ -23,25 +28,19 @@ export const WishListScreen = ({
                 borderWidth="1">
                 <ScrollView>
                     <Box>
-                        <Pressable
+                        <Box
                             flexDirection={"row"}
-                            position={"absolute"}
+                            justifyContent={"space-between"}
+                            alignItems={"center"}
                             pt={5}
-                            onPress={() => navigation.goBack()}>
-                            <Icon
-                                name="chevron-back"
-                                color={"#d52d3a"}
-                                size={24}
-                            />
-                            <Text>Back</Text>
-                        </Pressable>
-                        <Center>
-                            <Heading mt={5}>WishList</Heading>
-                        </Center>
-                        <CheckoutCard />
-                        <CheckoutCard />
-                        <CheckoutCard />
-                        <CheckoutCard />
+                            px={2}>
+                            <GoBackBtn is_relative />
+                            <Heading>WishList</Heading>
+                            <ClearWishBtn />
+                        </Box>
+                        {wishListItems?.map((item, index) => (
+                            <CheckoutCard item={item} key={index} />
+                        ))}
                     </Box>
                 </ScrollView>
             </Box>

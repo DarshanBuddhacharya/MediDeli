@@ -55,7 +55,7 @@ export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
                         mb={2}
                         justifyContent={"space-between"}>
                         <Icon name="star" size={18} />
-                        <WishListButton />
+                        <WishListButton clearId={item} />
                     </Flex>
                 </Box>
             </Box>

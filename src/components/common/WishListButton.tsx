@@ -1,9 +1,18 @@
 import {Popover, Button, Pressable, useDisclose} from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import {ProductProps} from "../../../types/ProductProps";
+import {useAppDispatch} from "../../features/hooks";
+import {change} from "../../features/wishListSlice";
 
-export const WishListButton = () => {
+export const WishListButton = ({
+    clearId,
+}: {
+    clearId: ProductProps["results"][0];
+}) => {
     const {isOpen, onClose, onOpen} = useDisclose();
+
+    const dispatch = useAppDispatch();
     return (
         <>
             <Popover
@@ -42,7 +51,14 @@ export const WishListButton = () => {
                                 onPress={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="danger">Remove</Button>
+                            <Button
+                                colorScheme="danger"
+                                onPress={() => {
+                                    dispatch(change(clearId));
+                                    onClose();
+                                }}>
+                                Remove
+                            </Button>
                         </Button.Group>
                     </Popover.Footer>
                 </Popover.Content>

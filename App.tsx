@@ -95,7 +95,8 @@ const CheckoutStack = () => {
 
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
-    const count = useAppSelector(state => state.cart.totalItems);
+    const countCart = useAppSelector(state => state.cart.totalItems);
+    const countWishList = useAppSelector(state => state.wishList.totalWishList);
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -141,7 +142,10 @@ const TabNavigation = () => {
             <Tab.Screen
                 name="WishList"
                 component={WishListScreen}
-                options={{headerShown: false}}
+                options={{
+                    headerShown: false,
+                    tabBarBadge: countWishList ? countWishList : undefined,
+                }}
             />
             <Tab.Screen
                 name="Shop"
@@ -155,7 +159,7 @@ const TabNavigation = () => {
                 component={CheckoutStack}
                 options={{
                     headerShown: false,
-                    tabBarBadge: count ? count : undefined,
+                    tabBarBadge: countCart ? countCart : undefined,
                 }}
             />
             <Tab.Screen name="Account" component={Account} />
