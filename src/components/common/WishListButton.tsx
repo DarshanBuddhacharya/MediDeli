@@ -28,11 +28,7 @@ export const WishListButton = ({
                                 color: "#d52d3a",
                                 radius: 12,
                             }}>
-                            <Icon
-                                name="heart-outline"
-                                size={24}
-                                color={"#d52d3a"}
-                            />
+                            <Icon name="heart" size={24} color={"#d52d3a"} />
                         </Pressable>
                     );
                 }}>

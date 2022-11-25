@@ -1,13 +1,15 @@
 import {Center, Button, Modal, Pressable} from "native-base";
 import React, {useState} from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {useAppDispatch} from "../../features/hooks";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
 import {clearAll} from "../../features/wishListSlice";
 
 export const ClearWishBtn = () => {
     const [showModal, setShowModal] = useState(false);
 
     const dispatch = useAppDispatch();
+
+    const wishListCount = useAppSelector(state => state.wishList.totalWishList);
     return (
         <Center>
             <Pressable
@@ -19,6 +21,8 @@ export const ClearWishBtn = () => {
                 bg={"primary.500"}
                 alignItems={"center"}
                 justifyContent={"center"}
+                isDisabled={wishListCount <= 0 ? true : false}
+                _disabled={{bg: "primary.200"}}
                 borderRadius={10}
                 mr={2}
                 onPress={() => setShowModal(true)}

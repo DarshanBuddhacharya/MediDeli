@@ -31,6 +31,8 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
 
     const dispatch = useAppDispatch();
 
+    const wishlistItems = useAppSelector(state => state.wishList.wishlistItems);
+
     return (
         <Box mb={2} mr={1}>
             <Box
@@ -119,11 +121,15 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                                 color: "#fde3e5",
                                 borderless: true,
                             }}>
-                            <Icon
-                                name="heart-outline"
-                                size={20}
-                                color={"red"}
-                            />
+                            {wishlistItems.find(item => item.id === data.id) ? (
+                                <Icon name="heart" size={20} color={"red"} />
+                            ) : (
+                                <Icon
+                                    name="heart-outline"
+                                    size={20}
+                                    color={"red"}
+                                />
+                            )}
                         </Pressable>
                         <CartQuantity is_small cartItems={data} />
                     </HStack>

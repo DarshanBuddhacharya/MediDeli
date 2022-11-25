@@ -2,12 +2,14 @@ import {Center, Button, Modal, Pressable} from "native-base";
 import React, {useState} from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {clear} from "../../features/cartSlice";
-import {useAppDispatch} from "../../features/hooks";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
 
 export const ClearButton = () => {
     const [showModal, setShowModal] = useState(false);
 
     const dispatch = useAppDispatch();
+
+    const cartCount = useAppSelector(state => state.cart.totalItems);
     return (
         <Center>
             <Pressable
@@ -19,6 +21,8 @@ export const ClearButton = () => {
                 bg={"primary.500"}
                 alignItems={"center"}
                 justifyContent={"center"}
+                isDisabled={cartCount <= 0 ? true : false}
+                _disabled={{bg: "primary.200"}}
                 borderRadius={10}
                 mr={2}
                 onPress={() => setShowModal(true)}

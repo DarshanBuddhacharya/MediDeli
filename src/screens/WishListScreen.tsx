@@ -16,6 +16,7 @@ export const WishListScreen = ({
     navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
     const wishListItems = useAppSelector(state => state.wishList.wishlistItems);
+
     return (
         <Container>
             <Box
