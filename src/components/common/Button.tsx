@@ -24,7 +24,9 @@ const Button = ({
             mx={4}
             h={10}
             onPress={() => navigation.push(link)}>
-            <Text color={"white"}>{children}</Text>
+            <Text color={"white"} px={3}>
+                {children}
+            </Text>
         </Pressable>
     );
 };

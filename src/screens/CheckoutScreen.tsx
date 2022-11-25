@@ -9,6 +9,7 @@ import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
 import {SummeryCard} from "../components/common/SummeryCard";
 import {TrashButton} from "../components/common/TrashButton";
+import {Fallback} from "../components/skeletons/Fallback";
 import cartSlice from "../features/cartSlice";
 import {useAppSelector} from "../features/hooks";
 
@@ -24,11 +25,9 @@ export const CheckoutScreen = () => {
             <Box
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
                 flexDirection={"column"}
                 justifyContent={"space-between"}
-                h={"100%"}
-                borderWidth="1">
+                h={"100%"}>
                 <ScrollView>
                     <Box
                         flexDirection={"row"}
@@ -40,17 +39,27 @@ export const CheckoutScreen = () => {
                         <Heading>Checkout</Heading>
                         <ClearButton />
                     </Box>
-                    {cartItems?.map((item, index) => (
-                        <CheckoutCard key={index} item={item} />
-                    ))}
+                    {cartItems.length > 0 ? (
+                        cartItems?.map((item, index) => (
+                            <CheckoutCard key={index} item={item} />
+                        ))
+                    ) : (
+                        <Fallback
+                            title={"Looks like your Cart is Empty"}
+                            link={"Home"}
+                            imageUrl={require("../../assets/Images/cart.png")}
+                        />
+                    )}
                 </ScrollView>
-                <SummeryCard
-                    gross_total={150}
-                    delivery_fee={50}
-                    discount={50}
-                    total={150}
-                    link={"Delivery"}
-                />
+                {cartItems.length > 0 && (
+                    <SummeryCard
+                        gross_total={150}
+                        delivery_fee={50}
+                        discount={50}
+                        total={150}
+                        link={"Delivery"}
+                    />
+                )}
             </Box>
         </Container>
     );

@@ -1,5 +1,13 @@
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {Box, Center, Heading, ScrollView, Pressable, Text} from "native-base";
+import {
+    Box,
+    Center,
+    Heading,
+    ScrollView,
+    Pressable,
+    Text,
+    Image,
+} from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 import {CheckoutCard} from "../components/common/CheckoutCard";
@@ -9,6 +17,8 @@ import {useAppSelector} from "../features/hooks";
 import {GoBackBtn} from "../components/common/GoBackBtn";
 import {ClearButton} from "../components/common/ClearButton";
 import {ClearWishBtn} from "../components/common/ClearWishBtn";
+import Button from "../components/common/Button";
+import {Fallback} from "../components/skeletons/Fallback";
 
 export const WishListScreen = ({
     navigation,
@@ -22,11 +32,9 @@ export const WishListScreen = ({
             <Box
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
                 flexDirection={"column"}
                 justifyContent={"space-between"}
-                h={"100%"}
-                borderWidth="1">
+                h={"100%"}>
                 <ScrollView>
                     <Box>
                         <Box
@@ -39,9 +47,17 @@ export const WishListScreen = ({
                             <Heading>WishList</Heading>
                             <ClearWishBtn />
                         </Box>
-                        {wishListItems?.map((item, index) => (
-                            <CheckoutCard item={item} key={index} />
-                        ))}
+                        {wishListItems.length > 0 ? (
+                            wishListItems?.map((item, index) => (
+                                <CheckoutCard item={item} key={index} />
+                            ))
+                        ) : (
+                            <Fallback
+                                title={"Looks like your Wish List is Empty"}
+                                link={"Home"}
+                                imageUrl={require("../../assets/Images/wishlist.png")}
+                            />
+                        )}
                     </Box>
                 </ScrollView>
             </Box>
