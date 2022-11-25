@@ -1,14 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { MMKV } from "react-native-mmkv";
 import { ProductProps } from "../../types/ProductProps";
+
+export const storage = new MMKV()
 
 export type WishListProps = {
     totalWishList: number;
     wishlistItems: ProductProps['results']
 }
 
+const jsonWishlist = storage.getString('wishList')
+const jsonTotal = storage.getString('totalWishList')
+
+const wishlistObject = JSON.parse(jsonWishlist ? jsonWishlist : '')
+
 const initialState: WishListProps = {
-    totalWishList: 0,
-    wishlistItems: []
+    totalWishList: jsonTotal ? parseInt(jsonTotal) : 0,
+    wishlistItems: wishlistObject ? wishlistObject : []
 }
 
 export const WishListSlice = createSlice({
@@ -25,10 +33,14 @@ export const WishListSlice = createSlice({
                 state.wishlistItems.push({ ...payload })
                 state.totalWishList += 1
             }
+            storage.set("wishList", JSON.stringify(state.wishlistItems));
+            storage.set("totalWishList", JSON.stringify(state.totalWishList));
         },
         clearAll: (state) => {
             state.wishlistItems = []
             state.totalWishList = 0
+            storage.set("wishList", JSON.stringify(state.wishlistItems));
+            storage.set("totalWishList", JSON.stringify(state.totalWishList));
         }
     }
 })
