@@ -3,7 +3,6 @@ import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../../types/ProductProps";
 import {CartQuantity} from "./CartQuantity";
-import {Container} from "./Container";
 import {TrashButton} from "./TrashButton";
 import {WishListButton} from "./WishListButton";
 
@@ -45,8 +44,8 @@ export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
                         mt="-1">
                         {item?.product?.brand?.brand_name}
                     </Text>
-                    <Text fontWeight="400">
-                        {`Lorem ipsum dolor sit amet consectetu`}
+                    <Text fontWeight="400" numberOfLines={1}>
+                        {item?.product?.description}
                     </Text>
                     <Flex
                         direction="row"

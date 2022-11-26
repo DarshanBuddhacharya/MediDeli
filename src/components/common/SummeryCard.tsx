@@ -4,7 +4,6 @@ import Button from "./Button";
 
 type SummeryCardProps = {
     gross_total: number;
-    delivery_fee: number;
     discount: number;
     total: number;
     link: string;
@@ -12,7 +11,6 @@ type SummeryCardProps = {
 
 export const SummeryCard = ({
     gross_total,
-    delivery_fee,
     discount,
     total,
     link,
@@ -39,10 +37,10 @@ export const SummeryCard = ({
                     <Text>Gross Total</Text>
                     <Text color={"gray.500"}>Rs. {gross_total}</Text>
                 </Flex>
-                <Flex direction="row" justifyContent={"space-between"}>
+                {/* <Flex direction="row" justifyContent={"space-between"}>
                     <Text>Delivery fee</Text>
                     <Text color={"gray.500"}>Rs. {delivery_fee}</Text>
-                </Flex>
+                </Flex> */}
                 <Flex direction="row" justifyContent={"space-between"}>
                     <Text>Discount</Text>
                     <Text color={"gray.500"}>Rs. {discount}</Text>

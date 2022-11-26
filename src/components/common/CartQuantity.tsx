@@ -1,8 +1,8 @@
 import {Flex, Input, Pressable} from "native-base";
-import React, {useEffect, useState} from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import {useAppDispatch, useAppSelector} from "../../features/hooks";
-import {add, remove} from "../../features/cartSlice";
+import {add, remove, update} from "../../features/cartSlice";
 import {useCart} from "../../hooks/use-cart";
 import {ProductProps} from "../../../types/ProductProps";
 
@@ -13,6 +13,16 @@ type CartQuantityProps = {
 
 export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
     const dispatch = useAppDispatch();
+
+    const [cartQuantity, setCartQuantity] = useState<number>();
+
+    useEffect(() => {
+        setCartQuantity(cartItems?.amount);
+    }, [cartItems?.amount]);
+
+    const handleQuantityChange = () => {
+        dispatch(update({cart: cartItems, quantity: cartQuantity}));
+    };
 
     return (
         <Flex direction="row" alignItems="center">
@@ -42,7 +52,12 @@ export const CartQuantity = ({is_small, cartItems}: CartQuantityProps) => {
                 mx={is_small ? 0 : 2}
                 variant="Outline"
                 placeholder={cartItems?.amount?.toString()}
-                value={cartItems?.amount?.toString()}
+                value={cartQuantity?.toString()}
+                onChange={e =>
+                    e.nativeEvent.text &&
+                    setCartQuantity(parseInt(e.nativeEvent.text))
+                }
+                onEndEditing={e => e.nativeEvent.text && handleQuantityChange()}
                 alignItems={"center"}
                 justifyContent={"center"}
                 fontSize={is_small ? 16 : 18}

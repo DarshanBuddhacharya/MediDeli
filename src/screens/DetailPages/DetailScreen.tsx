@@ -115,7 +115,9 @@ const DetailScreen = () => {
                             fontWeight="400">
                             Rs.{data?.price}
                         </Text>
-                        <CartQuantity />
+                        {data && (
+                            <CartQuantity cartItems={data} is_small={false} />
+                        )}
                     </Flex>
                     <Button link={"Checkout"}>Buy Now</Button>
                     <Box p={4}>
