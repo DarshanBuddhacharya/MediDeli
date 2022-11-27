@@ -54,13 +54,14 @@
 
 // export { axiosClient };
 import { REACT_APP_DEV_MODE } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { AxiosError } from "axios";
 import axios from "axios";
 import { compareAsc, fromUnixTime } from "date-fns";
 import jwtDecode from "jwt-decode";
 import { useContext } from "react";
-import { AuthContext } from "../Store/auth-context";
+import { MMKV } from "react-native-mmkv";
+import { authenticate, logout } from "../features/auth/authSlice";
+import { useAppDispatch } from "../features/hooks";
 
 const getApiEndpoint = () => {
     const url = REACT_APP_DEV_MODE;
@@ -71,6 +72,12 @@ const getApiEndpoint = () => {
     return url;
 };
 
+const storage = new MMKV()
+
+const tokenJson = storage.getString('user')
+
+const token = JSON?.parse(tokenJson ? tokenJson : '')
+
 const isTokenExpired = (token: string) => {
     const { exp } = jwtDecode<{ exp: number }>(token);
     const tokenExpirationDate = fromUnixTime(exp);
@@ -79,8 +86,8 @@ const isTokenExpired = (token: string) => {
 };
 
 const refreshAuthTokens = async (refreshToken: string) => {
-    const contx = useContext(AuthContext)
     const url = new URL("refresh/", getApiEndpoint());
+    const dispatch = useAppDispatch()
     fetch(url.href, {
         method: "POST",
         headers: {
@@ -94,21 +101,21 @@ const refreshAuthTokens = async (refreshToken: string) => {
             const { access, refresh } = <{ access: string; refresh: string }>(
                 data
             );
-            contx.authenticate({ access, refresh });
+            dispatch(authenticate(data));
         })
-        .catch(() => contx.logout());
+        .catch(() => dispatch(logout()));
 };
 
 const axiosClient = axios.create({
     baseURL: getApiEndpoint(),
 });
+
 axiosClient.interceptors.request.use(
     async (config) => {
-        const access = await AsyncStorage.getItem("access");
-        if (access && !isTokenExpired(access)) {
+        if (token.token.access && !isTokenExpired(token.token.access)) {
             config.headers = {
                 ...config.headers,
-                Authorization: `Bearer ${access}`,
+                Authorization: `Bearer ${token.token.access}`,
             };
         }
         return config;
@@ -119,12 +126,10 @@ axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
         const axiosError = error as AxiosError<{ code: string }>;
-        const accessToken = await AsyncStorage.getItem("access");
-        const refreshToken = await AsyncStorage.getItem("access");
         if (axiosError.response?.status === 401) {
             const errorCode = axiosError.response?.data?.code;
-            const access = accessToken;
-            const refresh = refreshToken;
+            const access = token.token.access;
+            const refresh = token.token.refresh;
 
             if (!access || !refresh) return Promise.reject(error);
 

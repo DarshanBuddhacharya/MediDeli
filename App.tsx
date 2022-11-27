@@ -18,9 +18,7 @@ import DetailScreen from "./src/screens/DetailPages/DetailScreen";
 import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 import {WishListScreen} from "./src/screens/WishListScreen";
-import AuthContextProvider, {AuthContext} from "./src/Store/auth-context";
-import {useContext, useEffect, useState} from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
 import {ListingScreen} from "./src/screens/ListingScreen";
@@ -30,6 +28,7 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 import {calculateTotals} from "./src/features/cartSlice";
+import {authenticate, logout} from "./src/features/auth/authSlice";
 
 type HomeStackNavigator = {
     Index: undefined;
@@ -169,12 +168,12 @@ const TabNavigation = () => {
 };
 
 const Navigation = () => {
-    const authCntx = useContext(AuthContext);
+    const auth = useAppSelector(state => state.auth.user?.token);
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {!authCntx.isAuthenticated && (
+                {!auth && (
                     <>
                         <Stack.Screen
                             name="Login"
@@ -188,7 +187,7 @@ const Navigation = () => {
                         />
                     </>
                 )}
-                {authCntx.isAuthenticated && (
+                {auth && (
                     <>
                         <Stack.Screen
                             name="Home"
@@ -212,29 +211,26 @@ const Root = () => {
 
     const dispatch = useAppDispatch();
     const cartItems = useAppSelector(state => state.cart.cartItems);
+    const auth = useAppSelector(state => state.auth.user);
+
     useEffect(() => {
         dispatch(calculateTotals());
     }, [cartItems]);
 
-    const authCtx = useContext(AuthContext);
-
     useEffect(() => {
         const fetchToken = async () => {
-            const storedAccess = await AsyncStorage.getItem("access");
-            const storedRefresh = await AsyncStorage.getItem("refresh");
-            const response = axios
-                .post(`${REACT_APP_DEV_MODE}refresh/`, {
-                    refresh: storedRefresh,
-                })
-                .then(res => console.log(res.data))
-                .catch(err => {
-                    console.log("taht", err.response.data), authCtx.logout();
-                });
-            if (storedAccess && storedRefresh) {
-                authCtx.authenticate({
-                    access: storedAccess,
-                    refresh: storedRefresh,
-                });
+            if (auth) {
+                const response = axios
+                    .post(`${REACT_APP_DEV_MODE}refresh/`, {
+                        refresh: auth.token.refresh,
+                    })
+                    .then(res => console.log(res.data))
+                    .catch(err => {
+                        dispatch(logout());
+                    });
+            }
+            if (auth) {
+                dispatch(authenticate(auth.token));
             }
             setIsTryingLogin(false);
         };
@@ -263,13 +259,11 @@ const App = () => {
     return (
         <NativeBaseProvider theme={theme}>
             <Provider store={store}>
-                <AuthContextProvider>
-                    <StatusBar
-                        barStyle={isDarkMode ? "light-content" : "dark-content"}
-                        backgroundColor={backgroundStyle.backgroundColor}
-                    />
-                    <Root />
-                </AuthContextProvider>
+                <StatusBar
+                    barStyle={isDarkMode ? "light-content" : "dark-content"}
+                    backgroundColor={backgroundStyle.backgroundColor}
+                />
+                <Root />
             </Provider>
         </NativeBaseProvider>
     );

@@ -1,12 +1,13 @@
 import {Box, Pressable, Text} from "native-base";
 import React, {useContext} from "react";
-import {AuthContext} from "../Store/auth-context";
+import {logout} from "../features/auth/authSlice";
+import {useAppDispatch} from "../features/hooks";
 
 const Account = () => {
-    const authCntx = useContext(AuthContext);
+    const dispatch = useAppDispatch();
     return (
         <Box>
-            <Pressable onPress={authCntx.logout}>
+            <Pressable onPress={() => dispatch(logout())}>
                 <Text>Logout</Text>
             </Pressable>
         </Box>

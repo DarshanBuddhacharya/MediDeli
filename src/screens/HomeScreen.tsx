@@ -9,6 +9,7 @@ import SearchBar from "../components/common/SearchBar";
 import Title from "../components/common/Title";
 import {ItemCard} from "../components/ItemCard";
 import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
+import {useAppSelector} from "../features/hooks";
 import {useCategory} from "../hooks/use-category";
 import {useProduct} from "../hooks/use-products";
 
@@ -16,6 +17,8 @@ const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
         useProduct<ProductProps>({query: "limit=8"});
     const {loading: categoryLoading, data: categoryData} = useCategory();
+
+    const user = useAppSelector(state => state.auth.user);
     return (
         <Container>
             <ScrollView>
@@ -30,15 +33,7 @@ const HomeScreen = () => {
                     width="100%"
                     display={"flex"}>
                     <Box _text={{color: "white"}}>
-                        Hello There, Ram Baran Yadav
-                        <Flex direction="row">
-                            <Icon
-                                name="location-on"
-                                color={"white"}
-                                size={24}
-                            />
-                            <Text>Your current location</Text>
-                        </Flex>
+                        Hello There, {user?.user?.full_name}
                     </Box>
                     <Avatar
                         bg="green.500"

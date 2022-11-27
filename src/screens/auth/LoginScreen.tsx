@@ -1,6 +1,6 @@
 import {Formik} from "formik";
 import {Box, Checkbox, Flex, Pressable, Text} from "native-base";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {Image} from "react-native";
 import {Container} from "../../components/common/Container";
 import {FormButton} from "../../components/Form/FormButton";
@@ -8,9 +8,8 @@ import InputField from "../../components/Form/InputField";
 import PasswordField from "../../components/Form/PasswordField";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {loginFormSchema} from "../../validation/LoginValidation";
-import axios from "axios";
-import {AuthContext} from "../../Store/auth-context";
-import {REACT_APP_DEV_MODE} from "@env";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
+import {login, reset} from "../../features/auth/authSlice";
 
 export type RootStackParamList = {
     Signup: undefined;
@@ -22,7 +21,14 @@ const LoginScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
-    const authCtx = useContext(AuthContext);
+    const {user, isError, isSuccess, message} = useAppSelector(
+        state => state.auth,
+    );
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(reset());
+    }, [user, isError, isSuccess, message, dispatch]);
     return (
         <Container>
             <Box alignItems={"center"} mt={5}>
@@ -34,12 +40,7 @@ const LoginScreen = ({
             <Formik
                 initialValues={{phone: "", password: ""}}
                 validationSchema={loginFormSchema}
-                onSubmit={async values => {
-                    const response = await axios
-                        .post(`${REACT_APP_DEV_MODE}login/`, values)
-                        .then(res => authCtx.authenticate(res.data.token))
-                        .catch(error => console.log(error.response.data));
-                }}>
+                onSubmit={value => dispatch(login(value))}>
                 {({
                     handleChange,
                     setFieldTouched,
