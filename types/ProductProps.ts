@@ -30,7 +30,7 @@ export type ProductProps = {
             stock: number
         }
         image: string
-        price: string
+        price: number
         amount: number
     }>
 }
