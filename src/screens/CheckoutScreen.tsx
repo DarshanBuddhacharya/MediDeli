@@ -1,11 +1,16 @@
-import {Box, Heading, ScrollView} from "native-base";
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {Box, Center, Heading, Pressable, ScrollView, Text} from "native-base";
+import React, {useEffect} from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 import {CheckoutCard} from "../components/common/CheckoutCard";
 import {ClearButton} from "../components/common/ClearButton";
 import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
 import {SummeryCard} from "../components/common/SummeryCard";
+import {TrashButton} from "../components/common/TrashButton";
 import {Fallback} from "../components/skeletons/Fallback";
+import cartSlice from "../features/cartSlice";
 import {useAppSelector} from "../features/hooks";
 
 export type RootStackParamList = {
@@ -14,8 +19,6 @@ export type RootStackParamList = {
 
 export const CheckoutScreen = () => {
     const cartItems = useAppSelector(state => state.cart.cartItems);
-
-    const cartPrice = useAppSelector(state => state.cart.totalPrice);
 
     return (
         <Container>
@@ -50,9 +53,10 @@ export const CheckoutScreen = () => {
                 </ScrollView>
                 {cartItems.length > 0 && (
                     <SummeryCard
-                        gross_total={cartPrice}
+                        gross_total={150}
+                        delivery_fee={50}
                         discount={50}
-                        total={cartPrice}
+                        total={150}
                         link={"Delivery"}
                     />
                 )}

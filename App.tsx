@@ -23,12 +23,10 @@ import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
 import {ListingScreen} from "./src/screens/ListingScreen";
 
-import {Provider} from "react-redux";
+import {Provider, useDispatch} from "react-redux";
 
 import {store} from "./store";
 import {useAppDispatch, useAppSelector} from "./src/features/hooks";
-import {calculateTotals} from "./src/features/cartSlice";
-import {authenticate, logout} from "./src/features/auth/authSlice";
 
 type HomeStackNavigator = {
     Index: undefined;
@@ -210,24 +208,25 @@ const Root = () => {
     const [isTryingLogin, setIsTryingLogin] = useState(true);
 
     const dispatch = useAppDispatch();
-    const cartItems = useAppSelector(state => state.cart.cartItems);
-    const auth = useAppSelector(state => state.auth.user);
-
-    useEffect(() => {
-        dispatch(calculateTotals());
-    }, [cartItems]);
 
     useEffect(() => {
         const fetchToken = async () => {
-            if (auth) {
-                const response = axios
-                    .post(`${REACT_APP_DEV_MODE}refresh/`, {
-                        refresh: auth.token.refresh,
-                    })
-                    .then(res => console.log(res.data))
-                    .catch(err => {
-                        dispatch(logout());
-                    });
+            const storedAccess = await AsyncStorage.getItem("access");
+            const storedRefresh = await AsyncStorage.getItem("refresh");
+            const cart = await AsyncStorage.getItem("cart");
+            const response = axios
+                .post(`${REACT_APP_DEV_MODE}refresh/`, {
+                    refresh: storedRefresh,
+                })
+                .then(res => console.log(res.data))
+                .catch(err => {
+                    console.log("taht", err.response.data), authCtx.logout();
+                });
+            if (storedAccess && storedRefresh) {
+                authCtx.authenticate({
+                    access: storedAccess,
+                    refresh: storedRefresh,
+                });
             }
             if (auth) {
                 dispatch(authenticate(auth.token));
