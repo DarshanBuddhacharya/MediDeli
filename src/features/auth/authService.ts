@@ -8,6 +8,7 @@ const storage = new MMKV()
 const login = async (loginData: LoginInputProps) => {
     const response = await axios.post<LoginRespondProps>(`${REACT_APP_DEV_MODE}login/`, loginData)
     if (response.data) {
+        console.log("🚀 ~ file: authService.ts:11 ~ login ~ response", response)
         storage.set('user', JSON.stringify(response.data))
     }
     return response.data

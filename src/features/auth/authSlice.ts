@@ -7,6 +7,7 @@ import authService from "./authService"
 export const storage = new MMKV()
 
 const userJson = storage.getString('user')
+console.log("🚀 ~ file: authSlice.ts ~ line 10 ~ userJson", userJson)
 
 let user
 if (userJson) {

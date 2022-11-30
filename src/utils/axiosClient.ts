@@ -75,8 +75,9 @@ const getApiEndpoint = () => {
 const storage = new MMKV()
 
 const tokenJson = storage.getString('user')
+console.log("🚀 ~ file: axiosClient.ts ~ line 78 ~ tokenJson", tokenJson)
 
-const token = JSON?.parse(tokenJson ? tokenJson : '')
+const token = JSON?.parse(tokenJson ? tokenJson : "null")
 
 const isTokenExpired = (token: string) => {
     const { exp } = jwtDecode<{ exp: number }>(token);
@@ -98,9 +99,6 @@ const refreshAuthTokens = async (refreshToken: string) => {
     })
         .then((res) => res.json())
         .then((data) => {
-            const { access, refresh } = <{ access: string; refresh: string }>(
-                data
-            );
             dispatch(authenticate(data));
         })
         .catch(() => dispatch(logout()));

@@ -44,7 +44,7 @@ const SignupScreen = ({
                         const response = await axios
                             .post(`${REACT_APP_DEV_MODE}register/`, values)
                             .then(function (response) {
-                                console.log(response.data.message);
+                                console.log("success", response.data.message);
                                 navigation.navigate("Login");
                             })
                             .catch(function (error) {
@@ -53,7 +53,7 @@ const SignupScreen = ({
                                         return <ToastAlert id={id} />;
                                     },
                                 });
-                                console.log(error.response.data);
+                                console.log("error", error.response.data);
                             });
                     }}>
                     {({
