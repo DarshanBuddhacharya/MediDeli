@@ -1,10 +1,19 @@
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer, useNavigation} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StatusBar, useColorScheme} from "react-native";
 
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import LandingScreen from "./src/screens/LandingScreen";
-import {Box, NativeBaseProvider, Text, View} from "native-base";
+import {
+    Box,
+    Button,
+    Flex,
+    Modal,
+    NativeBaseProvider,
+    Pressable,
+    Text,
+    View,
+} from "native-base";
 import {theme} from "./src/utils/Theme";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -28,29 +37,14 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 import {calculateTotals} from "./src/features/cartSlice";
-import {authenticate, logout} from "./src/features/auth/authSlice";
+import {logout, refresh} from "./src/features/auth/authSlice";
+import {CustomTabButton} from "./src/screens/Navigation/CustomTabButton";
 
 type HomeStackNavigator = {
     Index: undefined;
     ListingScreen: undefined;
     DetailScreen: {userId: string};
 };
-
-const CustomTabButton = ({onPress}: any) => (
-    <TouchableOpacity
-        style={{top: -15, justifyContent: "center", alignItems: "center"}}
-        onPress={onPress}>
-        <Box
-            height={70}
-            width={70}
-            bg={"primary.500"}
-            alignItems={"center"}
-            borderRadius={10}
-            justifyContent={"center"}>
-            <AwsomeIcon name={"add-shopping-cart"} size={30} color={"white"} />
-        </Box>
-    </TouchableOpacity>
-);
 
 const HomeStack = () => {
     const Stack = createNativeStackNavigator<HomeStackNavigator>();
@@ -151,7 +145,12 @@ const TabNavigation = () => {
                 name="Shop"
                 component={HomeScreen}
                 options={{
-                    tabBarButton: props => <CustomTabButton {...props} />,
+                    tabBarButton: () => <CustomTabButton />,
+                }}
+                listeners={{
+                    tabPress: e => {
+                        e.preventDefault();
+                    },
                 }}
             />
             <Tab.Screen
@@ -169,6 +168,7 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
+    console.log("🚀 ~ file: App.tsx:172 ~ Navigation ~ auth", auth);
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
@@ -212,6 +212,7 @@ const Root = () => {
     const dispatch = useAppDispatch();
     const cartItems = useAppSelector(state => state.cart.cartItems);
     const auth = useAppSelector(state => state.auth.user);
+    console.log("🚀 ~ file: App.tsx:215 ~ Root ~ auth", auth);
 
     useEffect(() => {
         dispatch(calculateTotals());
@@ -219,18 +220,8 @@ const Root = () => {
 
     useEffect(() => {
         const fetchToken = async () => {
-            if (auth) {
-                const response = axios
-                    .post(`${REACT_APP_DEV_MODE}refresh/`, {
-                        refresh: auth.token.refresh,
-                    })
-                    .then(res => console.log(res.data))
-                    .catch(err => {
-                        dispatch(logout());
-                    });
-            }
-            if (auth) {
-                dispatch(authenticate(auth.token));
+            if (auth?.token) {
+                dispatch(refresh(auth.token.refresh));
             }
             setIsTryingLogin(false);
         };

@@ -40,7 +40,9 @@ const LoginScreen = ({
             <Formik
                 initialValues={{phone: "", password: ""}}
                 validationSchema={loginFormSchema}
-                onSubmit={value => dispatch(login(value))}>
+                onSubmit={value => {
+                    dispatch(login(value));
+                }}>
                 {({
                     handleChange,
                     setFieldTouched,

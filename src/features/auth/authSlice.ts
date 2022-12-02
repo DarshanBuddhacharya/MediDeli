@@ -7,7 +7,6 @@ import authService from "./authService"
 export const storage = new MMKV()
 
 const userJson = storage.getString('user')
-console.log("🚀 ~ file: authSlice.ts ~ line 10 ~ userJson", userJson)
 
 let user
 if (userJson) {
@@ -15,7 +14,7 @@ if (userJson) {
 }
 
 export interface AuthProps {
-    user: LoginRespondProps | null
+    user: LoginRespondProps | null | undefined
     isError: boolean
     isSuccess: boolean
     isLoading: boolean
@@ -30,9 +29,9 @@ const initialState: AuthProps = {
     message: '',
 }
 
-export const login = createAsyncThunk('auth/login', async (user: LoginInputProps, thunkAPI) => {
+export const login = createAsyncThunk('auth/login', async (value: LoginInputProps, thunkAPI) => {
     try {
-        return await authService.login(user)
+        return await authService.login(value)
     } catch (error: any) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -41,6 +40,15 @@ export const login = createAsyncThunk('auth/login', async (user: LoginInputProps
 
 export const logout = createAsyncThunk('auth/logout', async () => {
     authService.logout()
+})
+
+export const refresh = createAsyncThunk('auth/refresh', async (value: LoginRespondProps['token']['refresh'], thunkAPI) => {
+    try {
+        return await authService.refresh(value)
+    } catch (error: any) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
 })
 
 export const authSlice = createSlice({
@@ -52,9 +60,6 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = false
             state.message = ''
-        },
-        authenticate: (state, { payload }: { payload: LoginRespondProps['token'] }) => {
-            storage.set('user', JSON.stringify({ ...state.user, token: payload }))
         }
     },
     extraReducers: (builder) => {
@@ -64,16 +69,33 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.user = action.payload
+            storage.set('user', JSON.stringify(action.payload))
         }).addCase(login.rejected, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
             state.message = action.payload
             state.user = null
+        }).addCase(refresh.pending, (state) => {
+            state.isLoading = true
+        }).addCase(refresh.fulfilled, (state, action) => {
+            console.log("🚀 ~ file: authSlice.ts:81 ~ builder.addCase ~ action", action.payload)
+            state.isLoading = false
+            state.isSuccess = true
+            if (state.user?.token) {
+                state.user.token = action.payload
+            }
+            storage.set('user', JSON.stringify({ ...state.user, token: action.payload }))
+        }).addCase(refresh.rejected, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.message = action.payload
+            state.user = null
+            storage.delete('user')
         }).addCase(logout.fulfilled, (state) => {
             state.user = null
         })
     }
 })
 
-export const { reset, authenticate } = authSlice.actions
+export const { reset } = authSlice.actions
 export default authSlice.reducer

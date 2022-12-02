@@ -10,7 +10,6 @@ import {ToastAlert} from "../../components/common/ToastAlert";
 import {FormButton} from "../../components/Form/FormButton";
 import InputField from "../../components/Form/InputField";
 import PasswordField from "../../components/Form/PasswordField";
-import {loginFormSchema} from "../../validation/LoginValidation";
 import {SignupFormSchema} from "../../validation/SignupValidation";
 
 export type RootStackParamList = {
@@ -53,7 +52,7 @@ const SignupScreen = ({
                                         return <ToastAlert id={id} />;
                                     },
                                 });
-                                console.log("error", error.response.data);
+                                console.log("error", error);
                             });
                     }}>
                     {({

@@ -49,7 +49,9 @@ export const CartSlice = createSlice({
         },
         update: (state, { payload }) => {
             const cartItem = state.cartItems.findIndex(item => item.id === payload.cart.id)
-            state.cartItems[cartItem].amount = payload.quantity
+            if (state.cartItems[cartItem]?.amount) {
+                state.cartItems[cartItem].amount = payload.quantity
+            }
             storage.set("cart", JSON.stringify(state.cartItems));
 
         },

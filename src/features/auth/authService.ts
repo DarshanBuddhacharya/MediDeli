@@ -7,10 +7,12 @@ import { LoginRespondProps } from "../../../types/LoginRespondProps"
 const storage = new MMKV()
 const login = async (loginData: LoginInputProps) => {
     const response = await axios.post<LoginRespondProps>(`${REACT_APP_DEV_MODE}login/`, loginData)
-    if (response.data) {
-        console.log("🚀 ~ file: authService.ts:11 ~ login ~ response", response)
-        storage.set('user', JSON.stringify(response.data))
-    }
+    console.log("🚀 ~ file: authService.ts:11 ~ login ~ response", response)
+    return response.data
+}
+
+const refresh = async (refresh: LoginRespondProps['token']['refresh']) => {
+    const response = await axios.post<LoginRespondProps['token']>(`${REACT_APP_DEV_MODE}refresh/`, { refresh: refresh })
     return response.data
 }
 
@@ -20,6 +22,7 @@ const logout = () => {
 
 const authService = {
     login,
+    refresh,
     logout
 }
 
