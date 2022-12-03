@@ -1,6 +1,6 @@
 import {Stack, Center, HStack, FlatList, Box} from "native-base";
-import React from "react";
-import {StyleSheet} from "react-native";
+import React, {useRef} from "react";
+import {Animated, StyleSheet} from "react-native";
 import {ProductProps} from "../../types/ProductProps";
 import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
@@ -11,8 +11,37 @@ import {useProduct} from "../hooks/use-products";
 export const ListingScreen = () => {
     const {data, loading} = useProduct<ProductProps>({query: "limit=100"});
 
-    const renderItem = ({item}: {item: ProductProps["results"][0]}) => {
-        return <ItemCard data={item} />;
+    const scrollY = useRef(new Animated.Value(0)).current;
+
+    const ITEM_SIZE = 200;
+
+    const renderItem = ({
+        item,
+        index,
+    }: {
+        item: ProductProps["results"][0];
+        index: number;
+    }) => {
+        const inputRange = [-1, 0, ITEM_SIZE * index, ITEM_SIZE * (index + 5)];
+        const oppacityRange = [
+            -1,
+            0,
+            ITEM_SIZE * index,
+            ITEM_SIZE * (index + 2),
+        ];
+        const scale = scrollY.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1, 0],
+        });
+        const opacity = scrollY.interpolate({
+            inputRange: oppacityRange,
+            outputRange: [1, 1, 1, 0],
+        });
+        return (
+            <Animated.View style={{transform: [{scale}], opacity}}>
+                <ItemCard data={item} />
+            </Animated.View>
+        );
     };
     return (
         <Container>
@@ -24,9 +53,13 @@ export const ListingScreen = () => {
                     ))}
             </HStack>
             {data && (
-                <FlatList
+                <Animated.FlatList
                     columnWrapperStyle={style.row}
                     data={data?.results}
+                    onScroll={Animated.event(
+                        [{nativeEvent: {contentOffset: {y: scrollY}}}],
+                        {useNativeDriver: true},
+                    )}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     numColumns={2}

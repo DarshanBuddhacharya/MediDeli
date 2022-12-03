@@ -39,6 +39,7 @@ import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 import {calculateTotals} from "./src/features/cartSlice";
 import {logout, refresh} from "./src/features/auth/authSlice";
 import {CustomTabButton} from "./src/screens/Navigation/CustomTabButton";
+import SplashScreen from "react-native-splash-screen";
 
 type HomeStackNavigator = {
     Index: undefined;
@@ -168,7 +169,6 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
-    console.log("🚀 ~ file: App.tsx:172 ~ Navigation ~ auth", auth);
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
