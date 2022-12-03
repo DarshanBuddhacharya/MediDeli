@@ -1,6 +1,7 @@
 import {
     AspectRatio,
     Box,
+    FlatList,
     Flex,
     Heading,
     HStack,
@@ -10,8 +11,9 @@ import {
     ScrollView,
     Stack,
     Text,
+    View,
 } from "native-base";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Container} from "../../components/common/Container";
 import Button from "../../components/common/Button";
@@ -22,6 +24,7 @@ import {useNavigation, useRoute} from "@react-navigation/native";
 import {useProduct} from "../../hooks/use-products";
 import {ProductProps} from "../../../types/ProductProps";
 import {GoBackBtn} from "../../components/common/GoBackBtn";
+import {Animated, Dimensions, StyleSheet} from "react-native";
 
 type RootStackParamList = {
     DetailScreen: {productId: string};
@@ -32,6 +35,16 @@ type Props = NativeStackScreenProps<
     "DetailScreen"
 >["route"];
 
+const lata = [
+    "https://cdn.dribbble.com/users/3281732/screenshots/11192830/media/7690704fa8f0566d572a085637dd1eee.jpg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/13130602/media/592ccac0a949b39f058a297fd1faa38e.jpg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/9165292/media/ccbfbce040e1941972dbc6a378c35e98.jpg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/11205211/media/44c854b0a6e381340fbefe276e03e8e4.jpg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/7003560/media/48d5ac3503d204751a2890ba82cc42ad.jpg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/6727912/samji_illustrator.jpeg?compress=1&resize=1200x1200",
+    "https://cdn.dribbble.com/users/3281732/screenshots/13661330/media/1d9d3cd01504fa3f5ae5016e5ec3a313.jpg?compress=1&resize=1200x1200",
+];
+
 const DetailScreen = () => {
     //fetching routes
     const route = useRoute<Props>();
@@ -41,26 +54,74 @@ const DetailScreen = () => {
         id: productId,
     });
 
+    const {width, height} = Dimensions.get("screen");
+
+    const scrollX = useRef(new Animated.Value(0)).current;
+
     const [read, setRead] = useState(true);
 
     return (
-        <Container>
+        <>
+            <View h={height} style={StyleSheet.absoluteFillObject}>
+                {lata.map((image, index) => {
+                    const inputRange = [
+                        (index - 1) * width,
+                        index * width,
+                        (index + 1) * width,
+                    ];
+
+                    const opacity = scrollX.interpolate({
+                        inputRange,
+                        outputRange: [0, 1, 0],
+                    });
+                    return (
+                        <Animated.Image
+                            key={`image-${index}`}
+                            source={{uri: image}}
+                            style={[StyleSheet.absoluteFillObject, {opacity}]}
+                            blurRadius={80}
+                        />
+                    );
+                })}
+            </View>
             <GoBackBtn is_relative />
-            <ScrollView>
-                <Box
-                    rounded="lg"
-                    overflow="hidden"
-                    borderColor="coolGray.200"
-                    borderWidth="1">
-                    <AspectRatio ratio={1}>
-                        {data?.image && (
-                            <Image
-                                resizeMode="cover"
-                                source={{uri: `${data?.image}`}}
-                                alt="Picture of Product"
-                            />
-                        )}
-                    </AspectRatio>
+            <ScrollView
+                style={{
+                    shadowColor: "#000",
+                    shadowOpacity: 1,
+                    shadowOffset: {width: 0, height: 0},
+                    shadowRadius: 20,
+                }}>
+                <Animated.FlatList
+                    data={lata}
+                    onScroll={Animated.event(
+                        [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                        {useNativeDriver: true},
+                    )}
+                    keyExtractor={(_, index) => index.toString()}
+                    horizontal
+                    pagingEnabled
+                    renderItem={({item}) => {
+                        return (
+                            <Box
+                                w={width}
+                                justifyContent="center"
+                                px={4}
+                                alignItems={"center"}>
+                                <Image
+                                    source={{
+                                        uri: item,
+                                    }}
+                                    alt="img"
+                                    resizeMode="cover"
+                                    width={width - 8}
+                                    height={350}
+                                />
+                            </Box>
+                        );
+                    }}
+                />
+                <Box background={"white"} rounded="xl" mx={2} mb={100}>
                     <Stack p="4" space={3}>
                         <Flex
                             direction="row"
@@ -127,7 +188,7 @@ const DetailScreen = () => {
                     </Box>
                 </Box>
             </ScrollView>
-        </Container>
+        </>
     );
 };
 
