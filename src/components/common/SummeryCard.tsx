@@ -1,13 +1,12 @@
 import {Box, Flex, Heading, Pressable, Text, View} from "native-base";
 import React, {useRef, useState} from "react";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Button from "./Button";
-import {
-    Transition,
-    Transitioning,
-    TransitioningView,
-    TransitioningViewProps,
+import Animated, {
+    BounceInDown,
+    BounceInUp,
+    FadeIn,
+    Layout,
 } from "react-native-reanimated";
 import {StyleSheet} from "react-native";
 
@@ -18,14 +17,6 @@ type SummeryCardProps = {
     link: string;
 };
 
-const transition = (
-    <Transition.Together>
-        <Transition.In type="slide-top" durationMs={200} />
-        <Transition.Change />
-        <Transition.Out type="slide-bottom" durationMs={200} />
-    </Transition.Together>
-);
-
 export const SummeryCard = ({
     gross_total,
     discount,
@@ -33,19 +24,21 @@ export const SummeryCard = ({
     link,
 }: SummeryCardProps) => {
     const [showSummary, setShowSummary] = useState<boolean>(false);
-    const ref = useRef<TransitioningView>(null);
     return (
-        <Transitioning.View transition={transition} ref={ref}>
-            <Box
+        <Animated.View
+            entering={BounceInDown.duration(800)}
+            layout={Layout.springify()}>
+            <View
                 rounded="lg"
                 overflow="hidden"
                 borderColor="coolGray.200"
+                backgroundColor={"coolGray.50"}
                 borderWidth="1"
                 mx={2}
                 p={5}>
                 <Pressable
                     onPress={() => {
-                        ref.current && ref.current.animateNextTransition();
+                        // ref.current && ref.current.animateNextTransition();
                         setShowSummary(!showSummary);
                     }}
                     textAlign={"center"}
@@ -58,7 +51,9 @@ export const SummeryCard = ({
                     />
                 </Pressable>
                 {showSummary && (
-                    <View flexGrow={1}>
+                    <Animated.View
+                        entering={BounceInDown.duration(600)}
+                        layout={Layout.springify()}>
                         <Heading fontSize={20} pb={2}>
                             Summary
                         </Heading>
@@ -88,18 +83,18 @@ export const SummeryCard = ({
                                 <Text color={"gray.500"}>Rs. {discount}</Text>
                             </Flex>
                         </Box>
-                    </View>
+                    </Animated.View>
                 )}
 
                 <Box justifyContent={"space-between"} flexDirection="row">
                     <Text fontSize={20} fontWeight={600}>
                         Total
                     </Text>
-                    <Text color={"gray.800"}>Rs. {total}</Text>
+                    <Text color={"primary.600"}>Rs. {total}</Text>
                 </Box>
                 <Button link={link}>Procced</Button>
-            </Box>
-        </Transitioning.View>
+            </View>
+        </Animated.View>
     );
 };
 

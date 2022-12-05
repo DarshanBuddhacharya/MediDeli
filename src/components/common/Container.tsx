@@ -3,7 +3,7 @@ import React from "react";
 
 export const Container = ({children}: {children: React.ReactNode}) => {
     return (
-        <Box p={4} mb={20}>
+        <Box p={2} mb={20}>
             {children}
         </Box>
     );

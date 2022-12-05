@@ -1,5 +1,11 @@
-import {Box, Heading, ScrollView} from "native-base";
+import {Box, Flex, Heading, ScrollView, Text} from "native-base";
 import React from "react";
+import Animated, {
+    BounceInDown,
+    BounceOutDown,
+    FadeInDown,
+    Layout,
+} from "react-native-reanimated";
 import {CheckoutCard} from "../components/common/CheckoutCard";
 import {ClearButton} from "../components/common/ClearButton";
 import {Container} from "../components/common/Container";
@@ -25,28 +31,32 @@ export const CheckoutScreen = () => {
                 flexDirection={"column"}
                 justifyContent={"space-between"}
                 h={"100%"}>
+                <Box
+                    flexDirection={"row"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    pt={5}
+                    pb={2}
+                    px={2}>
+                    <GoBackBtn is_relative />
+                    <Heading>Checkout</Heading>
+                    <ClearButton />
+                </Box>
+
                 <ScrollView>
-                    <Box
-                        flexDirection={"row"}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                        pt={5}
-                        px={2}>
-                        <GoBackBtn is_relative />
-                        <Heading>Checkout</Heading>
-                        <ClearButton />
+                    <Box flexDirection={"column-reverse"}>
+                        {cartItems.length > 0 ? (
+                            cartItems?.map((item, index) => (
+                                <CheckoutCard key={index} item={item} />
+                            ))
+                        ) : (
+                            <Fallback
+                                title={"Looks like your Cart is Empty"}
+                                link={"Home"}
+                                imageUrl={require("../../assets/Images/cart.png")}
+                            />
+                        )}
                     </Box>
-                    {cartItems.length > 0 ? (
-                        cartItems?.map((item, index) => (
-                            <CheckoutCard key={index} item={item} />
-                        ))
-                    ) : (
-                        <Fallback
-                            title={"Looks like your Cart is Empty"}
-                            link={"Home"}
-                            imageUrl={require("../../assets/Images/cart.png")}
-                        />
-                    )}
                 </ScrollView>
                 {cartItems.length > 0 && (
                     <SummeryCard

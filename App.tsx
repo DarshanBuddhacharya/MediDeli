@@ -212,7 +212,6 @@ const Root = () => {
     const dispatch = useAppDispatch();
     const cartItems = useAppSelector(state => state.cart.cartItems);
     const auth = useAppSelector(state => state.auth.user);
-    console.log("🚀 ~ file: App.tsx:215 ~ Root ~ auth", auth);
 
     useEffect(() => {
         dispatch(calculateTotals());

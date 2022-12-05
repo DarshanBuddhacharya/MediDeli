@@ -35,31 +35,34 @@ export const WishListScreen = ({
                 flexDirection={"column"}
                 justifyContent={"space-between"}
                 h={"100%"}>
-                <ScrollView>
-                    <Box>
-                        <Box
-                            flexDirection={"row"}
-                            justifyContent={"space-between"}
-                            alignItems={"center"}
-                            pt={5}
-                            px={2}>
-                            <GoBackBtn is_relative />
-                            <Heading>WishList</Heading>
-                            <ClearWishBtn />
-                        </Box>
-                        {wishListItems.length > 0 ? (
-                            wishListItems?.map((item, index) => (
-                                <CheckoutCard item={item} key={index} />
-                            ))
-                        ) : (
-                            <Fallback
-                                title={"Looks like your Wish List is Empty"}
-                                link={"Home"}
-                                imageUrl={require("../../assets/Images/wishlist.png")}
-                            />
-                        )}
+                <Box>
+                    <Box
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                        pt={5}
+                        pb={2}
+                        px={2}>
+                        <GoBackBtn is_relative />
+                        <Heading>WishList</Heading>
+                        <ClearWishBtn />
                     </Box>
-                </ScrollView>
+                    <ScrollView>
+                        <Box flexDirection={"column-reverse"}>
+                            {wishListItems.length > 0 ? (
+                                wishListItems?.map((item, index) => (
+                                    <CheckoutCard item={item} key={index} />
+                                ))
+                            ) : (
+                                <Fallback
+                                    title={"Looks like your Wish List is Empty"}
+                                    link={"Home"}
+                                    imageUrl={require("../../assets/Images/wishlist.png")}
+                                />
+                            )}
+                        </Box>
+                    </ScrollView>
+                </Box>
             </Box>
         </Container>
     );
