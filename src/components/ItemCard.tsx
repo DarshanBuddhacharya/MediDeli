@@ -1,15 +1,12 @@
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {
-    AspectRatio,
     Box,
-    Center,
     Flex,
     Heading,
     HStack,
     Image,
     Pressable,
-    Spacer,
     Stack,
     Text,
 } from "native-base";
@@ -18,7 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../types/ProductProps";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {change} from "../features/wishListSlice";
-import {CartQuantity} from "./common/CartQuantity";
+import {AddRemoveBtn} from "./common/AddRemoveBtn";
 
 export type RootStackParamList = {
     DetailScreen: {productId: string};
@@ -111,7 +108,7 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                         </Flex>
                     </Pressable>
                     <HStack
-                        space={1}
+                        space={2}
                         alignItems="center"
                         justifyContent={"space-between"}>
                         <Pressable
@@ -130,7 +127,7 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                                 />
                             )}
                         </Pressable>
-                        <CartQuantity is_small cartItems={data} />
+                        <AddRemoveBtn is_small cartItems={data} />
                     </HStack>
                 </Stack>
             </Box>

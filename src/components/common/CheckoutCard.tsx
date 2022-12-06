@@ -1,30 +1,33 @@
+import {useRoute} from "@react-navigation/native";
 import {Box, Flex, Heading, Image, Pressable, Text} from "native-base";
 import React from "react";
 import Animated, {
     BounceInDown,
-    BounceOutDown,
-    FadeIn,
-    FadeOut,
+    BounceOutRight,
     Layout,
 } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/Ionicons";
 import {ProductProps} from "../../../types/ProductProps";
+import {AddRemoveBtn} from "./AddRemoveBtn";
 import {CartQuantity} from "./CartQuantity";
 import {TrashButton} from "./TrashButton";
 import {WishListButton} from "./WishListButton";
 
 export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
+    const route = useRoute();
     return (
         <Animated.View
             entering={BounceInDown.duration(600).delay(300)}
+            exiting={BounceOutRight.duration(500)}
             layout={Layout.springify()}>
             <Box
                 rounded="lg"
                 overflow="hidden"
-                borderColor="primary.600"
-                p={2}
-                m={4}
-                borderBottomWidth={"1"}>
+                backgroundColor={"white"}
+                p={4}
+                shadow={5}
+                mb={4}
+                mx={0.5}>
                 <Box w={"100%"} flexDirection={"row"}>
                     {item?.image && (
                         <Image
@@ -80,21 +83,25 @@ export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
                         fontWeight="400">
                         Rs.{item?.price}
                     </Text>
-                    <Flex
-                        direction="row"
-                        justifyContent={"space-between"}
-                        alignItems={"center"}>
-                        <Pressable
-                            android_ripple={{
-                                color: "#d52d3a",
-                                borderless: true,
-                                radius: 15,
-                            }}
-                            mr={4}>
-                            <TrashButton clearId={item?.id} />
-                        </Pressable>
-                        <CartQuantity is_small={false} cartItems={item} />
-                    </Flex>
+                    {route.name === "Checkout" ? (
+                        <Flex
+                            direction="row"
+                            justifyContent={"space-between"}
+                            alignItems={"center"}>
+                            <Pressable
+                                android_ripple={{
+                                    color: "#d52d3a",
+                                    borderless: true,
+                                    radius: 15,
+                                }}
+                                mr={4}>
+                                <TrashButton clearId={item?.id} />
+                            </Pressable>
+                            <CartQuantity is_small={false} cartItems={item} />
+                        </Flex>
+                    ) : (
+                        <AddRemoveBtn is_small={false} cartItems={item} />
+                    )}
                 </Box>
             </Box>
         </Animated.View>
