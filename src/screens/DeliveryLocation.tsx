@@ -10,24 +10,26 @@ import {
     Text,
 } from "native-base";
 import React from "react";
-import {CheckoutCard} from "../components/common/CheckoutCard";
 import {Container} from "../components/common/Container";
 import {SummeryCard} from "../components/common/SummeryCard";
 import Icon from "react-native-vector-icons/Ionicons";
 import {DeliveryList} from "../components/common/DeliveryList";
+import {useAppSelector} from "../features/hooks";
 
 export const DeliveryLocation = () => {
     const navigation = useNavigation();
+
+    const cartItems = useAppSelector(state => state.cart.cartItems);
+
+    const cartPrice = useAppSelector(state => state.cart.totalPrice);
     return (
         <Container>
             <Box
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
                 flexDirection={"column"}
                 justifyContent={"space-between"}
-                h={"100%"}
-                borderWidth="1">
+                h={"100%"}>
                 <ScrollView>
                     <Box>
                         <Pressable
@@ -70,18 +72,21 @@ export const DeliveryLocation = () => {
                                 <Text fontSize={14}>Order Id: #232323</Text>
                             </Flex>
                         </Box>
-                        <DeliveryList />
-                        <DeliveryList />
-                        <DeliveryList />
+                        <Flex direction="column-reverse">
+                            {cartItems?.map((item, key) => (
+                                <DeliveryList key={key} item={item} />
+                            ))}
+                        </Flex>
                     </Box>
                 </ScrollView>
-                <SummeryCard
-                    gross_total={150}
-                    delivery_fee={50}
-                    discount={50}
-                    total={150}
-                    link={"Payment"}
-                />
+                {cartItems.length > 0 && (
+                    <SummeryCard
+                        gross_total={cartPrice}
+                        discount={50}
+                        total={cartPrice}
+                        link={"Delivery"}
+                    />
+                )}
             </Box>
         </Container>
     );

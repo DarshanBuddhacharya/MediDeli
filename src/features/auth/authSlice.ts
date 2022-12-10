@@ -78,7 +78,6 @@ export const authSlice = createSlice({
         }).addCase(refresh.pending, (state) => {
             state.isLoading = true
         }).addCase(refresh.fulfilled, (state, action) => {
-            console.log("🚀 ~ file: authSlice.ts:81 ~ builder.addCase ~ action", action.payload)
             state.isLoading = false
             state.isSuccess = true
             if (state.user?.token) {

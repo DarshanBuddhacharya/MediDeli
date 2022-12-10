@@ -1,7 +1,9 @@
 import {Box, Flex, Text} from "native-base";
 import React from "react";
+import {ProductProps} from "../../../types/ProductProps";
 
-export const DeliveryList = () => {
+export const DeliveryList = ({item}: {item: ProductProps["results"][0]}) => {
+    const {amount, price, product} = item;
     return (
         <Box
             p={4}
@@ -16,10 +18,10 @@ export const DeliveryList = () => {
                 alignItems={"center"}
                 alignSelf={"stretch"}>
                 <Text flex={4} fontWeight={600} fontSize={16}>
-                    Cetamol is this as of that
+                    {product?.product_name}
                 </Text>
                 <Text ml={5} flex={2}>
-                    100
+                    {amount}
                 </Text>
                 <Text
                     flex={2}
@@ -28,7 +30,7 @@ export const DeliveryList = () => {
                         color: "warmGray.200",
                     }}
                     fontWeight="400">
-                    Rs.90
+                    Rs.{price}
                 </Text>
             </Flex>
         </Box>

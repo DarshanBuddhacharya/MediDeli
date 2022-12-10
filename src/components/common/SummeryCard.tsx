@@ -27,7 +27,8 @@ export const SummeryCard = ({
     return (
         <Animated.View
             entering={BounceInDown.duration(800)}
-            layout={Layout.springify()}>
+            layout={Layout.springify()}
+            style={{backgroundColor: "inherit"}}>
             <View
                 rounded="lg"
                 overflow="hidden"
