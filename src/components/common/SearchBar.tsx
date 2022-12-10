@@ -1,15 +1,22 @@
-import {VStack, Heading, Input, Icon} from "native-base";
-import React from "react";
+import {VStack, Heading, Input, Icon, Button, Pressable} from "native-base";
+import React, {Dispatch, SetStateAction} from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const SearchBar = () => {
+const SearchBar = ({
+    setSearchParams,
+    searchParams,
+}: {
+    setSearchParams: Dispatch<SetStateAction<string>>;
+    searchParams: string;
+}) => {
     return (
-        <VStack w="100%" space={5} alignSelf="center" mt={5}>
+        <VStack flex={2} alignSelf="center" mr={4}>
             <Input
-                placeholder="Search Products and Brands"
-                width="100%"
-                borderRadius="4"
-                py="3"
+                placeholder="Search Products"
+                borderColor="coolGray.200"
+                borderWidth="1"
+                onChange={e => setSearchParams(e.nativeEvent.text)}
+                value={searchParams}
                 px="1"
                 fontSize="14"
                 InputLeftElement={
@@ -22,13 +29,22 @@ const SearchBar = () => {
                     />
                 }
                 InputRightElement={
-                    <Icon
-                        m="2"
-                        mr="3"
-                        size="6"
-                        color="gray.400"
-                        as={<MaterialIcons name="filter-list-alt" />}
-                    />
+                    <>
+                        {searchParams && (
+                            <Pressable
+                                onPress={() => {
+                                    setSearchParams("");
+                                }}>
+                                <Icon
+                                    m="2"
+                                    mr="3"
+                                    size="6"
+                                    color="gray.400"
+                                    as={<MaterialIcons name="close" />}
+                                />
+                            </Pressable>
+                        )}
+                    </>
                 }
             />
         </VStack>

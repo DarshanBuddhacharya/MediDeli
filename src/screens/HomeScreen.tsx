@@ -62,7 +62,6 @@ const HomeScreen = () => {
                             ))}
                     </Stack>
                 </ScrollView>
-                <SearchBar />
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={1}>

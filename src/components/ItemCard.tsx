@@ -35,9 +35,9 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                 w={180}
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
                 backgroundColor={"white"}
                 shadow={3}
+                borderColor="coolGray.200"
                 borderWidth="1">
                 <Pressable
                     android_ripple={{

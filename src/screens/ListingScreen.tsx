@@ -1,15 +1,48 @@
-import {Stack, Center, HStack, FlatList, Box} from "native-base";
-import React, {useRef} from "react";
+import {Box, Button, Flex, HStack, ScrollView, Select} from "native-base";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Animated, StyleSheet} from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {ProductProps} from "../../types/ProductProps";
 import {Container} from "../components/common/Container";
 import {GoBackBtn} from "../components/common/GoBackBtn";
+import SearchBar from "../components/common/SearchBar";
+import {SortButton} from "../components/common/SortButton";
 import {ItemCard} from "../components/ItemCard";
 import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
-import {useProduct} from "../hooks/use-products";
+import {axiosClient} from "../utils/axiosClient";
 
 export const ListingScreen = () => {
-    const {data, loading} = useProduct<ProductProps>({query: "limit=100"});
+    const [sort, setSort] = useState("");
+
+    const [searchParams, setSearchParams] = useState("");
+
+    // let text = searchParams.join("&");
+    // console.log("🚀 ~ file: ListingScreen.tsx:21 ~ ListingScreen ~ text", text);
+
+    // useMemo(() => setSearchParams([...searchParams, sort]), [sort]);
+
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<ProductProps>();
+
+    const fetchApi = async () => {
+        try {
+            const {data} = await axiosClient.get<ProductProps>(
+                `products/?limit=100&search=${searchParams}`,
+            );
+            setData(data);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        fetchApi();
+    }, [searchParams]);
+
+    const [language, setLanguage] = useState<string>();
 
     const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -43,16 +76,73 @@ export const ListingScreen = () => {
             </Animated.View>
         );
     };
+
     return (
         <Container>
             <GoBackBtn is_relative />
+            <Box>
+                <Flex
+                    direction="row"
+                    alignItems={"center"}
+                    justifyContent="space-between"
+                    pt={2}>
+                    <SearchBar
+                        searchParams={searchParams}
+                        setSearchParams={setSearchParams}
+                    />
+                    <Flex direction="row" justifyContent={"space-between"}>
+                        <Button mr={1}>
+                            <Icon name="close" color={"white"} size={19} />
+                        </Button>
+                        <Button>
+                            <Icon name="filter" color={"white"} size={19} />
+                        </Button>
+                    </Flex>
+                </Flex>
+                <ScrollView horizontal={true} py={4}>
+                    <Select
+                        placeholder="Category"
+                        selectedValue={language}
+                        borderColor="coolGray.200"
+                        borderWidth="1"
+                        w={150}
+                        mr={2}
+                        onValueChange={(itemValue: string) =>
+                            setLanguage(itemValue)
+                        }>
+                        <Select.Item label="Wallet" value="key0" />
+                        <Select.Item label="ATM Card" value="key1" />
+                        <Select.Item label="Debit Card" value="key2" />
+                        <Select.Item label="Credit Card" value="key3" />
+                        <Select.Item label="Net Banking" value="key4" />
+                    </Select>
+                    <SortButton
+                        setSort={setSort}
+                        title={"Price"}
+                        searchQuery={"ordering=-price"}
+                        icon={"currency-inr"}
+                    />
+                    <SortButton
+                        setSort={setSort}
+                        title={"Rating"}
+                        searchQuery={"ordering=price"}
+                        icon={"star"}
+                    />
+                    {/* <SortButton
+                        setSearch={setSearch}
+                        title={"Stock"}
+                        searchQuery={}
+                        icon={"text-box"}
+                    /> */}
+                </ScrollView>
+            </Box>
             <HStack space={3} justifyContent="center">
                 {loading &&
                     Array.from({length: 4}).map((_, index) => (
                         <ProductSkeleton key={index} />
                     ))}
             </HStack>
-            {data && (
+            {!loading && data && (
                 <Animated.FlatList
                     columnWrapperStyle={style.row}
                     data={data?.results}
