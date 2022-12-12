@@ -16,9 +16,12 @@ const getApiEndpoint = () => {
     return url;
 };
 
-const tokenJson = storage.getString('user')
+const getToken = () => {
+    const tokenJson = storage.getString('user')
+    const token = JSON?.parse(tokenJson ? tokenJson : "null")
+    return token
+}
 
-const token = JSON?.parse(tokenJson ? tokenJson : "null")
 
 const isTokenExpired = (token: string) => {
     const { exp } = jwtDecode<{ exp: number }>(token);
@@ -58,10 +61,10 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
     async (config) => {
-        if (token.token.access && !isTokenExpired(token.token.access)) {
+        if (getToken().token.access && !isTokenExpired(getToken().token.access)) {
             config.headers = {
                 ...config.headers,
-                Authorization: `Bearer ${token.token.access}`,
+                Authorization: `Bearer ${getToken().token.access}`,
             };
         }
         return config;
@@ -74,8 +77,8 @@ axiosClient.interceptors.response.use(
         const axiosError = error as AxiosError<{ code: string }>;
         if (axiosError.response?.status === 401) {
             const errorCode = axiosError.response?.data?.code;
-            const access = token.token.access;
-            const refresh = token.token.refresh;
+            const access = getToken().token.access;
+            const refresh = getToken().token.refresh;
 
             if (!access || !refresh) return Promise.reject(error);
 

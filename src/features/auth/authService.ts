@@ -7,7 +7,6 @@ import { LoginRespondProps } from "../../../types/LoginRespondProps"
 const storage = new MMKV()
 const login = async (loginData: LoginInputProps) => {
     const response = await axios.post<LoginRespondProps>(`${REACT_APP_DEV_MODE}login/`, loginData)
-    console.log("🚀 ~ file: authService.ts:11 ~ login ~ response", response)
     return response.data
 }
 

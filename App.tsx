@@ -32,9 +32,10 @@ import axios from "axios";
 import {REACT_APP_DEV_MODE} from "@env";
 import {ListingScreen} from "./src/screens/ListingScreen";
 
+import {store} from "./store";
+
 import {Provider} from "react-redux";
 
-import {store} from "./store";
 import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 import {calculateTotals} from "./src/features/cartSlice";
 import {logout, refresh} from "./src/features/auth/authSlice";
@@ -169,6 +170,7 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
+    console.log("🚀 ~ file: App.tsx:173 ~ Navigation ~ auth", auth);
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
@@ -247,15 +249,15 @@ const App = () => {
     //     },
     // };
     return (
-        <NativeBaseProvider theme={theme}>
-            <Provider store={store}>
+        <Provider store={store}>
+            <NativeBaseProvider theme={theme}>
                 <StatusBar
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
                 <Root />
-            </Provider>
-        </NativeBaseProvider>
+            </NativeBaseProvider>
+        </Provider>
     );
 };
 

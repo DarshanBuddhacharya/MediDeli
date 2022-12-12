@@ -12,14 +12,27 @@ import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
 import {axiosClient} from "../utils/axiosClient";
 
 export const ListingScreen = () => {
-    const [sort, setSort] = useState("");
+    const [sortKeys, setSortKeys] = useState<string[]>([]);
 
     const [searchParams, setSearchParams] = useState("");
 
-    // let text = searchParams.join("&");
-    // console.log("🚀 ~ file: ListingScreen.tsx:21 ~ ListingScreen ~ text", text);
+    const handleClick = (sortKey: string) => {
+        if (sortKeys.includes(sortKey)) {
+            // Replace the sort key with its negated value
+            setSortKeys(
+                sortKeys.map(key => (key === sortKey ? `-${sortKey}` : key)),
+            );
+        } else if (sortKeys.includes(`-${sortKey}`)) {
+            setSortKeys([
+                ...sortKeys.filter(key => key !== `-${sortKey}`),
+                sortKey,
+            ]);
+        } else {
+            setSortKeys([...sortKeys, sortKey]);
+        }
+    };
 
-    // useMemo(() => setSearchParams([...searchParams, sort]), [sort]);
+    const sortParams = `ordering=${sortKeys.join(",")}`;
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps>();
@@ -27,7 +40,7 @@ export const ListingScreen = () => {
     const fetchApi = async () => {
         try {
             const {data} = await axiosClient.get<ProductProps>(
-                `products/?limit=100&search=${searchParams}`,
+                `products/?limit=100&search=${searchParams}&${sortParams}`,
             );
             setData(data);
             setLoading(false);
@@ -40,7 +53,7 @@ export const ListingScreen = () => {
     useEffect(() => {
         setLoading(true);
         fetchApi();
-    }, [searchParams]);
+    }, [searchParams, sortParams]);
 
     const [language, setLanguage] = useState<string>();
 
@@ -117,13 +130,13 @@ export const ListingScreen = () => {
                         <Select.Item label="Net Banking" value="key4" />
                     </Select>
                     <SortButton
-                        setSort={setSort}
+                        handleClick={handleClick}
                         title={"Price"}
                         searchQuery={"ordering=-price"}
                         icon={"currency-inr"}
                     />
                     <SortButton
-                        setSort={setSort}
+                        handleClick={handleClick}
                         title={"Rating"}
                         searchQuery={"ordering=price"}
                         icon={"star"}

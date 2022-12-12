@@ -12,7 +12,7 @@ export type WishListProps = {
 const jsonWishlist = storage.getString('wishList')
 const jsonTotal = storage.getString('totalWishList')
 
-const wishlistObject = JSON.parse(jsonWishlist ? jsonWishlist : '')
+const wishlistObject = JSON.parse(jsonWishlist ? jsonWishlist : '[]')
 
 const initialState: WishListProps = {
     totalWishList: jsonTotal ? parseInt(jsonTotal) : 0,

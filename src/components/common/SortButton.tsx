@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 export interface SortButtonProps {
     title: string;
     icon: string;
-    setSort: Dispatch<SetStateAction<string>>;
+    handleClick: (arg0: string) => void;
     searchQuery: string;
 }
 
@@ -18,19 +18,17 @@ export enum SORTOPTIONS {
 export const SortButton = ({
     title,
     icon,
-    setSort,
+    handleClick,
     searchQuery,
 }: SortButtonProps) => {
     const [isAssending, setIsAssending] = useState<boolean | null>(null);
     const handlePress = () => {
         switch (title) {
             case SORTOPTIONS.Price:
-                return setSort(`ordering=${isAssending ? "-price" : "price"}`);
+                return handleClick("price");
 
             case SORTOPTIONS.Rating:
-                return setSort(
-                    `ordering=${isAssending ? "-rating" : "rating"}`,
-                );
+                return handleClick("rating");
 
             case SORTOPTIONS.Stock:
                 return `ordering=${isAssending ? "-stock" : "stock"}`;
@@ -81,7 +79,6 @@ export const SortButton = ({
                 <Pressable
                     onPress={() => {
                         setIsAssending(null);
-                        setSort("");
                     }}>
                     <Icon name="close" color={"white"} size={24} />
                 </Pressable>

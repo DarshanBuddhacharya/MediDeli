@@ -16,6 +16,7 @@ import {useProduct} from "../hooks/use-products";
 const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
         useProduct<ProductProps>({query: "limit=8"});
+
     const {loading: categoryLoading, data: categoryData} = useCategory();
 
     const user = useAppSelector(state => state.auth.user);

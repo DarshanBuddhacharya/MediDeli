@@ -11,10 +11,11 @@ export interface CartState {
 }
 
 const jsonCart = storage.getString('cart')
+console.log("🚀 ~ file: cartSlice.ts:14 ~ jsonCart", jsonCart)
 const jsonTotal = storage.getString('totalCart')
 const jsonTotalPrice = storage.getString('totalPrice')
 
-const cartObject = JSON.parse(jsonCart ? jsonCart : '')
+const cartObject = JSON.parse(jsonCart ? jsonCart : '[]')
 
 const initialState: CartState = {
     cartItems: cartObject ? cartObject : [],
