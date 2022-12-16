@@ -170,7 +170,6 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
-    console.log("🚀 ~ file: App.tsx:173 ~ Navigation ~ auth", auth);
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>

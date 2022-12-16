@@ -17,4 +17,5 @@ export const SignupFormSchema = Yup.object().shape({
     full_name: FullNameValidation,
     phone: PhoneValidation,
     password: passwordValidate,
+    password2: passwordValidate,
 })

@@ -3,8 +3,16 @@ import axios from "axios"
 import { MMKV } from "react-native-mmkv"
 import { LoginInputProps } from "../../../types/LoginInputProps"
 import { LoginRespondProps } from "../../../types/LoginRespondProps"
+import { SignupInputProps } from "../../../types/SignupInputProps"
+import { SignupRespondProps } from "../../../types/SignupResponseProps"
 
 const storage = new MMKV()
+
+const signup = async (signupData: SignupInputProps) => {
+    const response = await axios.post<SignupRespondProps>(`${REACT_APP_DEV_MODE}register/`, signupData)
+    return response.data
+}
+
 const login = async (loginData: LoginInputProps) => {
     const response = await axios.post<LoginRespondProps>(`${REACT_APP_DEV_MODE}login/`, loginData)
     return response.data
@@ -22,7 +30,8 @@ const logout = () => {
 const authService = {
     login,
     refresh,
-    logout
+    logout,
+    signup
 }
 
 export default authService

@@ -3,7 +3,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import axios from "axios";
 import {Formik} from "formik";
 import {Box, Flex, Pressable, Text, useToast} from "native-base";
-import React from "react";
+import React, {useEffect} from "react";
 import {Image, ScrollView} from "react-native";
 import {Container} from "../../components/common/Container";
 import {ToastAlert} from "../../components/common/ToastAlert";
@@ -11,6 +11,9 @@ import {FormButton} from "../../components/Form/FormButton";
 import InputField from "../../components/Form/InputField";
 import PasswordField from "../../components/Form/PasswordField";
 import {SignupFormSchema} from "../../validation/SignupValidation";
+import {useDispatch} from "react-redux";
+import {reset, signup} from "../../features/auth/authSlice";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
 
 export type RootStackParamList = {
     Login: undefined;
@@ -21,7 +24,14 @@ const SignupScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
 }) => {
-    const toast = useToast();
+    const dispatch = useAppDispatch();
+
+    const {isError, message} = useAppSelector(state => state.auth);
+
+    useEffect(() => {
+        dispatch(reset());
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -39,21 +49,8 @@ const SignupScreen = ({
                         password2: "",
                     }}
                     validationSchema={SignupFormSchema}
-                    onSubmit={async values => {
-                        const response = await axios
-                            .post(`${REACT_APP_DEV_MODE}register/`, values)
-                            .then(function (response) {
-                                console.log("success", response.data.message);
-                                navigation.navigate("Login");
-                            })
-                            .catch(function (error) {
-                                toast.show({
-                                    render: ({id}) => {
-                                        return <ToastAlert id={id} />;
-                                    },
-                                });
-                                console.log("error", error);
-                            });
+                    onSubmit={value => {
+                        dispatch(signup(value));
                     }}>
                     {({
                         handleChange,
@@ -118,6 +115,15 @@ const SignupScreen = ({
                         <Text color={"primary.600"}>Click Here</Text>
                     </Pressable>
                 </Flex>
+                {/* {isError && (
+                    <Box mt={10}>
+                        <ToastAlert
+                            title={"Login Error"}
+                            description={message as string}
+                            status={"error"}
+                        />
+                    </Box>
+                )} */}
             </ScrollView>
         </Container>
     );

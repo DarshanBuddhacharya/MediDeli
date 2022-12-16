@@ -12,7 +12,6 @@ type ProductItemProps = {
 export const useProduct = <T>({ id, query }: ProductItemProps) => {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<T>()
-    console.log("🚀 ~ file: use-products.ts:15 ~ useProduct ~ data", data)
 
     const fetchApi = async () => {
         try {

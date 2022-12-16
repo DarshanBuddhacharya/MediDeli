@@ -1,7 +1,7 @@
 import {Formik} from "formik";
-import {Box, Checkbox, Flex, Pressable, Text} from "native-base";
-import React, {useContext, useEffect} from "react";
-import {Image} from "react-native";
+import {Box, Checkbox, Flex, Pressable, ScrollView, Text} from "native-base";
+import React, {useContext, useEffect, useState} from "react";
+import {Image, Keyboard, TouchableWithoutFeedback} from "react-native";
 import {Container} from "../../components/common/Container";
 import {FormButton} from "../../components/Form/FormButton";
 import InputField from "../../components/Form/InputField";
@@ -10,6 +10,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {loginFormSchema} from "../../validation/LoginValidation";
 import {useAppDispatch, useAppSelector} from "../../features/hooks";
 import {login, reset} from "../../features/auth/authSlice";
+import {ToastAlert} from "../../components/common/ToastAlert";
 
 export type RootStackParamList = {
     Signup: undefined;
@@ -21,77 +22,94 @@ const LoginScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
-    const {user, isError, isSuccess, message} = useAppSelector(
-        state => state.auth,
-    );
+    const {isError, message} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(reset());
-    }, [user, isError, isSuccess, message, dispatch]);
+    }, []);
+
     return (
         <Container>
-            <Box alignItems={"center"} mt={5}>
-                <Image
-                    source={require("../../../assets/Images/logo-name.png")}
-                    style={{width: 200, height: 120}}
-                />
-            </Box>
-            <Formik
-                initialValues={{phone: "", password: ""}}
-                validationSchema={loginFormSchema}
-                onSubmit={value => {
-                    dispatch(login(value));
-                }}>
-                {({
-                    handleChange,
-                    setFieldTouched,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                }) => (
-                    <>
-                        <InputField
-                            onChangeText={handleChange("phone")}
-                            onBlur={() => setFieldTouched("phone")}
-                            value={values.phone}
-                            icon={"phone"}
-                            placeHolder={"Phone Number"}
-                            keyboardType={"number-pad"}
-                            touch={touched.phone}
-                            error={errors.phone}
-                            maxLength={10}
+            <ScrollView>
+                <Box alignItems={"center"} mt={5}>
+                    <Image
+                        source={require("../../../assets/Images/logo-name.png")}
+                        style={{width: 200, height: 120}}
+                    />
+                </Box>
+                <Formik
+                    initialValues={{phone: "", password: ""}}
+                    validationSchema={loginFormSchema}
+                    onSubmit={value => {
+                        dispatch(login(value));
+                    }}>
+                    {({
+                        handleChange,
+                        setFieldTouched,
+                        handleSubmit,
+                        values,
+                        errors,
+                        touched,
+                    }) => (
+                        <>
+                            <InputField
+                                onChangeText={handleChange("phone")}
+                                onBlur={() => setFieldTouched("phone")}
+                                value={values.phone}
+                                icon={"phone"}
+                                placeHolder={"Phone Number"}
+                                keyboardType={"number-pad"}
+                                touch={touched.phone}
+                                error={errors.phone}
+                                maxLength={10}
+                            />
+                            <PasswordField
+                                icon={"key-variant"}
+                                onChangeText={handleChange("password")}
+                                onBlur={() => setFieldTouched("password")}
+                                value={values.password}
+                                touch={touched.password}
+                                error={errors.password}
+                                placeHolder={"Password"}
+                            />
+                            <Checkbox value="true" my={2}>
+                                Remember me
+                            </Checkbox>
+                            <Pressable mt={2}>
+                                <Text>Forgot Password?</Text>
+                            </Pressable>
+                            <FormButton
+                                onPress={() => {
+                                    handleSubmit();
+                                    Keyboard.dismiss;
+                                }}>
+                                Login
+                            </FormButton>
+                        </>
+                    )}
+                </Formik>
+                <Flex
+                    direction="row"
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    mt={2}>
+                    <Text>Create a new Account, </Text>
+                    <Pressable onPress={() => navigation.navigate("Signup")}>
+                        <Text color={"primary.600"}>Click Here</Text>
+                    </Pressable>
+                </Flex>
+
+                {isError && (
+                    <Box mt={10}>
+                        <ToastAlert
+                            title={"Login Error"}
+                            description={message as string}
+                            status={"error"}
                         />
-                        <PasswordField
-                            icon={"key-variant"}
-                            onChangeText={handleChange("password")}
-                            onBlur={() => setFieldTouched("password")}
-                            value={values.password}
-                            touch={touched.password}
-                            error={errors.password}
-                            placeHolder={"Password"}
-                        />
-                        <Checkbox value="true" my={2}>
-                            Remember me
-                        </Checkbox>
-                        <Pressable mt={2}>
-                            <Text>Forgot Password?</Text>
-                        </Pressable>
-                        <FormButton onPress={handleSubmit}>Login</FormButton>
-                    </>
+                    </Box>
                 )}
-            </Formik>
-            <Flex
-                direction="row"
-                alignItems={"center"}
-                justifyContent={"center"}
-                mt={2}>
-                <Text>Create a new Account, </Text>
-                <Pressable onPress={() => navigation.navigate("Signup")}>
-                    <Text color={"primary.600"}>Click Here</Text>
-                </Pressable>
-            </Flex>
+            </ScrollView>
         </Container>
     );
 };

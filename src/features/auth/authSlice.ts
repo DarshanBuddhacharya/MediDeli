@@ -3,6 +3,8 @@ import { MMKV } from "react-native-mmkv"
 import { LoginInputProps } from "../../../types/LoginInputProps"
 import { LoginRespondProps } from "../../../types/LoginRespondProps"
 import authService from "./authService"
+import { SignupInputProps } from "../../../types/SignupInputProps"
+import { startOfYesterday } from "date-fns"
 
 export const storage = new MMKV()
 
@@ -29,11 +31,20 @@ const initialState: AuthProps = {
     message: '',
 }
 
+export const signup = createAsyncThunk('auth/signup', async (value: SignupInputProps, thunkAPI) => {
+    try {
+        return await authService.signup(value)
+    } catch (error: any) {
+        const message = (error.response && error.response.data && error.response.data.errors) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const login = createAsyncThunk('auth/login', async (value: LoginInputProps, thunkAPI) => {
     try {
         return await authService.login(value)
     } catch (error: any) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.errors) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
@@ -73,8 +84,20 @@ export const authSlice = createSlice({
         }).addCase(login.rejected, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
+            state.isError = true
             state.message = action.payload
             state.user = null
+        }).addCase(signup.pending, (state) => {
+            state.isLoading = true
+        }).addCase(signup.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.message = action.payload
+        }).addCase(signup.rejected, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = true
+            state.message = action.payload
         }).addCase(refresh.pending, (state) => {
             state.isLoading = true
         }).addCase(refresh.fulfilled, (state, action) => {

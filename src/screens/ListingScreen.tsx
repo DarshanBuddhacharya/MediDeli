@@ -1,5 +1,5 @@
 import {Box, Button, Flex, HStack, ScrollView, Select} from "native-base";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Animated, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {ProductProps} from "../../types/ProductProps";
@@ -132,14 +132,14 @@ export const ListingScreen = () => {
                     <SortButton
                         handleClick={handleClick}
                         title={"Price"}
-                        searchQuery={"ordering=-price"}
                         icon={"currency-inr"}
+                        sortKey={"price"}
                     />
                     <SortButton
                         handleClick={handleClick}
                         title={"Rating"}
-                        searchQuery={"ordering=price"}
                         icon={"star"}
+                        sortKey={"rating"}
                     />
                     {/* <SortButton
                         setSearch={setSearch}

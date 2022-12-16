@@ -1,26 +1,31 @@
-import {
-    Alert,
-    VStack,
-    HStack,
-    Box,
-    CloseIcon,
-    Heading,
-    IconButton,
-    useToast,
-    Text,
-} from "native-base";
+import {Alert, VStack, HStack, CloseIcon, IconButton, Text} from "native-base";
+import {useAppDispatch} from "../../features/hooks";
+import {reset} from "../../features/auth/authSlice";
+import {ResponsiveValue} from "native-base/lib/typescript/components/types";
+
+export interface ToastAlertProps {
+    status: "info" | (string & {}) | "error" | "success" | "warning";
+    variant?: ResponsiveValue<
+        | "subtle"
+        | "solid"
+        | "outline"
+        | "left-accent"
+        | "top-accent"
+        | "outline-light"
+        | (string & {})
+    >;
+    title: string;
+    description: string;
+}
 
 export const ToastAlert = ({
-    id,
     status,
     variant,
     title,
     description,
-    isClosable,
     ...rest
-}: any) => {
-    const toast = useToast();
-    console.log(id);
+}: ToastAlertProps) => {
+    const dispatch = useAppDispatch();
     return (
         <Alert
             maxWidth="100%"
@@ -57,7 +62,7 @@ export const ToastAlert = ({
                             color:
                                 variant === "solid" ? "lightText" : "darkText",
                         }}
-                        onPress={() => toast.close(id)}
+                        onPress={() => dispatch(reset())}
                     />
                 </HStack>
                 <Text

@@ -6,37 +6,16 @@ export interface SortButtonProps {
     title: string;
     icon: string;
     handleClick: (arg0: string) => void;
-    searchQuery: string;
-}
-
-export enum SORTOPTIONS {
-    Price = "Price",
-    Rating = "Rating",
-    Stock = "Stock",
+    sortKey: string;
 }
 
 export const SortButton = ({
     title,
     icon,
     handleClick,
-    searchQuery,
+    sortKey,
 }: SortButtonProps) => {
     const [isAssending, setIsAssending] = useState<boolean | null>(null);
-    const handlePress = () => {
-        switch (title) {
-            case SORTOPTIONS.Price:
-                return handleClick("price");
-
-            case SORTOPTIONS.Rating:
-                return handleClick("rating");
-
-            case SORTOPTIONS.Stock:
-                return `ordering=${isAssending ? "-stock" : "stock"}`;
-
-            default:
-                return console.log("last");
-        }
-    };
 
     return (
         <Box
@@ -52,7 +31,7 @@ export const SortButton = ({
                 bg={"none"}
                 px={1}
                 onPress={() => {
-                    handlePress();
+                    handleClick(sortKey);
                     setIsAssending(!isAssending);
                 }}>
                 <Flex direction="row" alignItems={"center"}>
@@ -68,7 +47,7 @@ export const SortButton = ({
                     </Text>
                     {isAssending !== null && (
                         <Icon
-                            name={!isAssending ? "chevron-up" : "chevron-down"}
+                            name={isAssending ? "chevron-up" : "chevron-down"}
                             color={isAssending !== null ? "white" : "#e63946"}
                             size={19}
                         />
@@ -79,6 +58,7 @@ export const SortButton = ({
                 <Pressable
                     onPress={() => {
                         setIsAssending(null);
+                        handleClick("");
                     }}>
                     <Icon name="close" color={"white"} size={24} />
                 </Pressable>

@@ -11,7 +11,6 @@ export interface CartState {
 }
 
 const jsonCart = storage.getString('cart')
-console.log("🚀 ~ file: cartSlice.ts:14 ~ jsonCart", jsonCart)
 const jsonTotal = storage.getString('totalCart')
 const jsonTotalPrice = storage.getString('totalPrice')
 

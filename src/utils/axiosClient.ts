@@ -42,15 +42,12 @@ const refreshAuthTokens = async (refreshToken: string) => {
         body: JSON.stringify({ refresh: refreshToken }),
     })
         .then((res) => {
-            console.log("🚀 ~ file: axiosClient.ts:42 ~ refreshAuthTokens ~ res", res)
             return res.json()
         })
         .then((data) => {
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             dispatch(refresh(data));
         })
         .catch(() => {
-            console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbb')
             dispatch(logout())
         });
 };
