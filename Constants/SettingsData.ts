@@ -7,6 +7,16 @@ export const ACCOUNT_SETTINGS = [
             "#F8961E",
     },
     {
+        iconName: "account-outline",
+        List: "Advanced Settings",
+        link: "Home",
+        iconColor:
+            "#FA6163",
+    },
+]
+
+export const ACCOUNT_COMPELETE_SETTINGS = [
+    {
         iconName: "navigation-outline",
         List: "Primary Delivery Location",
         link: "Home",
@@ -26,13 +36,6 @@ export const ACCOUNT_SETTINGS = [
         link: "Home",
         iconColor:
             "#580AFF",
-    },
-    {
-        iconName: "account-outline",
-        List: "Advanced Settings",
-        link: "Home",
-        iconColor:
-            "#FA6163",
     },
 ]
 
