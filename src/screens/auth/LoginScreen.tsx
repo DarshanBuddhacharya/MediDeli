@@ -22,7 +22,9 @@ const LoginScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
-    const {isError, message} = useAppSelector(state => state.auth);
+    const {isError, message, isSuccess, isLoading} = useAppSelector(
+        state => state.auth,
+    );
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -80,6 +82,7 @@ const LoginScreen = ({
                                 <Text>Forgot Password?</Text>
                             </Pressable>
                             <FormButton
+                                isSubmitting={isLoading}
                                 onPress={() => {
                                     handleSubmit();
                                     Keyboard.dismiss;

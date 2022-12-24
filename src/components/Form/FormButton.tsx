@@ -1,8 +1,20 @@
-import {Box, Button, Pressable, Text} from "native-base";
+import {
+    Box,
+    Button,
+    HStack,
+    Heading,
+    Pressable,
+    Spinner,
+    Text,
+} from "native-base";
 import React from "react";
 import {FormButtonProps} from "../../../types/FormButtonProps";
 
-export const FormButton = ({onPress, children}: FormButtonProps) => {
+export const FormButton = ({
+    onPress,
+    children,
+    isSubmitting,
+}: FormButtonProps) => {
     return (
         <Pressable
             bg={"primary.600"}
@@ -15,9 +27,21 @@ export const FormButton = ({onPress, children}: FormButtonProps) => {
             alignItems={"center"}
             android_ripple={{color: "primary.600"}}
             onPress={onPress}>
-            <Text color={"white"} fontSize={18}>
-                {children}
-            </Text>
+            {isSubmitting ? (
+                <HStack space={2} justifyContent="center">
+                    <Spinner
+                        color={"white"}
+                        accessibilityLabel="Loading posts"
+                    />
+                    <Heading color="white" fontSize="md">
+                        Loading
+                    </Heading>
+                </HStack>
+            ) : (
+                <Text color={"white"} fontSize={18}>
+                    {children}
+                </Text>
+            )}
         </Pressable>
     );
 };

@@ -4,7 +4,6 @@ import { LoginInputProps } from "../../../types/LoginInputProps"
 import { LoginRespondProps } from "../../../types/LoginRespondProps"
 import authService from "./authService"
 import { SignupInputProps } from "../../../types/SignupInputProps"
-import { startOfYesterday } from "date-fns"
 
 export const storage = new MMKV()
 
@@ -35,7 +34,7 @@ export const signup = createAsyncThunk('auth/signup', async (value: SignupInputP
     try {
         return await authService.signup(value)
     } catch (error: any) {
-        const message = (error.response && error.response.data && error.response.data.errors) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
@@ -44,7 +43,7 @@ export const login = createAsyncThunk('auth/login', async (value: LoginInputProp
     try {
         return await authService.login(value)
     } catch (error: any) {
-        const message = (error.response && error.response.data && error.response.data.errors) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.errors.phone[0]) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })

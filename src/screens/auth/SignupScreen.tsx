@@ -26,7 +26,7 @@ const SignupScreen = ({
 }) => {
     const dispatch = useAppDispatch();
 
-    const {isError, message} = useAppSelector(state => state.auth);
+    const {isError, message, isLoading} = useAppSelector(state => state.auth);
 
     useEffect(() => {
         dispatch(reset());
@@ -115,15 +115,15 @@ const SignupScreen = ({
                         <Text color={"primary.600"}>Click Here</Text>
                     </Pressable>
                 </Flex>
-                {/* {isError && (
+                {isError && (
                     <Box mt={10}>
                         <ToastAlert
-                            title={"Login Error"}
+                            title={"Signup Error"}
                             description={message as string}
                             status={"error"}
                         />
                     </Box>
-                )} */}
+                )}
             </ScrollView>
         </Container>
     );
