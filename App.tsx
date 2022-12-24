@@ -149,7 +149,11 @@ const TabNavigation = () => {
                     tabBarBadge: countCart ? countCart : undefined,
                 }}
             />
-            <Tab.Screen name="Account" component={Account} />
+            <Tab.Screen
+                name="Account"
+                component={Account}
+                options={{headerShown: false}}
+            />
         </Tab.Navigator>
     );
 };

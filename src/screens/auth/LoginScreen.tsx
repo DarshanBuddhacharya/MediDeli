@@ -1,7 +1,7 @@
 import {Formik} from "formik";
 import {Box, Checkbox, Flex, Pressable, ScrollView, Text} from "native-base";
-import React, {useContext, useEffect, useState} from "react";
-import {Image, Keyboard, TouchableWithoutFeedback} from "react-native";
+import React, {useEffect} from "react";
+import {Image} from "react-native";
 import {Container} from "../../components/common/Container";
 import {FormButton} from "../../components/Form/FormButton";
 import InputField from "../../components/Form/InputField";
@@ -22,9 +22,7 @@ const LoginScreen = ({
 }: {
     navigation: NativeStackNavigationProp<RootStackParamList, "Signup", "Home">;
 }) => {
-    const {isError, message, isSuccess, isLoading} = useAppSelector(
-        state => state.auth,
-    );
+    const {isError, message, isLoading} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -85,7 +83,6 @@ const LoginScreen = ({
                                 isSubmitting={isLoading}
                                 onPress={() => {
                                     handleSubmit();
-                                    Keyboard.dismiss;
                                 }}>
                                 Login
                             </FormButton>
