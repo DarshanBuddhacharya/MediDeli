@@ -1,26 +1,15 @@
-import {NavigationContainer, useNavigation} from "@react-navigation/native";
+import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StatusBar, useColorScheme} from "react-native";
 
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import LandingScreen from "./src/screens/LandingScreen";
-import {
-    Box,
-    Button,
-    Flex,
-    Modal,
-    NativeBaseProvider,
-    Pressable,
-    Text,
-    View,
-} from "native-base";
+import {NativeBaseProvider, Text} from "native-base";
 import {theme} from "./src/utils/Theme";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import HomeScreen from "./src/screens/HomeScreen";
 import Icon from "react-native-vector-icons/Ionicons";
-import AwsomeIcon from "react-native-vector-icons/MaterialIcons";
 import Account from "./src/screens/AccountScreen";
-import {TouchableOpacity} from "react-native";
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import SignupScreen from "./src/screens/auth/SignupScreen";
 import DetailScreen from "./src/screens/DetailPages/DetailScreen";
@@ -28,8 +17,6 @@ import {CheckoutScreen} from "./src/screens/CheckoutScreen";
 import {DeliveryLocation} from "./src/screens/DeliveryLocation";
 import {WishListScreen} from "./src/screens/WishListScreen";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {REACT_APP_DEV_MODE} from "@env";
 import {ListingScreen} from "./src/screens/ListingScreen";
 
 import {store} from "./store";
@@ -38,9 +25,8 @@ import {Provider} from "react-redux";
 
 import {useAppDispatch, useAppSelector} from "./src/features/hooks";
 import {calculateTotals} from "./src/features/cartSlice";
-import {logout, refresh} from "./src/features/auth/authSlice";
+import {refresh} from "./src/features/auth/authSlice";
 import {CustomTabButton} from "./src/screens/Navigation/CustomTabButton";
-import SplashScreen from "react-native-splash-screen";
 
 type HomeStackNavigator = {
     Index: undefined;
