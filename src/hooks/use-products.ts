@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { ProductProps } from '../../types/ProductProps';
 import { axiosClient } from '../utils/axiosClient';
+import urls from '../../constants/urls';
 
 type ProductItemProps = {
     id?: string,
@@ -15,7 +16,7 @@ export const useProduct = <T>({ id, query }: ProductItemProps) => {
 
     const fetchApi = async () => {
         try {
-            const { data } = await axiosClient.get<T>(id ? `products/${id}` : `products/?${query}`)
+            const { data } = await axiosClient.get<T>(id ? `${urls.products}${id}` : `${urls.products}?${query}`)
             setData(data)
             setLoading(false)
         } catch (error) {

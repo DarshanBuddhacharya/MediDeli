@@ -4,6 +4,7 @@ import { LoginInputProps } from "../../../types/LoginInputProps"
 import { LoginRespondProps } from "../../../types/LoginRespondProps"
 import authService from "./authService"
 import { SignupInputProps } from "../../../types/SignupInputProps"
+import { ReduxStateProps } from "../../../types/ReduxStateProps"
 
 export const storage = new MMKV()
 
@@ -14,12 +15,8 @@ if (userJson) {
     user = JSON?.parse(userJson)
 }
 
-export interface AuthProps {
+export interface AuthProps extends ReduxStateProps {
     user: LoginRespondProps | null | undefined
-    isError: boolean
-    isSuccess: boolean
-    isLoading: boolean
-    message?: string | unknown
 }
 
 const initialState: AuthProps = {
