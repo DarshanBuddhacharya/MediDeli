@@ -64,7 +64,7 @@ const Account = () => {
                             style={{height: 300}}
                             alt={"whishlist-empty"}
                         />
-                        <Button link={""}>Complete Profile</Button>
+                        <Button link={"AccountForm"}>Complete Profile</Button>
                     </Center>
                 )}
 

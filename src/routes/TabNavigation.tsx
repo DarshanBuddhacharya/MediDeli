@@ -7,6 +7,7 @@ import HomeScreen from "../screens/HomeScreen";
 import {CustomTabButton} from "../screens/Navigation/CustomTabButton";
 import CheckoutStack from "./CheckoutStack";
 import Account from "../screens/AccountScreen";
+import AccountStack from "./AccountStack";
 
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
@@ -84,7 +85,7 @@ const TabNavigation = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={Account}
+                component={AccountStack}
                 options={{headerShown: false}}
             />
         </Tab.Navigator>

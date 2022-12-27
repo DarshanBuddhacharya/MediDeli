@@ -65,7 +65,7 @@ const SignupScreen = ({
                                 onChangeText={handleChange("full_name")}
                                 onBlur={() => setFieldTouched("full_name")}
                                 value={values.full_name}
-                                icon={"person"}
+                                icon={"account"}
                                 placeHolder={"Full Name"}
                                 touch={touched.full_name}
                                 error={errors.full_name}
