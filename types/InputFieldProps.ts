@@ -4,8 +4,10 @@ export interface InputFieldProps {
     label?: string;
     icon: string;
     placeHolder: string;
-    onChangeText: (text: string) => void
-    onBlur: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
+    varient?: string;
+    isDisabled?: boolean;
+    onChangeText?: (text: string) => void
+    onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
     value: string
     keyboardType?: KeyboardTypeOptions
     touch?: boolean;

@@ -7,7 +7,7 @@ import {
     WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {InputFieldProps} from "../../../types/InputFieldProps";
 
 const InputField = ({
@@ -18,13 +18,15 @@ const InputField = ({
     onBlur,
     value,
     maxLength,
+    isDisabled,
+    varient,
     keyboardType,
     error,
     touch,
 }: InputFieldProps) => {
     return (
-        <Box w={"100%"}>
-            <Text>{label}</Text>
+        <Box w={"100%"} pt={4}>
+            {label && <Text>{label}</Text>}
             <Input
                 InputLeftElement={
                     <Icon
@@ -34,6 +36,8 @@ const InputField = ({
                         style={{marginLeft: 10}}
                     />
                 }
+                variant={varient}
+                isDisabled={isDisabled}
                 placeholder={placeHolder}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
