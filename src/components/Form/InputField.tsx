@@ -1,11 +1,4 @@
-import {
-    Box,
-    Flex,
-    FormControl,
-    Input,
-    Text,
-    WarningOutlineIcon,
-} from "native-base";
+import {Box, Flex, Input, Text} from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {InputFieldProps} from "../../../types/InputFieldProps";
@@ -49,7 +42,11 @@ const InputField = ({
             />
             {touch && error && (
                 <Flex direction="row" alignItems={"center"} mt={1}>
-                    <Icon name="info-outline" size={20} color="#d52d3a" />
+                    <Icon
+                        name="information-outline"
+                        size={20}
+                        color="#d52d3a"
+                    />
                     <Text color={"primary.600"} marginLeft={2}>
                         {error}
                     </Text>
