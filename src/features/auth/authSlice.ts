@@ -67,6 +67,11 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = false
             state.message = ''
+        },
+        hasAccount: (state) => {
+            if (state?.user) {
+                state.user.user.has_account = true
+            }
         }
     },
     extraReducers: (builder) => {
@@ -79,7 +84,6 @@ export const authSlice = createSlice({
             storage.set('user', JSON.stringify(action.payload))
         }).addCase(login.rejected, (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
             state.isError = true
             state.message = action.payload
             state.user = null
@@ -88,11 +92,12 @@ export const authSlice = createSlice({
         }).addCase(signup.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
+            state.isError = false
             state.message = action.payload
         }).addCase(signup.rejected, (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
             state.isError = true
+            state.isSuccess = false
             state.message = action.payload
         }).addCase(refresh.pending, (state) => {
             state.isLoading = true
@@ -115,5 +120,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const { reset } = authSlice.actions
+export const { reset, hasAccount } = authSlice.actions
 export default authSlice.reducer

@@ -6,6 +6,8 @@ import { LoginRespondProps } from "../../../types/LoginRespondProps"
 import { SignupInputProps } from "../../../types/SignupInputProps"
 import { SignupRespondProps } from "../../../types/SignupResponseProps"
 import urls from "../../../constants/urls"
+import { useAppDispatch } from "../hooks"
+import { reset } from "../account/accountSlice"
 
 const storage = new MMKV()
 

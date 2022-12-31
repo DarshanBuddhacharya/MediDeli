@@ -8,7 +8,7 @@ import {
     ScrollView,
 } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import React from "react";
+import React, {useEffect} from "react";
 import {logout} from "../features/auth/authSlice";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {Container} from "../components/common/Container";
@@ -20,10 +20,14 @@ import {
     PAYMENT_SETTINGS,
 } from "../../constants/SettingsData";
 import Button from "../components/common/Button";
+import {reset} from "../features/account/accountSlice";
 
 const Account = () => {
     const dispatch = useAppDispatch();
+
     const userData = useAppSelector(state => state.auth.user);
+
+    const accountData = useAppSelector(state => state.account.account);
 
     const {user} = userData ?? {};
     return (
@@ -120,7 +124,10 @@ const Account = () => {
                         flexDirection={"row"}
                         alignItems="center"
                         justifyContent={"space-between"}
-                        onPress={() => dispatch(logout())}>
+                        onPress={() => {
+                            dispatch(logout());
+                            dispatch(reset());
+                        }}>
                         <Heading>Logout</Heading>
                         <Icon name="logout" color={"red"} size={24} />
                     </Pressable>

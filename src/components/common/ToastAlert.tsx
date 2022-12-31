@@ -28,7 +28,7 @@ export const ToastAlert = ({
     const dispatch = useAppDispatch();
     return (
         <Alert
-            maxWidth="100%"
+            maxWidth="90%"
             alignSelf="center"
             flexDirection="row"
             status={status ? status : "info"}

@@ -26,7 +26,13 @@ const SignupScreen = ({
 }) => {
     const dispatch = useAppDispatch();
 
-    const {isError, message, isLoading} = useAppSelector(state => state.auth);
+    const {isError, message, isLoading, isSuccess} = useAppSelector(
+        state => state.auth,
+    );
+
+    if (isSuccess) {
+        navigation.navigate("Login");
+    }
 
     useEffect(() => {
         dispatch(reset());
@@ -99,7 +105,9 @@ const SignupScreen = ({
                                 error={errors.password2}
                                 placeHolder={"Password"}
                             />
-                            <FormButton onPress={handleSubmit}>
+                            <FormButton
+                                onPress={handleSubmit}
+                                isSubmitting={isLoading}>
                                 Signup
                             </FormButton>
                         </>

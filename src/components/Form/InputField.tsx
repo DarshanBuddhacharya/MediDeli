@@ -16,6 +16,7 @@ const InputField = ({
     keyboardType,
     error,
     touch,
+    ...rest
 }: InputFieldProps) => {
     return (
         <Box w={"100%"} pt={4}>
@@ -29,6 +30,7 @@ const InputField = ({
                         style={{marginLeft: 10}}
                     />
                 }
+                {...rest}
                 variant={varient}
                 isDisabled={isDisabled}
                 placeholder={placeHolder}

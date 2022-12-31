@@ -18,7 +18,6 @@ export const accountCreate = createAsyncThunk('account/create', async (values: A
     try {
         return await accountService.accountCreate(values)
     } catch (error: any) {
-        console.log("🚀 ~ file: accountSlice.ts:22 ~ accountCreate ~ error", error.response.data)
         const message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.error) || error.response.data || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
@@ -33,6 +32,8 @@ export const accountSlice = createSlice({
             state.isError = false
             state.isLoading = false
             state.isSuccess = false
+            state.account = null
+            state.message = null
         }
     },
     extraReducers: (builder) => {
@@ -42,6 +43,7 @@ export const accountSlice = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.message = payload
+            state.account = payload.account
         }).addCase(accountCreate.rejected, (state, { payload }) => {
             state.isLoading = false
             state.isSuccess = false

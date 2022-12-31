@@ -1,5 +1,5 @@
-import {Avatar, Box, ScrollView} from "native-base";
-import React, {useEffect, useState} from "react";
+import {Avatar, Box, ScrollView, useToast} from "native-base";
+import React, {useCallback, useEffect, useState} from "react";
 import {Container} from "../components/common/Container";
 import {Formik} from "formik";
 import InputField from "../components/Form/InputField";
@@ -9,24 +9,31 @@ import {useAppDispatch, useAppSelector} from "../features/hooks";
 import DateField from "../components/Form/DateField";
 import {accountFormSchema} from "../validation/AccountValidation";
 import {accountCreate, reset} from "../features/account/accountSlice";
+import {useNavigation} from "@react-navigation/native";
+import {hasAccount} from "../features/auth/authSlice";
+import {ToastAlert} from "../components/common/ToastAlert";
+import {GoBackBtn} from "../components/common/GoBackBtn";
 
 export const AccountForm = () => {
-    const auth = useAppSelector(state => state.auth.user);
-
-    const {message, isLoading, isError, isSuccess} = useAppSelector(
-        state => state.account,
-    );
-
     const dispatch = useAppDispatch();
-
     useEffect(() => {
         dispatch(reset());
     }, []);
 
+    const auth = useAppSelector(state => state.auth.user);
+
+    const {isLoading} = useAppSelector(state => state.account);
+
     const {user} = auth ?? {};
+
+    const toast = useToast();
+
+    const navigation: any = useNavigation();
+
     return (
         <Container>
             <ScrollView>
+                <GoBackBtn />
                 <Avatar
                     bg="green.500"
                     alignSelf="center"
@@ -63,26 +70,45 @@ export const AccountForm = () => {
                             date_of_birth: null as unknown as Date,
                         }}
                         validationSchema={accountFormSchema}
-                        onSubmit={(values, actions) => {
+                        onSubmit={async (values, actions) => {
                             const accountPayload = {
                                 ...values,
                                 date_of_birth: values.date_of_birth
                                     .toISOString()
                                     .substring(0, 10),
                             };
-                            dispatch(accountCreate(accountPayload));
+                            const {payload, meta} = await dispatch(
+                                accountCreate(accountPayload),
+                            );
+
+                            if (meta.requestStatus === "fulfilled") {
+                                dispatch(hasAccount());
+                                navigation.push("AccountScreen");
+                                toast.show({
+                                    render: () => {
+                                        return (
+                                            <ToastAlert
+                                                status={"success"}
+                                                title={"Account Created"}
+                                                description={payload.message}
+                                            />
+                                        );
+                                    },
+                                });
+                            }
+
                             actions.setFieldError(
                                 "date_of_birth",
-                                message?.date_of_birth &&
-                                    message.date_of_birth[0],
+                                payload?.date_of_birth &&
+                                    payload.date_of_birth[0],
                             );
                             actions.setFieldError(
                                 "gender",
-                                message?.image && message.image[0],
+                                payload?.image && payload.image[0],
                             );
                             actions.setFieldError(
                                 "email",
-                                message?.email && message.email[0],
+                                payload?.email && payload.email[0],
                             );
                         }}>
                         {({
