@@ -19,16 +19,17 @@ import {
     APP_SETTINGS,
     PAYMENT_SETTINGS,
 } from "../../constants/SettingsData";
-import {Fallback} from "../components/skeletons/Fallback";
 import Button from "../components/common/Button";
 
 const Account = () => {
     const dispatch = useAppDispatch();
-    const user = useAppSelector(state => state.auth.user);
+    const userData = useAppSelector(state => state.auth.user);
+
+    const {user} = userData ?? {};
     return (
         <Container>
             <ScrollView>
-                {user?.user?.has_account ? (
+                {user?.has_account ? (
                     <Box position={"relative"} mb={5}>
                         <Avatar
                             bg="green.500"
@@ -39,7 +40,7 @@ const Account = () => {
                                 uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
                             }}
                         />
-                        <Heading alignSelf="center">Ram Baran Yadav</Heading>
+                        <Heading alignSelf="center">{user?.full_name}</Heading>
                         <Pressable
                             position="absolute"
                             p={3}
@@ -70,7 +71,7 @@ const Account = () => {
 
                 <Box bg={"white"} rounded="md" shadow={5} px={3} pt={2} mb={4}>
                     <Heading>Account</Heading>
-                    {user?.user?.has_account &&
+                    {user?.has_account &&
                         ACCOUNT_COMPELETE_SETTINGS.map((item, key) => (
                             <NavList
                                 key={key}

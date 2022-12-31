@@ -12,14 +12,14 @@ const initialState: AccountProps = {
     isError: false,
     isLoading: false,
     isSuccess: false,
-    message: ''
 }
 
 export const accountCreate = createAsyncThunk('account/create', async (values: AccountInputProps, thunkAPI) => {
     try {
         return await accountService.accountCreate(values)
     } catch (error: any) {
-        const message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.error) || error.message || error.toString()
+        console.log("🚀 ~ file: accountSlice.ts:22 ~ accountCreate ~ error", error.response.data)
+        const message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.error) || error.response.data || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
@@ -44,7 +44,7 @@ export const accountSlice = createSlice({
             state.message = payload
         }).addCase(accountCreate.rejected, (state, { payload }) => {
             state.isLoading = false
-            state.isSuccess = true
+            state.isSuccess = false
             state.message = payload
             state.isError = true
         })

@@ -1,25 +1,27 @@
-import {
-    Avatar,
-    Box,
-    CheckIcon,
-    Input,
-    Radio,
-    ScrollView,
-    Select,
-    Text,
-} from "native-base";
-import React from "react";
+import {Avatar, Box, ScrollView} from "native-base";
+import React, {useEffect, useState} from "react";
 import {Container} from "../components/common/Container";
 import {Formik} from "formik";
 import InputField from "../components/Form/InputField";
 import {FormButton} from "../components/Form/FormButton";
 import RadioGroup from "../components/Form/RadioGroup";
-import {useAppSelector} from "../features/hooks";
+import {useAppDispatch, useAppSelector} from "../features/hooks";
 import DateField from "../components/Form/DateField";
 import {accountFormSchema} from "../validation/AccountValidation";
+import {accountCreate, reset} from "../features/account/accountSlice";
 
 export const AccountForm = () => {
     const auth = useAppSelector(state => state.auth.user);
+
+    const {message, isLoading, isError, isSuccess} = useAppSelector(
+        state => state.account,
+    );
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(reset());
+    }, []);
 
     const {user} = auth ?? {};
     return (
@@ -53,7 +55,7 @@ export const AccountForm = () => {
                     />
                     <Formik
                         initialValues={{
-                            image: "",
+                            image: null,
                             email: "",
                             gender: "",
                             address: "",
@@ -61,9 +63,28 @@ export const AccountForm = () => {
                             date_of_birth: null as unknown as Date,
                         }}
                         validationSchema={accountFormSchema}
-                        onSubmit={(values, action) =>
-                            console.log("first", values)
-                        }>
+                        onSubmit={(values, actions) => {
+                            const accountPayload = {
+                                ...values,
+                                date_of_birth: values.date_of_birth
+                                    .toISOString()
+                                    .substring(0, 10),
+                            };
+                            dispatch(accountCreate(accountPayload));
+                            actions.setFieldError(
+                                "date_of_birth",
+                                message?.date_of_birth &&
+                                    message.date_of_birth[0],
+                            );
+                            actions.setFieldError(
+                                "gender",
+                                message?.image && message.image[0],
+                            );
+                            actions.setFieldError(
+                                "email",
+                                message?.email && message.email[0],
+                            );
+                        }}>
                         {({
                             handleChange,
                             values,
@@ -109,6 +130,7 @@ export const AccountForm = () => {
                                     error={errors.date_of_birth as string}
                                 />
                                 <FormButton
+                                    isSubmitting={isLoading}
                                     onPress={() => {
                                         handleSubmit();
                                     }}>

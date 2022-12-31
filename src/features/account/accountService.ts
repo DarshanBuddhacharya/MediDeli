@@ -1,9 +1,10 @@
 import { REACT_APP_DEV_MODE } from "@env"
-import axios from "axios"
 import { AccountInputProps } from "../../../types/AccountInputProps"
+import urls from "../../../constants/urls"
+import { axiosClient } from "../../utils/axiosClient"
 
 const accountCreate = async (accountData: AccountInputProps) => {
-    const response = await axios.post(`${REACT_APP_DEV_MODE}register/`, accountData)
+    const response = await axiosClient.post(`${REACT_APP_DEV_MODE}${urls.account.create}`, accountData)
     return response.data
 }
 

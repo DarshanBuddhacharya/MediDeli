@@ -3,7 +3,8 @@ const urls = {
     registration: 'register/',
     refresh: 'refresh/',
     category: 'category/',
-    products: 'products/'
+    products: 'products/',
+    account: { init: 'account/', create: 'account/create/' }
 }
 
 export default urls
