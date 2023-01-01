@@ -5,7 +5,7 @@ import { axiosClient } from "../../utils/axiosClient"
 import { AccountRespondProps } from "../../../types/AccountRespondProps"
 import { AccountDataProps } from "../../../types/AccountDataProps"
 
-const accountCreate = async (accountData: AccountInputProps) => {
+const accountCreate = async (accountData: FormData) => {
     const response = await axiosClient.post<AccountRespondProps, any>(`${REACT_APP_DEV_MODE}${urls.account.create}`, accountData)
     return response.data
 }
@@ -15,7 +15,7 @@ const accountGet = async () => {
     return response.data
 }
 
-const accountUpdate = async (accountData: AccountInputProps, id: number) => {
+const accountUpdate = async (accountData: FormData, id: number) => {
     const response = await axiosClient.patch<AccountRespondProps, any>(`${REACT_APP_DEV_MODE}${urls.account.init}${id}/`, accountData)
     return response.data
 }

@@ -14,7 +14,7 @@ const initialState: AccountProps = {
     isSuccess: false,
 }
 
-export const accountCreate = createAsyncThunk('account/create', async (values: AccountInputProps, thunkAPI) => {
+export const accountCreate = createAsyncThunk('account/create', async (values: FormData, thunkAPI) => {
     try {
         return await accountService.accountCreate(values)
     } catch (error: any) {
@@ -32,7 +32,7 @@ export const accountGet = createAsyncThunk('account/get', async (_, thunkAPI) =>
     }
 })
 
-export const accountUpdate = createAsyncThunk('account/update', async (values: { id: number, data: AccountInputProps }, thunkAPI) => {
+export const accountUpdate = createAsyncThunk('account/update', async (values: { id: number, data: FormData }, thunkAPI) => {
     const { data, id } = values
     try {
         return await accountService.accountUpdate(data, id)

@@ -61,6 +61,8 @@ axiosClient.interceptors.request.use(
         if (getToken().token.access && !isTokenExpired(getToken().token.access)) {
             config.headers = {
                 ...config.headers,
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${getToken().token.access}`,
             };
         }
