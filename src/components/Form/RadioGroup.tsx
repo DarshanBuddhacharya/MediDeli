@@ -12,6 +12,7 @@ const RadioGroup = ({
     maxLength,
     keyboardType,
     name,
+    value,
     error,
     touch,
     ...rest
@@ -25,6 +26,7 @@ const RadioGroup = ({
                         {...rest}
                         {...field}
                         name={name}
+                        value={value}
                         accessibilityLabel="favorite number"
                         onChange={onChange}>
                         <Flex direction="row" alignItems="center">

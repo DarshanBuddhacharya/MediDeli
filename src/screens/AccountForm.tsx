@@ -8,7 +8,11 @@ import RadioGroup from "../components/Form/RadioGroup";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import DateField from "../components/Form/DateField";
 import {accountFormSchema} from "../validation/AccountValidation";
-import {accountCreate, reset} from "../features/account/accountSlice";
+import {
+    accountCreate,
+    accountUpdate,
+    reset,
+} from "../features/account/accountSlice";
 import {useNavigation} from "@react-navigation/native";
 import {hasAccount} from "../features/auth/authSlice";
 import {ToastAlert} from "../components/common/ToastAlert";
@@ -16,9 +20,6 @@ import {GoBackBtn} from "../components/common/GoBackBtn";
 
 export const AccountForm = () => {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        dispatch(reset());
-    }, []);
 
     const auth = useAppSelector(state => state.auth.user);
 
@@ -29,6 +30,8 @@ export const AccountForm = () => {
     const toast = useToast();
 
     const navigation: any = useNavigation();
+
+    const accountData = useAppSelector(state => state.account.account);
 
     return (
         <Container>
@@ -63,11 +66,14 @@ export const AccountForm = () => {
                     <Formik
                         initialValues={{
                             image: null,
-                            email: "",
-                            gender: "",
-                            address: "",
-                            secondary_address: "",
-                            date_of_birth: null as unknown as Date,
+                            email: accountData?.email ?? "",
+                            gender: accountData?.gender ?? "",
+                            address: accountData?.address ?? "",
+                            secondary_address:
+                                accountData?.secondary_address ?? "",
+                            date_of_birth: accountData?.date_of_birth
+                                ? new Date(String(accountData?.date_of_birth))
+                                : (null as unknown as Date),
                         }}
                         validationSchema={accountFormSchema}
                         onSubmit={async (values, actions) => {
@@ -77,39 +83,66 @@ export const AccountForm = () => {
                                     .toISOString()
                                     .substring(0, 10),
                             };
-                            const {payload, meta} = await dispatch(
-                                accountCreate(accountPayload),
-                            );
-
-                            if (meta.requestStatus === "fulfilled") {
-                                dispatch(hasAccount());
-                                navigation.push("AccountScreen");
-                                toast.show({
-                                    render: () => {
-                                        return (
-                                            <ToastAlert
-                                                status={"success"}
-                                                title={"Account Created"}
-                                                description={payload.message}
-                                            />
-                                        );
-                                    },
-                                });
+                            //Check if account exist to call post or patch method
+                            if (accountData && user) {
+                                console.log("asdasdasd Cal;l;ed");
+                                const {payload, meta} = await dispatch(
+                                    accountUpdate({
+                                        id: user.id,
+                                        data: accountPayload,
+                                    }),
+                                );
+                                if (meta.requestStatus === "fulfilled") {
+                                    navigation.push("AccountScreen");
+                                    toast.show({
+                                        render: () => {
+                                            return (
+                                                <ToastAlert
+                                                    status={"success"}
+                                                    title={"Account Updated"}
+                                                    description={
+                                                        payload.message
+                                                    }
+                                                />
+                                            );
+                                        },
+                                    });
+                                }
+                            } else {
+                                const {payload, meta} = await dispatch(
+                                    accountCreate(accountPayload),
+                                );
+                                actions.setFieldError(
+                                    "date_of_birth",
+                                    payload?.date_of_birth &&
+                                        payload.date_of_birth[0],
+                                );
+                                actions.setFieldError(
+                                    "gender",
+                                    payload?.image && payload.image[0],
+                                );
+                                actions.setFieldError(
+                                    "email",
+                                    payload?.email && payload.email[0],
+                                );
+                                if (meta.requestStatus === "fulfilled") {
+                                    dispatch(hasAccount());
+                                    navigation.push("AccountScreen");
+                                    toast.show({
+                                        render: () => {
+                                            return (
+                                                <ToastAlert
+                                                    status={"success"}
+                                                    title={"Account Created"}
+                                                    description={
+                                                        payload.message
+                                                    }
+                                                />
+                                            );
+                                        },
+                                    });
+                                }
                             }
-
-                            actions.setFieldError(
-                                "date_of_birth",
-                                payload?.date_of_birth &&
-                                    payload.date_of_birth[0],
-                            );
-                            actions.setFieldError(
-                                "gender",
-                                payload?.image && payload.image[0],
-                            );
-                            actions.setFieldError(
-                                "email",
-                                payload?.email && payload.email[0],
-                            );
                         }}>
                         {({
                             handleChange,
@@ -138,6 +171,7 @@ export const AccountForm = () => {
                                     }
                                     name={"gender"}
                                     label={"Gender"}
+                                    value={values.gender}
                                     onBlur={() => setFieldTouched("gender")}
                                     touch={touched.gender}
                                     error={errors.gender}

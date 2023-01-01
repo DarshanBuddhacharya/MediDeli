@@ -20,16 +20,20 @@ import {
     PAYMENT_SETTINGS,
 } from "../../constants/SettingsData";
 import Button from "../components/common/Button";
-import {reset} from "../features/account/accountSlice";
+import {accountGet, reset} from "../features/account/accountSlice";
+import {useNavigation} from "@react-navigation/native";
 
 const Account = () => {
     const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(accountGet());
+    }, []);
 
     const userData = useAppSelector(state => state.auth.user);
 
-    const accountData = useAppSelector(state => state.account.account);
-
     const {user} = userData ?? {};
+
+    const navigation: any = useNavigation();
     return (
         <Container>
             <ScrollView>
@@ -49,6 +53,7 @@ const Account = () => {
                             position="absolute"
                             p={3}
                             shadow={5}
+                            onPress={() => navigation.push("AccountForm")}
                             rounded="md"
                             bg={"primary.500"}
                             right={0}>

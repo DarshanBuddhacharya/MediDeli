@@ -19,3 +19,8 @@ export const getMaximumDate = () => {
 
     return today;
 };
+
+export const convertTimeStringToDateString = (value: string) =>
+    new Date(
+        `${new Date().toISOString().split("T")[0]}T${value}`
+    ) as unknown as string;
