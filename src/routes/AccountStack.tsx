@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import Account from "../screens/AccountScreen";
-import {AccountForm} from "../screens/AccountForm";
+import {AccountForm} from "../screens/settings/AccountForm";
+import {PrimaryLoactionScreen} from "../screens/settings/PrimaryLoactionScreen";
 
 const AccountStack = () => {
     const Stack = createNativeStackNavigator();
@@ -14,6 +15,11 @@ const AccountStack = () => {
             <Stack.Screen
                 name="AccountForm"
                 component={AccountForm}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="PrimaryLocation"
+                component={PrimaryLoactionScreen}
                 options={{headerShown: false}}
             />
         </Stack.Navigator>

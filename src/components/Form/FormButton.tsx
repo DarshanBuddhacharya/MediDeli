@@ -6,9 +6,11 @@ export const FormButton = ({
     onPress,
     children,
     isSubmitting,
+    ...rest
 }: FormButtonProps) => {
     return (
         <Pressable
+            {...rest}
             bg={"primary.600"}
             mt={3}
             w={"100%"}

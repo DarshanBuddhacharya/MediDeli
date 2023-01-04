@@ -8,20 +8,23 @@ import {
     useToast,
 } from "native-base";
 import React, {useState} from "react";
-import {Container} from "../components/common/Container";
+import {Container} from "../../components/common/Container";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Formik} from "formik";
-import InputField from "../components/Form/InputField";
-import {FormButton} from "../components/Form/FormButton";
-import RadioGroup from "../components/Form/RadioGroup";
-import {useAppDispatch, useAppSelector} from "../features/hooks";
-import DateField from "../components/Form/DateField";
-import {accountFormSchema} from "../validation/AccountValidation";
-import {accountCreate, accountUpdate} from "../features/account/accountSlice";
+import InputField from "../../components/Form/InputField";
+import {FormButton} from "../../components/Form/FormButton";
+import RadioGroup from "../../components/Form/RadioGroup";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
+import DateField from "../../components/Form/DateField";
+import {accountFormSchema} from "../../validation/AccountValidation";
+import {
+    accountCreate,
+    accountUpdate,
+} from "../../features/account/accountSlice";
 import {useNavigation} from "@react-navigation/native";
-import {hasAccount} from "../features/auth/authSlice";
-import {ToastAlert} from "../components/common/ToastAlert";
-import {GoBackBtn} from "../components/common/GoBackBtn";
+import {hasAccount} from "../../features/auth/authSlice";
+import {ToastAlert} from "../../components/common/ToastAlert";
+import {GoBackBtn} from "../../components/common/GoBackBtn";
 import ImagePicker, {Image, Options} from "react-native-image-crop-picker";
 
 export const AccountForm = () => {
@@ -148,7 +151,7 @@ export const AccountForm = () => {
                                 alignSelf="center"
                                 mt={4}
                                 size="xl"
-                                source={require("../../assets/Images/profilePlaceholder.jpg")}
+                                source={require("../../../assets/Images/profilePlaceholder.jpg")}
                             />
                         )}
                         <Box
