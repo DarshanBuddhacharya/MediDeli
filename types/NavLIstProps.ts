@@ -3,4 +3,5 @@ export interface NavListProps {
     link: string
     iconColor: string
     iconName: string
+    secondaryText?: string
 }

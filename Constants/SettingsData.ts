@@ -1,3 +1,9 @@
+import { useState } from "react"
+import { useAppSelector } from "../src/features/hooks"
+import { useLatLng } from "../utils/useLatLng"
+
+import { REACT_APP_MAPBOX_KEY } from "@env"
+
 export const ACCOUNT_SETTINGS = [
     {
         iconName: "key-variant",
@@ -15,29 +21,53 @@ export const ACCOUNT_SETTINGS = [
     },
 ]
 
-export const ACCOUNT_COMPELETE_SETTINGS = [
-    {
-        iconName: "navigation-outline",
-        List: "Primary Delivery Location",
-        link: "Home",
-        iconColor:
-            "#ED070B",
-    },
-    {
-        iconName: "navigation-variant-outline",
-        List: "Secondary Delivery Location",
-        link: "Home",
-        iconColor:
-            "#147DF5",
-    },
-    {
-        iconName: "account-box-multiple-outline",
-        List: "KYC Verification",
-        link: "Home",
-        iconColor:
-            "#580AFF",
-    },
-]
+export const ACCOUNT_COMPELETE_SETTINGS = () => {
+    const accountData = useAppSelector(state => state.account.account)
+
+    const { latitude, longitude } = useLatLng(accountData?.address ?? '');
+
+
+
+    var apiKey = REACT_APP_MAPBOX_KEY;
+    var apiUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + longitude + ',' + latitude + '.json?access_token=' + apiKey;
+
+
+    const [address, setAddress] = useState()
+    fetch(apiUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(async function (data) {
+            var address = await data.features[0].place_name;
+            setAddress(address)
+        }).catch(e => console.log(e));
+
+
+    return [
+        {
+            iconName: "navigation-outline",
+            List: "Primary Delivery Location",
+            link: "Home",
+            secondaryText: address,
+            iconColor:
+                "#ED070B",
+        },
+        {
+            iconName: "navigation-variant-outline",
+            List: "Secondary Delivery Location",
+            link: "Home",
+            iconColor:
+                "#147DF5",
+        },
+        {
+            iconName: "account-box-multiple-outline",
+            List: "KYC Verification",
+            link: "Home",
+            iconColor:
+                "#580AFF",
+        },
+    ]
+}
 
 export const PAYMENT_SETTINGS = [
     {

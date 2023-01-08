@@ -31,6 +31,8 @@ const Account = () => {
 
     const userData = useAppSelector(state => state.auth.user);
 
+    const accountData = useAppSelector(state => state.account.account);
+
     const {user} = userData ?? {};
 
     const navigation: any = useNavigation();
@@ -81,11 +83,12 @@ const Account = () => {
                 <Box bg={"white"} rounded="md" shadow={5} px={3} pt={2} mb={4}>
                     <Heading>Account</Heading>
                     {user?.has_account &&
-                        ACCOUNT_COMPELETE_SETTINGS.map((item, key) => (
+                        ACCOUNT_COMPELETE_SETTINGS().map((item, key) => (
                             <NavList
                                 key={key}
                                 List={item.List}
                                 link={item.link}
+                                secondaryText={item?.secondaryText}
                                 iconColor={item.iconColor}
                                 iconName={item.iconName}
                             />

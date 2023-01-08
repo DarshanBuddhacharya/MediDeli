@@ -4,7 +4,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {NavListProps} from "../../../types/NavLIstProps";
 import {useNavigation} from "@react-navigation/native";
 
-export const NavList = ({iconName, List, link, iconColor}: NavListProps) => {
+export const NavList = ({
+    iconName,
+    List,
+    link,
+    iconColor,
+    secondaryText,
+}: NavListProps) => {
     const navigation: any = useNavigation();
     return (
         <Pressable onPress={() => navigation.push("PrimaryLocation")}>
@@ -18,7 +24,14 @@ export const NavList = ({iconName, List, link, iconColor}: NavListProps) => {
                 alignItems={"center"}>
                 <Flex direction="row" alignItems={"center"}>
                     <Icon name={iconName} color={iconColor} size={28} />
-                    <Text ml={2}>{List}</Text>
+                    <Flex ml={2}>
+                        <Text>{List}</Text>
+                        {secondaryText ? (
+                            <Text noOfLines={1} width={280}>
+                                {secondaryText}
+                            </Text>
+                        ) : null}
+                    </Flex>
                 </Flex>
                 <Icon name="menu-right" color={"red"} size={24} />
             </Box>

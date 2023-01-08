@@ -32,12 +32,13 @@ export const accountGet = createAsyncThunk('account/get', async (_, thunkAPI) =>
     }
 })
 
-export const accountUpdate = createAsyncThunk('account/update', async (values: { id: number, data: FormData }, thunkAPI) => {
+export const accountUpdate = createAsyncThunk('account/update', async (values: { id: number, data: FormData | AccountInputProps }, thunkAPI) => {
     const { data, id } = values
     try {
         return await accountService.accountUpdate(data, id)
     } catch (error: any) {
         const message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.error) || error.response.data || error.toString()
+        console.log("🚀 ~ file: accountSlice.ts:41 ~ accountUpdate ~ message", message)
         return thunkAPI.rejectWithValue(message)
     }
 })

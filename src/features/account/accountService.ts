@@ -15,7 +15,7 @@ const accountGet = async () => {
     return response.data
 }
 
-const accountUpdate = async (accountData: FormData, id: number) => {
+const accountUpdate = async (accountData: FormData | AccountInputProps, id: number) => {
     const response = await axiosClient.patch<AccountRespondProps, any>(`${REACT_APP_DEV_MODE}${urls.account.init}${id}/`, accountData)
     return response.data
 }

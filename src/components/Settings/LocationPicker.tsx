@@ -1,25 +1,49 @@
-import {Box, Icon, Image, Input, Text} from "native-base";
-import React from "react";
+import {Box, Icon, Image, Input, useToast} from "native-base";
+import React, {useState} from "react";
 import {Dimensions, StyleSheet, View} from "react-native";
 import MapView from "react-native-maps";
 import {GoBackBtn} from "../common/GoBackBtn";
 import {Container} from "../common/Container";
-import Button from "../common/Button";
 import {FormButton} from "../Form/FormButton";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
+import {accountUpdate} from "../../features/account/accountSlice";
+import {useLatLng} from "../../../utils/useLatLng";
+import {useNavigation} from "@react-navigation/native";
+import {ToastAlert} from "../common/ToastAlert";
 
 export const LocationPicker = () => {
+    const accountData = useAppSelector(state => state.account);
+
+    const navigation: any = useNavigation();
+
+    const toast = useToast();
+
+    const {latitude, longitude, deltalatitude, deltalongitude} = useLatLng(
+        accountData?.account?.address ?? "",
+    );
+    const userId = useAppSelector(state => state.auth.user?.user.id);
+
+    const [location, setLocation] = useState<string | undefined>(
+        accountData?.account?.address,
+    );
+
+    const dispatch = useAppDispatch();
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
                 showsUserLocation
-                onRegionChangeComplete={e => console.log(e)}
+                onRegionChangeComplete={e => {
+                    setLocation(
+                        `lat:${e.latitude}, lng:${e.longitude}, delLat:${e.latitudeDelta}, delLng:${e.longitudeDelta}`,
+                    );
+                }}
                 region={{
-                    latitude: 27.701108,
-                    longitude: 85.313475,
-                    latitudeDelta: 0.0422,
-                    longitudeDelta: 0.0421,
+                    latitude: latitude ?? 27.701108,
+                    longitude: longitude ?? 85.313475,
+                    latitudeDelta: deltalatitude ?? 0.0422,
+                    longitudeDelta: deltalongitude ?? 0.0421,
                 }}></MapView>
             <GoBackBtn mt={5} />
             <Container>
@@ -48,7 +72,43 @@ export const LocationPicker = () => {
                 />
             </Box>
             <Box shadow={5} px={3} top={"55%"}>
-                <FormButton onPress={() => console.log("hj")}>
+                <FormButton
+                    onPress={() => {
+                        dispatch(
+                            accountUpdate({
+                                id: userId ?? 0,
+                                data: {address: location},
+                            }),
+                        );
+                        if (accountData?.isSuccess) {
+                            toast.show({
+                                render: () => {
+                                    return (
+                                        <ToastAlert
+                                            status={"success"}
+                                            title={"Location Updated"}
+                                            description={
+                                                "Location successfully updated"
+                                            }
+                                        />
+                                    );
+                                },
+                            });
+                            navigation.navigate("AccountScreen");
+                        } else {
+                            toast.show({
+                                render: () => {
+                                    return (
+                                        <ToastAlert
+                                            status={"error"}
+                                            title={"Update Failed"}
+                                            description={accountData?.message}
+                                        />
+                                    );
+                                },
+                            });
+                        }
+                    }}>
                     Confirm Location
                 </FormButton>
             </Box>
