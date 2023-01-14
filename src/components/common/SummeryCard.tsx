@@ -1,29 +1,58 @@
-import {Box, Flex, Heading, Pressable, Text, View} from "native-base";
-import React, {useRef, useState} from "react";
+import {
+    Box,
+    Flex,
+    Heading,
+    Pressable,
+    Text,
+    View,
+    useDisclose,
+} from "native-base";
+import React, {useState} from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Button from "./Button";
-import Animated, {
-    BounceInDown,
-    BounceInUp,
-    FadeIn,
-    Layout,
-} from "react-native-reanimated";
+import Animated, {BounceInDown, Layout} from "react-native-reanimated";
 import {StyleSheet} from "react-native";
+import {PaymentOptions} from "../checkout/payment-options";
+import {FormButton} from "../Form/FormButton";
 
 type SummeryCardProps = {
     gross_total: number;
     discount: number;
     total: number;
+    type: "checkout" | "delivery";
     link: string;
 };
+
+export enum CARD_TYPE {
+    checkout = "checkout",
+    delivery = "delivery",
+}
 
 export const SummeryCard = ({
     gross_total,
     discount,
+    type,
     total,
     link,
 }: SummeryCardProps) => {
     const [showSummary, setShowSummary] = useState<boolean>(false);
+
+    const renderButton = () => {
+        switch (type) {
+            case CARD_TYPE.checkout:
+                return <Button link={link}>Procced To Delivery</Button>;
+            case CARD_TYPE.delivery:
+                return (
+                    <FormButton onPress={onOpen}>
+                        Choose a Payment method
+                    </FormButton>
+                );
+            default:
+                break;
+        }
+    };
+
+    const {isOpen, onOpen, onClose} = useDisclose();
     return (
         <Animated.View
             entering={BounceInDown.duration(800)}
@@ -39,7 +68,6 @@ export const SummeryCard = ({
                 p={5}>
                 <Pressable
                     onPress={() => {
-                        // ref.current && ref.current.animateNextTransition();
                         setShowSummary(!showSummary);
                     }}
                     textAlign={"center"}
@@ -93,8 +121,10 @@ export const SummeryCard = ({
                     </Text>
                     <Text color={"primary.600"}>Rs. {total}</Text>
                 </Box>
-                <Button link={link}>Procced</Button>
+                {renderButton()}
             </View>
+
+            <PaymentOptions isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
         </Animated.View>
     );
 };

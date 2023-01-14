@@ -1,11 +1,5 @@
-import {Box, Flex, Heading, ScrollView, Text} from "native-base";
+import {Box, Heading, ScrollView, Text} from "native-base";
 import React from "react";
-import Animated, {
-    BounceInDown,
-    BounceOutDown,
-    FadeInDown,
-    Layout,
-} from "react-native-reanimated";
 import {CheckoutCard} from "../components/common/CheckoutCard";
 import {ClearButton} from "../components/common/ClearButton";
 import {Container} from "../components/common/Container";
@@ -60,6 +54,7 @@ export const CheckoutScreen = () => {
                 </ScrollView>
                 {cartItems.length > 0 && (
                     <SummeryCard
+                        type={"checkout"}
                         gross_total={cartPrice}
                         discount={50}
                         total={cartPrice}

@@ -1,17 +1,20 @@
 import {useNavigation} from "@react-navigation/native";
 import {Pressable, Text} from "native-base";
+import {InterfacePressableProps} from "native-base/lib/typescript/components/primitives/Pressable/types";
 import React from "react";
 
 const Button = ({
     children,
     link,
+    ...rest
 }: {
     children: React.ReactNode;
-    link: string;
-}) => {
+    link?: string;
+} & InterfacePressableProps) => {
     const navigation: any = useNavigation();
     return (
         <Pressable
+            {...rest}
             android_ripple={{
                 color: "#d52d3a",
                 radius: 160,

@@ -1,13 +1,13 @@
 import {useNavigation} from "@react-navigation/native";
 import {
     Box,
-    Button,
     Center,
     Flex,
     Heading,
     Pressable,
     ScrollView,
     Text,
+    useDisclose,
 } from "native-base";
 import React from "react";
 import {Container} from "../components/common/Container";
@@ -15,6 +15,7 @@ import {SummeryCard} from "../components/common/SummeryCard";
 import Icon from "react-native-vector-icons/Ionicons";
 import {DeliveryList} from "../components/common/DeliveryList";
 import {useAppSelector} from "../features/hooks";
+import {PaymentOptions} from "../components/checkout/payment-options";
 
 export const DeliveryLocation = () => {
     const navigation = useNavigation();
@@ -22,6 +23,9 @@ export const DeliveryLocation = () => {
     const cartItems = useAppSelector(state => state.cart.cartItems);
 
     const cartPrice = useAppSelector(state => state.cart.totalPrice);
+
+    const userData = useAppSelector(state => state.auth.user?.user);
+    const {full_name, phone} = userData ?? {};
     return (
         <Container>
             <Box
@@ -52,8 +56,8 @@ export const DeliveryLocation = () => {
                             borderBottomWidth="1"
                             borderStyle={"dotted"}
                             borderColor="primary.600">
-                            <Text>Name: Ram Baran Yadav</Text>
-                            <Text>Phone: 9865468907</Text>
+                            <Text>Name: {full_name}</Text>
+                            <Text>Phone: {phone}</Text>
                             <Text>Location: This and that</Text>
                         </Box>
                         <Box
@@ -81,6 +85,7 @@ export const DeliveryLocation = () => {
                 </ScrollView>
                 {cartItems.length > 0 && (
                     <SummeryCard
+                        type="delivery"
                         gross_total={cartPrice}
                         discount={50}
                         total={cartPrice}
