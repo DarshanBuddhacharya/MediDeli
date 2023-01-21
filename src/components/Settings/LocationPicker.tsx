@@ -22,6 +22,7 @@ export const LocationPicker = () => {
     const {latitude, longitude, deltalatitude, deltalongitude} = useLatLng(
         accountData?.account?.address ?? "",
     );
+
     const userId = useAppSelector(state => state.auth.user?.user.id);
 
     const [location, setLocation] = useState<string | undefined>(
@@ -40,10 +41,18 @@ export const LocationPicker = () => {
                     );
                 }}
                 region={{
-                    latitude: latitude ?? 27.701108,
-                    longitude: longitude ?? 85.313475,
-                    latitudeDelta: deltalatitude ?? 0.0422,
-                    longitudeDelta: deltalongitude ?? 0.0421,
+                    latitude: accountData?.account?.address
+                        ? latitude
+                        : 27.701108,
+                    longitude: accountData?.account?.address
+                        ? longitude
+                        : 85.313475,
+                    latitudeDelta: accountData?.account?.address
+                        ? deltalatitude
+                        : 0.0422,
+                    longitudeDelta: accountData?.account?.address
+                        ? deltalongitude
+                        : 0.0421,
                 }}></MapView>
             <GoBackBtn mt={5} />
             <Container>

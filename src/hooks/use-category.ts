@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { CategoryProps } from '../../types/CategoryProps'
 import { axiosClient } from '../utils/axiosClient'
 import urls from '../../constants/urls'
@@ -23,5 +23,4 @@ export const useCategory = () => {
   }, [])
 
   return { data, loading }
-
 }

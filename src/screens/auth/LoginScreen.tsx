@@ -1,5 +1,13 @@
 import {Formik} from "formik";
-import {Box, Checkbox, Flex, Pressable, ScrollView, Text} from "native-base";
+import {
+    Box,
+    Checkbox,
+    Flex,
+    Heading,
+    Pressable,
+    ScrollView,
+    Text,
+} from "native-base";
 import React, {useEffect} from "react";
 import {Image} from "react-native";
 import {Container} from "../../components/common/Container";
@@ -38,6 +46,9 @@ const LoginScreen = ({
                         style={{width: 200, height: 120}}
                     />
                 </Box>
+                <Heading fontSize={32} mt={8} mb={4} alignSelf={"center"}>
+                    Welcome
+                </Heading>
                 <Formik
                     initialValues={{phone: "", password: ""}}
                     validationSchema={loginFormSchema}

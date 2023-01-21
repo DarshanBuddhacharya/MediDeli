@@ -1,23 +1,33 @@
-import {Avatar, Box, Flex, Heading, Skeleton, Stack, Text} from "native-base";
+import {Avatar, Box, Flex, Heading, Stack, Text} from "native-base";
 import React from "react";
-import {Image, ScrollView} from "react-native";
+import {FlatList, Image, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {ProductProps} from "../../types/ProductProps";
 import CategoryCard from "../components/CategoryCard";
 import {Container} from "../components/common/Container";
-import SearchBar from "../components/common/SearchBar";
 import Title from "../components/common/Title";
 import {ItemCard} from "../components/ItemCard";
 import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
 import {useAppSelector} from "../features/hooks";
 import {useCategory} from "../hooks/use-category";
 import {useProduct} from "../hooks/use-products";
+import {CategoryProps} from "../../types/CategoryProps";
 
 const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
         useProduct<ProductProps>({query: "limit=8"});
 
     const {loading: categoryLoading, data: categoryData} = useCategory();
+
+    const renderItem = ({
+        item,
+        index,
+    }: {
+        item: CategoryProps["results"][0];
+        index: number;
+    }) => {
+        return <CategoryCard key={index} data={item} />;
+    };
 
     const user = useAppSelector(state => state.auth.user);
     return (
@@ -45,24 +55,16 @@ const HomeScreen = () => {
                 </Flex>
 
                 <Title title={"Top Categories"} />
+                <FlatList
+                    data={categoryData?.results}
+                    keyExtractor={item => item?.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    snapToInterval={126}
+                    decelerationRate={"fast"}
+                    renderItem={renderItem}
+                />
 
-                <ScrollView horizontal={true}>
-                    <Stack direction={"row"} mb="2.5" mt="1.5" space={3}>
-                        {categoryLoading &&
-                            Array.from({length: 4}).map((_, index) => (
-                                <Skeleton
-                                    h="100"
-                                    w="90"
-                                    rounded="lg"
-                                    key={index}
-                                />
-                            ))}
-                        {!categoryLoading &&
-                            categoryData?.results?.map((data, index) => (
-                                <CategoryCard key={index} data={data} />
-                            ))}
-                    </Stack>
-                </ScrollView>
                 <Title title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={1}>

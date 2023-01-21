@@ -1,11 +1,14 @@
 export type CategoryProps = {
     count: number
-    next: any
-    previous: any
+    next: string
+    previous: string
     results: Array<{
         id: string
-        category_name: string
-        icon: string
+        name: string
         color: string
+        level: number
+        icon: string
+        is_active: boolean
+        parent?: string
     }>
 }
