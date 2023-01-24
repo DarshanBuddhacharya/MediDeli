@@ -8,6 +8,7 @@ import {CustomTabButton} from "../screens/Navigation/CustomTabButton";
 import CheckoutStack from "./CheckoutStack";
 import Account from "../screens/AccountScreen";
 import AccountStack from "./AccountStack";
+import {NotFound} from "../components/NotFound";
 
 const Tab = createBottomTabNavigator();
 
@@ -64,9 +65,9 @@ const TabNavigation = () => {
                     tabBarBadge: countWishList ? countWishList : undefined,
                 }}
             />
-            {/* <Tab.Screen
+            <Tab.Screen
                 name="Shop"
-                component={HomeScreen}
+                component={NotFound}
                 options={{
                     tabBarButton: () => <CustomTabButton />,
                 }}
@@ -75,7 +76,7 @@ const TabNavigation = () => {
                         e.preventDefault();
                     },
                 }}
-            /> */}
+            />
             <Tab.Screen
                 name="Cart"
                 component={CheckoutStack}
