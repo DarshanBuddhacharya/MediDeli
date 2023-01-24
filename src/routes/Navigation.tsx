@@ -6,9 +6,10 @@ import SignupScreen from "../screens/auth/SignupScreen";
 import LandingScreen from "../screens/LandingScreen";
 import TabNavigation from "./TabNavigation";
 
+const Stack = createNativeStackNavigator();
+
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
-    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator>

@@ -52,6 +52,7 @@ const App = () => {
             <NativeBaseProvider theme={theme}>
                 <StatusBar
                     barStyle={isDarkMode ? "light-content" : "dark-content"}
+                    hidden
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
                 <Root />

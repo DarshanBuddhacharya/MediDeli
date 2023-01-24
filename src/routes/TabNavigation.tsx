@@ -9,8 +9,9 @@ import CheckoutStack from "./CheckoutStack";
 import Account from "../screens/AccountScreen";
 import AccountStack from "./AccountStack";
 
+const Tab = createBottomTabNavigator();
+
 const TabNavigation = () => {
-    const Tab = createBottomTabNavigator();
     const countCart = useAppSelector(state => state.cart.totalItems);
     const countWishList = useAppSelector(state => state.wishList.totalWishList);
     return (
@@ -63,7 +64,7 @@ const TabNavigation = () => {
                     tabBarBadge: countWishList ? countWishList : undefined,
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Shop"
                 component={HomeScreen}
                 options={{
@@ -74,7 +75,7 @@ const TabNavigation = () => {
                         e.preventDefault();
                     },
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="Cart"
                 component={CheckoutStack}

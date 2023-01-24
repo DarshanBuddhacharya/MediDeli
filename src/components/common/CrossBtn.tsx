@@ -11,7 +11,7 @@ export const CrossBtn = () => {
             mr={2}
             mt={2}
             onPress={() => navigation.goBack()}>
-            <Icon name="x" color={"#DEE2E6"} size={28} />
+            <Icon name="x" color={"white"} size={28} />
         </Pressable>
     );
 };
