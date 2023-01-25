@@ -3,6 +3,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {
     Avatar,
     Box,
+    FlatList,
     Flex,
     Heading,
     Image,
@@ -10,14 +11,14 @@ import {
     Text,
     View,
 } from "native-base";
-import React from "react";
+import React, {useState} from "react";
 import {CrossBtn} from "../../components/common/CrossBtn";
 import {Container} from "../../components/common/Container";
 import {useCategoryDetail} from "../../hooks/use-category-detail";
 import {NavList} from "../../components/Settings/NavList";
 import {SharedElement} from "react-navigation-shared-element";
 import {CategoryDetialProps} from "../../../types/CategoryDetialProps";
-import {StyleSheet} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 import Animated, {
     BounceIn,
     BounceInDown,
@@ -48,6 +49,29 @@ const CategoryScreen = () => {
     const {color, icon, name, id} = data ?? {};
 
     const {child} = forChild ?? {};
+
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    const renderItem = ({item, index}: {item: any; index: number}) => {
+        return (
+            <TouchableOpacity onPress={() => setSelectedTab(index)}>
+                <View px={1}>
+                    <Text
+                        color={"white"}
+                        px={2}
+                        rounded={"md"}
+                        bg={
+                            selectedTab === index
+                                ? "primary.500"
+                                : "transparent"
+                        }>
+                        {item?.name}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <>
             <SharedElement
@@ -138,37 +162,13 @@ const CategoryScreen = () => {
                             </Flex>
                         </Box>
                     </Animated.View>
-
-                    <Animated.View
-                        entering={BounceInUp.duration(1000)}
-                        layout={Layout.springify()}>
-                        {child &&
-                            child.map((item, key) => (
-                                <Box
-                                    key={key}
-                                    flexDirection={"row"}
-                                    alignItems={"center"}
-                                    bg={"white"}
-                                    rounded="md"
-                                    shadow={8}
-                                    p={3}
-                                    mb={2}>
-                                    <Image
-                                        source={{uri: icon}}
-                                        style={{width: 50, height: 50}}
-                                        alt="category-image"
-                                    />
-                                    <Flex ml={3}>
-                                        <Text fontSize={18}>{item.name}</Text>
-                                        <Text noOfLines={2} fontSize={14}>
-                                            Lorem ipsum dolor sit amet,
-                                            consectetur adipisicing elit. Culpa,
-                                            dolorem?
-                                        </Text>
-                                    </Flex>
-                                </Box>
-                            ))}
-                    </Animated.View>
+                    <FlatList
+                        data={child}
+                        keyExtractor={item => item?.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={renderItem}
+                    />
                 </Container>
             </ScrollView>
         </>

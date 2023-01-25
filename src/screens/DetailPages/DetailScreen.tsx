@@ -25,6 +25,7 @@ import {useProduct} from "../../hooks/use-products";
 import {ProductProps} from "../../../types/ProductProps";
 import {GoBackBtn} from "../../components/common/GoBackBtn";
 import {Animated, Dimensions, StyleSheet} from "react-native";
+import {CrossBtn} from "../../components/common/CrossBtn";
 
 type RootStackParamList = {
     DetailScreen: {productId: string};
@@ -50,7 +51,7 @@ const DetailScreen = () => {
     const route = useRoute<Props>();
     const productId = route.params.productId;
 
-    const {data, loading} = useProduct<ProductProps["results"][0]>({
+    const {data} = useProduct<ProductProps["results"][0]>({
         id: productId,
     });
 
@@ -84,7 +85,7 @@ const DetailScreen = () => {
                     );
                 })}
             </View>
-            <GoBackBtn is_relative />
+            <CrossBtn with_back />
             <ScrollView
                 style={{
                     shadowColor: "#000",

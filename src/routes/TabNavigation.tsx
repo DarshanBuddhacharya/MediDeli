@@ -3,10 +3,8 @@ import {useAppSelector} from "../features/hooks";
 import Icon from "react-native-vector-icons/Ionicons";
 import HomeStack from "./HomeStack";
 import {WishListScreen} from "../screens/WishListScreen";
-import HomeScreen from "../screens/HomeScreen";
 import {CustomTabButton} from "../screens/Navigation/CustomTabButton";
 import CheckoutStack from "./CheckoutStack";
-import Account from "../screens/AccountScreen";
 import AccountStack from "./AccountStack";
 import {NotFound} from "../components/NotFound";
 
