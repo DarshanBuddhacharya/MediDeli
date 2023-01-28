@@ -1,5 +1,4 @@
 import {Box, Image, Text, View} from "native-base";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
 import {CategoryProps} from "../../types/CategoryProps";
 import {useNavigation} from "@react-navigation/native";

@@ -65,7 +65,7 @@ const HomeScreen = () => {
                     renderItem={renderItem}
                 />
 
-                <Title title={"Recommended"} />
+                <Title is_redirectable title={"Recommended"} />
                 <ScrollView horizontal={true}>
                     <Stack direction={"row"} mb="2.5" mt="1.5" space={1}>
                         {productLoading &&

@@ -8,6 +8,7 @@ export const useCategoryDetail = (categoryId: string) => {
     const [data, setData] = useState<CategoryDetialProps>()
     const [loading, setLoading] = useState(true)
     const fetchApi = async () => {
+        setLoading(true)
         try {
             const { data } = await axiosClient.get<CategoryDetialProps>(`${urls.category}${categoryId}/`)
             setData(data)
@@ -20,8 +21,10 @@ export const useCategoryDetail = (categoryId: string) => {
     }
 
     useEffect(() => {
-        fetchApi()
-    }, [])
+        if (categoryId) {
+            fetchApi()
+        }
+    }, [categoryId])
 
     return { data, loading }
 }

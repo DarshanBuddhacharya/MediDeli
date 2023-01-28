@@ -5,31 +5,34 @@ import {
     Box,
     FlatList,
     Flex,
+    HStack,
     Heading,
     Image,
     ScrollView,
     Text,
+    VStack,
     View,
 } from "native-base";
 import React, {useState} from "react";
 import {CrossBtn} from "../../components/common/CrossBtn";
 import {Container} from "../../components/common/Container";
 import {useCategoryDetail} from "../../hooks/use-category-detail";
-import {NavList} from "../../components/Settings/NavList";
 import {SharedElement} from "react-navigation-shared-element";
 import {CategoryDetialProps} from "../../../types/CategoryDetialProps";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import Animated, {
     BounceIn,
-    BounceInDown,
-    BounceInUp,
     FadeIn,
-    FadeInUp,
     Layout,
     StretchInX,
-    ZoomIn,
-    ZoomInEasyUp,
+    ZoomInLeft,
+    ZoomInRight,
 } from "react-native-reanimated";
+import {ItemCard} from "../../components/ItemCard";
+import {ProductProps} from "../../../types/ProductProps";
+import {axiosClient} from "../../utils/axiosClient";
+import urls from "../../../constants/urls";
+import {ProductSkeleton} from "../../components/skeletons/ProductSkeleton";
 
 type RootStackParamList = {
     CategoryScreen: {data: CategoryDetialProps};
@@ -48,29 +51,12 @@ const CategoryScreen = () => {
 
     const {color, icon, name, id} = data ?? {};
 
-    const {child} = forChild ?? {};
+    const {child, product} = forChild ?? {};
 
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState("");
 
-    const renderItem = ({item, index}: {item: any; index: number}) => {
-        return (
-            <TouchableOpacity onPress={() => setSelectedTab(index)}>
-                <View px={1}>
-                    <Text
-                        color={"white"}
-                        px={2}
-                        rounded={"md"}
-                        bg={
-                            selectedTab === index
-                                ? "primary.500"
-                                : "transparent"
-                        }>
-                        {item?.name}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+    const {data: subCategory, loading: subLoading} =
+        useCategoryDetail(selectedTab);
 
     return (
         <>
@@ -162,13 +148,69 @@ const CategoryScreen = () => {
                             </Flex>
                         </Box>
                     </Animated.View>
-                    <FlatList
-                        data={child}
-                        keyExtractor={item => item?.id}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={renderItem}
-                    />
+
+                    <Animated.ScrollView
+                        entering={ZoomInRight.duration(400)}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}>
+                        <HStack>
+                            <TouchableOpacity
+                                onPress={() => setSelectedTab("")}>
+                                <View px={1}>
+                                    <Text
+                                        color={"white"}
+                                        px={2}
+                                        rounded={"md"}
+                                        bg={
+                                            selectedTab === ""
+                                                ? "primary.500"
+                                                : "transparent"
+                                        }>
+                                        Recommended
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            {child?.map((item, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => setSelectedTab(item.id)}>
+                                    <Text
+                                        color={"white"}
+                                        px={2}
+                                        rounded={"md"}
+                                        bg={
+                                            selectedTab === item.id
+                                                ? "primary.500"
+                                                : "transparent"
+                                        }>
+                                        {item?.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </HStack>
+                    </Animated.ScrollView>
+                    <HStack flexWrap={"wrap"} mt={4}>
+                        {!selectedTab &&
+                            !loading &&
+                            product?.map((item, index) => (
+                                <VStack key={index}>
+                                    <ItemCard data={item} />
+                                </VStack>
+                            ))}
+                        {!subLoading &&
+                            subCategory?.product.map((item, index) => (
+                                <VStack key={index}>
+                                    <ItemCard data={item} />
+                                </VStack>
+                            ))}
+                        {selectedTab &&
+                            subLoading &&
+                            Array.from({length: 4}).map((_, index) => (
+                                <VStack key={index}>
+                                    <ProductSkeleton key={index} />
+                                </VStack>
+                            ))}
+                    </HStack>
                 </Container>
             </ScrollView>
         </>

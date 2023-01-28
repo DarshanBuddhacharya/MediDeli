@@ -15,9 +15,12 @@ export type ProductProps = {
             id: string
             category: {
                 id: string
-                category_name: string
-                icon: string
+                name: string
                 color: string
+                level: number
+                icon: string
+                is_active: boolean
+                parent: any
             }
             brand: {
                 id: string

@@ -51,7 +51,7 @@ const HomeStack = () => {
                         },
                         {
                             id: `category.${data.id}.image`,
-                            animation: "move",
+                            animation: "fade",
                             resize: "clip",
                         },
                         {
