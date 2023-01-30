@@ -10,6 +10,7 @@ export const CrossBtn = ({with_back}: {with_back?: boolean}) => {
             alignSelf={"flex-end"}
             mr={2}
             mt={2}
+            shadow={with_back ? 5 : null}
             rounded={"md"}
             bg={with_back ? "primary.500" : "transparent"}
             onPress={() => navigation.goBack()}>

@@ -15,20 +15,21 @@ import {
 } from "native-base";
 import React, {useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import {Container} from "../../components/common/Container";
 import Button from "../../components/common/Button";
 import ReviewCard from "../../components/common/ReviewCard";
 import {CartQuantity} from "../../components/common/CartQuantity";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useNavigation, useRoute} from "@react-navigation/native";
+import {useRoute} from "@react-navigation/native";
 import {useProduct} from "../../hooks/use-products";
 import {ProductProps} from "../../../types/ProductProps";
-import {GoBackBtn} from "../../components/common/GoBackBtn";
 import {Animated, Dimensions, StyleSheet} from "react-native";
 import {CrossBtn} from "../../components/common/CrossBtn";
+import {SharedElement} from "react-navigation-shared-element";
+import {useAppDispatch, useAppSelector} from "../../features/hooks";
+import {change} from "../../features/wishListSlice";
 
 type RootStackParamList = {
-    DetailScreen: {productId: string};
+    DetailScreen: {productData: ProductProps["results"][0]};
 };
 
 type Props = NativeStackScreenProps<
@@ -49,11 +50,11 @@ const lata = [
 const DetailScreen = () => {
     //fetching routes
     const route = useRoute<Props>();
-    const productId = route.params.productId;
+    const productData = route.params.productData;
 
-    const {data} = useProduct<ProductProps["results"][0]>({
-        id: productId,
-    });
+    const {product, price, id, image} = productData;
+
+    const {product_name, description, brand} = product;
 
     const {width, height} = Dimensions.get("screen");
 
@@ -61,9 +62,13 @@ const DetailScreen = () => {
 
     const [read, setRead] = useState(true);
 
+    const dispatch = useAppDispatch();
+
+    const wishlistItems = useAppSelector(state => state.wishList.wishlistItems);
+
     return (
         <>
-            <View h={height} style={StyleSheet.absoluteFillObject}>
+            {/* <View h={height} style={StyleSheet.absoluteFillObject}>
                 {lata.map((image, index) => {
                     const inputRange = [
                         (index - 1) * width,
@@ -84,8 +89,7 @@ const DetailScreen = () => {
                         />
                     );
                 })}
-            </View>
-            <CrossBtn with_back />
+            </View> */}
             <ScrollView
                 style={{
                     shadowColor: "#000",
@@ -93,7 +97,8 @@ const DetailScreen = () => {
                     shadowOffset: {width: 0, height: 0},
                     shadowRadius: 20,
                 }}>
-                <Animated.FlatList
+                <CrossBtn with_back />
+                {/* <Animated.FlatList
                     data={lata}
                     onScroll={Animated.event(
                         [{nativeEvent: {contentOffset: {x: scrollX}}}],
@@ -109,56 +114,102 @@ const DetailScreen = () => {
                                 justifyContent="center"
                                 px={4}
                                 alignItems={"center"}>
-                                <Image
-                                    source={{
-                                        uri: item,
-                                    }}
-                                    alt="img"
-                                    resizeMode="cover"
-                                    width={width - 8}
-                                    height={350}
-                                />
+                                <SharedElement id={`product.${id}.image`}>
+                                    <Image
+                                        source={{
+                                            uri: item,
+                                        }}
+                                        alt="img"
+                                        resizeMode="cover"
+                                        width={width - 8}
+                                        height={350}
+                                    />
+                                </SharedElement>
                             </Box>
                         );
                     }}
-                />
+                /> */}
+                <Box
+                    w={width}
+                    justifyContent="center"
+                    px={4}
+                    mt={2}
+                    alignItems={"center"}>
+                    <SharedElement id={`product.${id}.image`}>
+                        <Image
+                            source={{
+                                uri: image,
+                            }}
+                            alt="img"
+                            resizeMode="cover"
+                            width={width - 8}
+                            height={350}
+                        />
+                    </SharedElement>
+                </Box>
                 <Box background={"white"} rounded="xl" mx={2} mb={100}>
                     <Stack p="4" space={3}>
                         <Flex
                             direction="row"
                             justifyContent={"space-between"}
                             alignItems={"center"}>
-                            <Heading size="md" width={300}>
-                                {data?.product?.product_name}
-                            </Heading>
-                            <Icon
-                                name="heart-outline"
-                                size={25}
-                                color={"red"}
-                            />
+                            <SharedElement id={`product.${id}.title`}>
+                                <Heading size="md" width={300}>
+                                    {product_name}
+                                </Heading>
+                            </SharedElement>
+                            <SharedElement id={`product.${id}.wishlist`}>
+                                <Pressable
+                                    onPress={() =>
+                                        dispatch(change(productData))
+                                    }
+                                    android_ripple={{
+                                        color: "#fde3e5",
+                                        borderless: true,
+                                    }}>
+                                    {wishlistItems.find(
+                                        item => item.id === id,
+                                    ) ? (
+                                        <Icon
+                                            name="heart"
+                                            size={24}
+                                            color={"red"}
+                                        />
+                                    ) : (
+                                        <Icon
+                                            name="heart-outline"
+                                            size={24}
+                                            color={"red"}
+                                        />
+                                    )}
+                                </Pressable>
+                            </SharedElement>
                         </Flex>
-
-                        <Text
-                            fontSize="md"
-                            _light={{
-                                color: "primary.500",
-                            }}
-                            _dark={{
-                                color: "primary.400",
-                            }}
-                            fontWeight="500"
-                            ml="-0.5"
-                            mt="-1">
-                            {data?.product?.brand?.brand_name}
-                        </Text>
+                        <SharedElement id={`product.${id}.brand`}>
+                            <Text
+                                fontSize="md"
+                                _light={{
+                                    color: "primary.500",
+                                }}
+                                _dark={{
+                                    color: "primary.400",
+                                }}
+                                fontWeight="500"
+                                ml="-0.5"
+                                mt="-1">
+                                {brand?.brand_name}
+                            </Text>
+                        </SharedElement>
                         <Text fontWeight="400">Description</Text>
                         <Pressable onPress={() => setRead(!read)}>
-                            <Text
-                                fontSize={15}
-                                fontWeight="200"
-                                numberOfLines={read ? 4 : 0}>
-                                {data?.product?.description}
-                            </Text>
+                            <SharedElement id={`product.${id}.desc`}>
+                                <Text
+                                    fontSize={15}
+                                    fontWeight="200"
+                                    numberOfLines={read ? 4 : 0}>
+                                    {description}
+                                </Text>
+                            </SharedElement>
                             <Text color={"primary.500"} fontWeight="400">
                                 {read ? "Read More" : "Show less"}
                             </Text>
@@ -169,16 +220,21 @@ const DetailScreen = () => {
                         alignItems="center"
                         justifyContent={"space-between"}
                         p="4">
-                        <Text
-                            color="coolGray.600"
-                            _dark={{
-                                color: "warmGray.200",
-                            }}
-                            fontWeight="400">
-                            Rs.{data?.price}
-                        </Text>
-                        {data && (
-                            <CartQuantity cartItems={data} is_small={false} />
+                        <SharedElement id={`product.${id}.price`}>
+                            <Text
+                                color="coolGray.600"
+                                _dark={{
+                                    color: "warmGray.200",
+                                }}
+                                fontWeight="400">
+                                Rs.{price}
+                            </Text>
+                        </SharedElement>
+                        {productData && (
+                            <CartQuantity
+                                cartItems={productData}
+                                is_small={false}
+                            />
                         )}
                     </Flex>
                     <Button link={"Checkout"}>Buy Now</Button>

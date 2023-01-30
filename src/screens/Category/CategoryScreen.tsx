@@ -19,7 +19,7 @@ import {Container} from "../../components/common/Container";
 import {useCategoryDetail} from "../../hooks/use-category-detail";
 import {SharedElement} from "react-navigation-shared-element";
 import {CategoryDetialProps} from "../../../types/CategoryDetialProps";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {Dimensions, StyleSheet, TouchableOpacity} from "react-native";
 import Animated, {
     BounceIn,
     FadeIn,
@@ -189,7 +189,11 @@ const CategoryScreen = () => {
                             ))}
                         </HStack>
                     </Animated.ScrollView>
-                    <HStack flexWrap={"wrap"} mt={4}>
+                    <HStack
+                        space={1.5}
+                        justifyContent={"center"}
+                        flexWrap={"wrap"}
+                        mt={4}>
                         {!selectedTab &&
                             !loading &&
                             product?.map((item, index) => (
@@ -198,17 +202,13 @@ const CategoryScreen = () => {
                                 </VStack>
                             ))}
                         {!subLoading &&
-                            subCategory?.product.map((item, index) => (
-                                <VStack key={index}>
-                                    <ItemCard data={item} />
-                                </VStack>
+                            subCategory?.product?.map((item, index) => (
+                                <ItemCard data={item} key={index} />
                             ))}
                         {selectedTab &&
                             subLoading &&
                             Array.from({length: 4}).map((_, index) => (
-                                <VStack key={index}>
-                                    <ProductSkeleton key={index} />
-                                </VStack>
+                                <ProductSkeleton key={index} />
                             ))}
                     </HStack>
                 </Container>

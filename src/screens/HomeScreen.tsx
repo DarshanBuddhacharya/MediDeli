@@ -17,7 +17,7 @@ const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
         useProduct<ProductProps>({query: "limit=8"});
 
-    const {loading: categoryLoading, data: categoryData} = useCategory();
+    const {data: categoryData} = useCategory();
 
     const renderItem = ({
         item,

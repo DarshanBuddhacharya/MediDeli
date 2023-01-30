@@ -4,8 +4,7 @@ import React from "react";
 export const ProductSkeleton = () => {
     return (
         <VStack
-            w={180}
-            mr={1}
+            w={170}
             mb={2}
             borderWidth="1"
             space={8}

@@ -1,4 +1,3 @@
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import DetailScreen from "../screens/DetailPages/DetailScreen";
 import {ListingScreen} from "../screens/ListingScreen";
@@ -12,7 +11,7 @@ type HomeStackNavigator = {
     CategoryScreen: undefined;
 };
 
-const Stack = createSharedElementStackNavigator<any>();
+const Stack = createSharedElementStackNavigator<HomeStackNavigator>();
 
 const HomeStack = () => {
     return (
@@ -22,11 +21,7 @@ const HomeStack = () => {
                 component={HomeScreen}
                 options={{headerShown: false}}
             />
-            <Stack.Screen
-                name="DetailScreen"
-                component={DetailScreen}
-                options={{headerShown: false}}
-            />
+
             <Stack.Screen
                 name="ListingScreen"
                 component={ListingScreen}
@@ -36,7 +31,7 @@ const HomeStack = () => {
                 name="CategoryScreen"
                 component={CategoryScreen}
                 options={{headerShown: false}}
-                sharedElements={(route, otherRoute, showing) => {
+                sharedElements={route => {
                     const {data} = route.params;
                     return [
                         {
@@ -57,6 +52,46 @@ const HomeStack = () => {
                         {
                             id: `category.${data.id}.bg`,
                             animation: "fade-out",
+                            resize: "clip",
+                        },
+                    ];
+                }}
+            />
+            <Stack.Screen
+                name="DetailScreen"
+                component={DetailScreen}
+                options={{headerShown: false}}
+                sharedElements={route => {
+                    const {productData} = route.params;
+                    return [
+                        {
+                            id: `product.${productData.id}.title`,
+                            animation: "fade",
+                            resize: "clip",
+                        },
+                        {
+                            id: `product.${productData.id}.desc`,
+                            animation: "fade",
+                            resize: "clip",
+                        },
+                        {
+                            id: `product.${productData.id}.image`,
+                            animation: "fade",
+                            resize: "clip",
+                        },
+                        {
+                            id: `product.${productData.id}.brand`,
+                            animation: "fade",
+                            resize: "clip",
+                        },
+                        {
+                            id: `product.${productData.id}.price`,
+                            animation: "fade",
+                            resize: "clip",
+                        },
+                        {
+                            id: `product.${productData.id}.wishlist`,
+                            animation: "fade",
                             resize: "clip",
                         },
                     ];

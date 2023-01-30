@@ -1,6 +1,14 @@
-import {Box, Button, Flex, HStack, ScrollView, Select} from "native-base";
-import React, {useEffect, useRef, useState} from "react";
-import {Animated, StyleSheet} from "react-native";
+import {
+    Box,
+    Button,
+    FlatList,
+    Flex,
+    HStack,
+    ScrollView,
+    Select,
+} from "native-base";
+import React, {useEffect, useState} from "react";
+import {StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {ProductProps} from "../../types/ProductProps";
 import {Container} from "../components/common/Container";
@@ -40,7 +48,7 @@ export const ListingScreen = () => {
     const fetchApi = async () => {
         try {
             const {data} = await axiosClient.get<ProductProps>(
-                `products/?limit=100&search=${searchParams}&${sortParams}`,
+                `products/?limit=4&search=${searchParams}&${sortParams}`,
             );
             setData(data);
             setLoading(false);
@@ -57,10 +65,6 @@ export const ListingScreen = () => {
 
     const [language, setLanguage] = useState<string>();
 
-    const scrollY = useRef(new Animated.Value(0)).current;
-
-    const ITEM_SIZE = 200;
-
     const renderItem = ({
         item,
         index,
@@ -68,26 +72,7 @@ export const ListingScreen = () => {
         item: ProductProps["results"][0];
         index: number;
     }) => {
-        const inputRange = [-1, 0, ITEM_SIZE * index, ITEM_SIZE * (index + 5)];
-        const oppacityRange = [
-            -1,
-            0,
-            ITEM_SIZE * index,
-            ITEM_SIZE * (index + 2),
-        ];
-        const scale = scrollY.interpolate({
-            inputRange,
-            outputRange: [1, 1, 1, 0],
-        });
-        const opacity = scrollY.interpolate({
-            inputRange: oppacityRange,
-            outputRange: [1, 1, 1, 0],
-        });
-        return (
-            <Animated.View style={{transform: [{scale}], opacity}}>
-                <ItemCard data={item} />
-            </Animated.View>
-        );
+        return <ItemCard key={index} data={item} />;
     };
 
     return (
@@ -156,13 +141,9 @@ export const ListingScreen = () => {
                     ))}
             </HStack>
             {!loading && data && (
-                <Animated.FlatList
+                <FlatList
                     columnWrapperStyle={style.row}
                     data={data?.results}
-                    onScroll={Animated.event(
-                        [{nativeEvent: {contentOffset: {y: scrollY}}}],
-                        {useNativeDriver: true},
-                    )}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     numColumns={2}
@@ -175,6 +156,6 @@ export const ListingScreen = () => {
 const style = StyleSheet.create({
     row: {
         flex: 1,
-        justifyContent: "space-between",
+        justifyContent: "space-around",
     },
 });

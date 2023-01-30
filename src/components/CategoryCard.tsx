@@ -46,7 +46,7 @@ const CategoryCard = ({data}: {data: CategoryProps["results"][0]}) => {
                     />
                 </SharedElement>
                 <SharedElement id={`category.${data?.id}.desc`}>
-                    <Text noOfLines={2} fontSize={16} color={"white"}>
+                    <Text noOfLines={2} fontSize={16} color={"white"} px={1}>
                         Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit. Culpa, dolorem?
                     </Text>

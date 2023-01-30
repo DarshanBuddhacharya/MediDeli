@@ -16,9 +16,10 @@ import {ProductProps} from "../../types/ProductProps";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {change} from "../features/wishListSlice";
 import {AddRemoveBtn} from "./common/AddRemoveBtn";
+import {SharedElement} from "react-navigation-shared-element";
 
 export type RootStackParamList = {
-    DetailScreen: {productId: string};
+    DetailScreen: {productData: ProductProps["results"][0]};
 };
 
 export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
@@ -29,55 +30,65 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
 
     const wishlistItems = useAppSelector(state => state.wishList.wishlistItems);
 
+    const {id, image, product, price} = data;
+    console.log("🚀 ~ file: ItemCard.tsx:34 ~ ItemCard ~ id", id);
+
+    const {product_name, brand, description} = product;
+
     return (
-        <Box mb={2} mr={1}>
-            <Box
-                w={180}
-                rounded="lg"
-                overflow="hidden"
-                backgroundColor={"white"}
-                shadow={3}
-                borderColor="coolGray.200"
-                borderWidth="1">
-                <Pressable
-                    android_ripple={{
-                        color: "#fde3e5",
-                        radius: 300,
-                        borderless: true,
-                    }}
-                    onPress={() =>
-                        navigation.navigate("DetailScreen", {
-                            productId: data?.id,
-                        })
-                    }>
-                    {data?.image && (
-                        <Box w={"100%"} justifyContent="center">
+        <Box
+            w={170}
+            rounded="lg"
+            overflow="hidden"
+            mb={3}
+            backgroundColor={"white"}
+            shadow={3}
+            borderColor="coolGray.200"
+            borderWidth="1">
+            <Pressable
+                android_ripple={{
+                    color: "#fde3e5",
+                    radius: 300,
+                    borderless: true,
+                }}
+                onPress={() =>
+                    navigation.navigate("DetailScreen", {
+                        productData: data,
+                    })
+                }>
+                {image && (
+                    <Box w={"100%"} justifyContent="center">
+                        <SharedElement id={`product.${id}.image`}>
                             <Image
                                 h={160}
                                 resizeMode="contain"
-                                source={{uri: `${data.image}`}}
-                                alt={data.image}
+                                source={{uri: `${image}`}}
+                                alt={image}
                                 background="white"
                             />
-                        </Box>
-                    )}
-                </Pressable>
-                <Stack p="4" space={3}>
-                    <Pressable
-                        onPress={() =>
-                            navigation.navigate("DetailScreen", {
-                                productId: data?.id,
-                            })
-                        }
-                        android_ripple={{
-                            color: "#fde3e5",
-                            radius: 150,
-                            borderless: true,
-                        }}>
-                        <Stack space={2}>
+                        </SharedElement>
+                    </Box>
+                )}
+            </Pressable>
+            <Stack p="4" space={3}>
+                <Pressable
+                    onPress={() =>
+                        navigation.navigate("DetailScreen", {
+                            productData: data,
+                        })
+                    }
+                    android_ripple={{
+                        color: "#fde3e5",
+                        radius: 150,
+                        borderless: true,
+                    }}>
+                    <Stack space={2}>
+                        <SharedElement id={`product.${id}.title`}>
                             <Heading size="sm" ml="-1" numberOfLines={2}>
-                                {data?.product?.product_name}
+                                {product_name}
                             </Heading>
+                        </SharedElement>
+                        <SharedElement id={`product.${id}.brand`}>
                             <Text
                                 fontSize="xs"
                                 _light={{
@@ -89,37 +100,43 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                                 fontWeight="500"
                                 ml="-0.5"
                                 mt="-1">
-                                {data?.product?.brand?.brand_name}
+                                {brand?.brand_name}
                             </Text>
+                        </SharedElement>
+                        <SharedElement id={`product.${id}.desc`}>
                             <Text fontWeight="400" numberOfLines={2}>
-                                {data?.product?.description}
+                                {description}
                             </Text>
-                        </Stack>
-                        <Flex
-                            direction="row"
-                            alignItems="center"
-                            justifyContent={"space-between"}>
+                        </SharedElement>
+                    </Stack>
+                    <Flex
+                        direction="row"
+                        alignItems="center"
+                        justifyContent={"space-between"}>
+                        <SharedElement id={`product.${id}.price`}>
                             <Text
                                 color="coolGray.600"
                                 _dark={{
                                     color: "warmGray.200",
                                 }}
                                 fontWeight="400">
-                                Rs. {data?.price}
+                                Rs. {price}
                             </Text>
-                        </Flex>
-                    </Pressable>
-                    <HStack
-                        space={2}
-                        alignItems="center"
-                        justifyContent={"space-between"}>
+                        </SharedElement>
+                    </Flex>
+                </Pressable>
+                <HStack
+                    space={2}
+                    alignItems="center"
+                    justifyContent={"space-between"}>
+                    <SharedElement id={`product.${id}.wishlist`}>
                         <Pressable
                             onPress={() => dispatch(change(data))}
                             android_ripple={{
                                 color: "#fde3e5",
                                 borderless: true,
                             }}>
-                            {wishlistItems.find(item => item.id === data.id) ? (
+                            {wishlistItems.find(item => item.id === id) ? (
                                 <Icon name="heart" size={20} color={"red"} />
                             ) : (
                                 <Icon
@@ -129,10 +146,10 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                                 />
                             )}
                         </Pressable>
-                        <AddRemoveBtn is_small cartItems={data} />
-                    </HStack>
-                </Stack>
-            </Box>
+                    </SharedElement>
+                    <AddRemoveBtn is_small cartItems={data} />
+                </HStack>
+            </Stack>
         </Box>
     );
 };
