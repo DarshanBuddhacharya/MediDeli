@@ -3,6 +3,7 @@ import cartReducer from './src/features/cartSlice'
 import wishListReducer from './src/features/wishListSlice'
 import authReducer from './src/features/auth/authSlice'
 import AccountReducer from './src/features/account/accountSlice'
+import productReducer from './src/features/product/productSlice'
 
 
 export const store = configureStore({
@@ -10,7 +11,8 @@ export const store = configureStore({
         cart: cartReducer,
         wishList: wishListReducer,
         auth: authReducer,
-        account: AccountReducer
+        account: AccountReducer,
+        product: productReducer
     },
 })
 

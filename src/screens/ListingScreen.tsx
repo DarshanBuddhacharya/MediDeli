@@ -7,8 +7,8 @@ import {
     ScrollView,
     Select,
 } from "native-base";
-import React, {useEffect, useState} from "react";
-import {StyleSheet} from "react-native";
+import React, {useEffect, useMemo, useState} from "react";
+import {Dimensions, StyleSheet, View} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {ProductProps} from "../../types/ProductProps";
 import {Container} from "../components/common/Container";
@@ -18,6 +18,9 @@ import {SortButton} from "../components/common/SortButton";
 import {ItemCard} from "../components/ItemCard";
 import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
 import {axiosClient} from "../utils/axiosClient";
+import {FlashList, MasonryFlashList} from "@shopify/flash-list";
+import {useAppDispatch, useAppSelector} from "../features/hooks";
+import {productGet} from "../features/product/productSlice";
 
 export const ListingScreen = () => {
     const [sortKeys, setSortKeys] = useState<string[]>([]);
@@ -43,37 +46,28 @@ export const ListingScreen = () => {
     const sortParams = `ordering=${sortKeys.join(",")}`;
 
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState<ProductProps>();
 
-    const fetchApi = async () => {
-        try {
-            const {data} = await axiosClient.get<ProductProps>(
-                `products/?limit=4&search=${searchParams}&${sortParams}`,
-            );
-            setData(data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
+    const [page, setPage] = useState(1);
+
+    const loadMorePage = () => {
+        setPage(page + 1);
     };
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
-        setLoading(true);
-        fetchApi();
-    }, [searchParams, sortParams]);
+        dispatch(productGet(page));
+    }, [page]);
+
+    const {product, isLoading} = useAppSelector(state => state.product);
 
     const [language, setLanguage] = useState<string>();
 
-    const renderItem = ({
-        item,
-        index,
-    }: {
-        item: ProductProps["results"][0];
-        index: number;
-    }) => {
-        return <ItemCard key={index} data={item} />;
+    const renderItem = ({item}: {item: ProductProps["results"][0]}) => {
+        return <ItemCard key={item.id} data={item} />;
     };
+
+    // const memoedRender = useMemo(() => renderItem, [products]);
 
     return (
         <Container>
@@ -134,28 +128,36 @@ export const ListingScreen = () => {
                     /> */}
                 </ScrollView>
             </Box>
-            <HStack space={3} justifyContent="center">
-                {loading &&
-                    Array.from({length: 4}).map((_, index) => (
-                        <ProductSkeleton key={index} />
-                    ))}
-            </HStack>
-            {!loading && data && (
-                <FlatList
-                    columnWrapperStyle={style.row}
-                    data={data?.results}
+            <View
+                style={{
+                    height: Dimensions.get("screen").height,
+                    width: Dimensions.get("screen").width,
+                    justifyContent: "space-between",
+                }}>
+                <FlashList
+                    data={product}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     numColumns={2}
+                    onEndReached={loadMorePage}
+                    onEndReachedThreshold={0.2}
+                    estimatedItemSize={200}
+                    ListFooterComponent={
+                        <HStack space={2} justifyContent="center">
+                            {isLoading &&
+                                Array.from({length: 2}).map((_, index) => (
+                                    <ProductSkeleton key={index} />
+                                ))}
+                        </HStack>
+                    }
                 />
-            )}
+            </View>
         </Container>
     );
 };
 
 const style = StyleSheet.create({
     row: {
-        flex: 1,
         justifyContent: "space-around",
     },
 });

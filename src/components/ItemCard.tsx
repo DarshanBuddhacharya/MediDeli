@@ -31,7 +31,6 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
     const wishlistItems = useAppSelector(state => state.wishList.wishlistItems);
 
     const {id, image, product, price} = data;
-    console.log("🚀 ~ file: ItemCard.tsx:34 ~ ItemCard ~ id", id);
 
     const {product_name, brand, description} = product;
 
