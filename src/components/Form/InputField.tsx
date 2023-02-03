@@ -1,4 +1,4 @@
-import {Box, Flex, Input, Text} from "native-base";
+import {Box, Flex, Input, Text, useColorMode} from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {InputFieldProps} from "../../../types/InputFieldProps";
@@ -18,6 +18,7 @@ const InputField = ({
     touch,
     ...rest
 }: InputFieldProps) => {
+    const {colorMode} = useColorMode();
     return (
         <Box w={"100%"} pt={4}>
             {label && <Text>{label}</Text>}
@@ -40,7 +41,17 @@ const InputField = ({
                 fontSize={15}
                 keyboardType={keyboardType}
                 maxLength={maxLength}
-                borderColor={error && touch ? "primary.600" : "grey"}
+                color={colorMode === "dark" ? "coolGray.300" : "muted.900"}
+                placeholderTextColor={
+                    colorMode === "dark" ? "coolGray.300" : "muted.500"
+                }
+                borderColor={
+                    touch && error
+                        ? "primary.600"
+                        : colorMode === "dark"
+                        ? "coolGray.300"
+                        : "grey"
+                }
             />
             {touch && error && (
                 <Flex direction="row" alignItems={"center"} mt={1}>

@@ -1,4 +1,4 @@
-import {Box, Flex, Input, Text} from "native-base";
+import {Box, Flex, Input, Text, useColorMode} from "native-base";
 import React, {useState} from "react";
 import {Pressable} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,6 +16,8 @@ const PasswordField = ({
     touch,
 }: InputFieldProps) => {
     const [show, setShow] = useState(false);
+
+    const {colorMode} = useColorMode();
     return (
         <Box w={"100%"}>
             <Text>{label}</Text>
@@ -34,6 +36,7 @@ const PasswordField = ({
                         <Icon
                             name={show ? "eye" : "eye-off"}
                             size={24}
+                            color={colorMode === "dark" ? "white" : "black"}
                             style={{marginRight: 10}}
                         />
                     </Pressable>
@@ -43,7 +46,17 @@ const PasswordField = ({
                 onBlur={onBlur}
                 value={value}
                 fontSize={15}
-                borderColor={touch && error ? "primary.600" : "grey"}
+                color={colorMode === "dark" ? "coolGray.300" : "muted.900"}
+                placeholderTextColor={
+                    colorMode === "dark" ? "coolGray.300" : "muted.500"
+                }
+                borderColor={
+                    touch && error
+                        ? "primary.600"
+                        : colorMode === "dark"
+                        ? "coolGray.300"
+                        : "grey"
+                }
             />
             {touch && error && (
                 <Flex direction="row" alignItems={"center"} mt={1}>
