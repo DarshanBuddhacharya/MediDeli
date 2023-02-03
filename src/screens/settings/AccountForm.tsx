@@ -165,7 +165,13 @@ export const AccountForm = () => {
                         </Box>
                     </Box>
                 </Pressable>
-                <Box bg={"white"} p={5} rounded={"md"} shadow={5} my={5}>
+                <Box
+                    _light={{bg: "white"}}
+                    _dark={{bg: "muted.800"}}
+                    p={5}
+                    rounded={"md"}
+                    shadow={5}
+                    my={5}>
                     <InputField
                         label={"Full Name"}
                         value={user?.full_name ?? ""}

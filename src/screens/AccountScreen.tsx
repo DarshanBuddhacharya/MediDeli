@@ -6,9 +6,10 @@ import {
     Image,
     Pressable,
     ScrollView,
+    useColorMode,
 } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {logout} from "../features/auth/authSlice";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {Container} from "../components/common/Container";
@@ -22,6 +23,7 @@ import {
 import Button from "../components/common/Button";
 import {accountGet, reset} from "../features/account/accountSlice";
 import {useNavigation} from "@react-navigation/native";
+import {TouchableOpacity} from "react-native";
 
 const Account = () => {
     const dispatch = useAppDispatch();
@@ -31,11 +33,16 @@ const Account = () => {
 
     const userData = useAppSelector(state => state.auth.user);
 
-    const accountData = useAppSelector(state => state.account.account);
-
     const {user} = userData ?? {};
 
     const navigation: any = useNavigation();
+
+    const {colorMode, toggleColorMode} = useColorMode();
+    console.log(
+        "🚀 ~ file: AccountScreen.tsx:41 ~ Account ~ colorMode",
+        colorMode,
+    );
+
     return (
         <Container>
             <ScrollView>
@@ -80,14 +87,21 @@ const Account = () => {
                     </Center>
                 )}
 
-                <Box bg={"white"} rounded="md" shadow={5} px={3} pt={2} mb={4}>
+                <Box
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
+                    rounded="md"
+                    shadow={5}
+                    px={3}
+                    pt={2}
+                    mb={4}>
                     <Heading>Account</Heading>
                     {user?.has_account &&
                         ACCOUNT_COMPELETE_SETTINGS().map((item, key) => (
                             <NavList
                                 key={key}
                                 List={item.List}
-                                link={item.link}
+                                onPress={() => navigation.navigate(item.link)}
                                 secondaryText={item?.secondaryText}
                                 iconColor={item.iconColor}
                                 iconName={item.iconName}
@@ -103,7 +117,14 @@ const Account = () => {
                         />
                     ))}
                 </Box>
-                <Box bg={"white"} rounded="md" shadow={5} px={3} pt={2} mb={4}>
+                <Box
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
+                    rounded="md"
+                    shadow={5}
+                    px={3}
+                    pt={2}
+                    mb={4}>
                     <Heading>Payment</Heading>
                     {PAYMENT_SETTINGS.map((item, key) => (
                         <NavList
@@ -115,8 +136,21 @@ const Account = () => {
                         />
                     ))}
                 </Box>
-                <Box bg={"white"} rounded="md" shadow={5} px={3} pt={2} mb={4}>
+                <Box
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
+                    rounded="md"
+                    shadow={5}
+                    px={3}
+                    pt={2}
+                    mb={4}>
                     <Heading>App settings</Heading>
+                    <NavList
+                        List={"Toggle Light/Dark Mode"}
+                        iconColor={"#335C67"}
+                        iconName={"white-balance-sunny"}
+                        onPress={() => toggleColorMode()}
+                    />
                     {APP_SETTINGS.map((item, key) => (
                         <NavList
                             key={key}
@@ -127,7 +161,14 @@ const Account = () => {
                         />
                     ))}
                 </Box>
-                <Box bg={"white"} rounded="md" shadow={5} px={3} py={2} mb={4}>
+                <Box
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
+                    rounded="md"
+                    shadow={5}
+                    px={3}
+                    py={2}
+                    mb={4}>
                     <Pressable
                         flexDirection={"row"}
                         alignItems="center"

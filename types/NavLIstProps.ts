@@ -1,7 +1,8 @@
 export interface NavListProps {
     List: string
-    link: string
+    link?: string
     iconColor: string
     iconName: string
     secondaryText?: string
+    onPress?: () => void
 }

@@ -47,7 +47,7 @@ export const ACCOUNT_COMPELETE_SETTINGS = () => {
         {
             iconName: "navigation-outline",
             List: "Primary Delivery Location",
-            link: "Home",
+            link: "PrimaryLocation",
             secondaryText: address,
             iconColor:
                 "#ED070B",
@@ -100,13 +100,6 @@ export const APP_SETTINGS = [
         link: "Home",
         iconColor:
             "#FF8700",
-    },
-    {
-        iconName: "white-balance-sunny",
-        List: "Toggle Light/Dark Mode",
-        link: "Home",
-        iconColor:
-            "#335C67",
     },
     {
         iconName: "message-alert-outline",

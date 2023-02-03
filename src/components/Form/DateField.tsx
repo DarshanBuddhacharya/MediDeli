@@ -1,4 +1,4 @@
-import {Box, Flex, Text} from "native-base";
+import {Box, Flex, Text, useColorMode} from "native-base";
 import React, {useState} from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import DatePicker from "react-native-date-picker";
@@ -15,6 +15,7 @@ const DateField = ({
     value,
     ...rest
 }: DateFieldProps) => {
+    const {colorMode} = useColorMode();
     return (
         <Field name={name}>
             {({field}: FieldProps) => (
@@ -28,7 +29,13 @@ const DateField = ({
                         date={value}
                         {...rest}
                         {...field}
-                        textColor={touch && error ? "#e63946" : "#000000"}
+                        textColor={
+                            touch && error
+                                ? "#e63946"
+                                : colorMode === "dark"
+                                ? "white"
+                                : "#000"
+                        }
                         onDateChange={onChange}
                         mode={"date"}
                         maximumDate={getMinimumDate()}

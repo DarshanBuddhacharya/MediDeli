@@ -55,24 +55,24 @@ export const LocationPicker = () => {
                         : 0.0421,
                 }}></MapView>
             <GoBackBtn mt={5} />
-            <Container>
-                <Input
-                    size="md"
-                    placeholder="md Input"
-                    bg={"white"}
-                    shadow={5}
-                    top={"14%"}
-                    InputLeftElement={
-                        <Icon
-                            m="2"
-                            ml="3"
-                            size="6"
-                            color="gray.400"
-                            as={<MaterialIcons name="search" />}
-                        />
-                    }
-                />
-            </Container>
+            <Input
+                size="md"
+                placeholder="md Input"
+                _light={{bg: "white"}}
+                _dark={{bg: "muted.800"}}
+                mx={3}
+                shadow={5}
+                top={"14%"}
+                InputLeftElement={
+                    <Icon
+                        m="2"
+                        ml="3"
+                        size="6"
+                        color="gray.400"
+                        as={<MaterialIcons name="search" />}
+                    />
+                }
+            />
             <Box alignSelf={"center"} top={"42%"} position={"absolute"}>
                 <Image
                     source={require("../../../assets/Images/marker.png")}
@@ -80,7 +80,7 @@ export const LocationPicker = () => {
                     alt={"whishlist-empty"}
                 />
             </Box>
-            <Box shadow={5} px={3} top={"55%"}>
+            <Box shadow={5} px={3} top={"72%"}>
                 <FormButton
                     onPress={() => {
                         dispatch(

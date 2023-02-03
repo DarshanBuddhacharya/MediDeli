@@ -64,10 +64,16 @@ export const DeliveryLocation = () => {
                             p={4}
                             mt={2}
                             mx={2}
-                            bg={"coolGray.300"}
+                            _light={{
+                                bg: "coolGray.300",
+                                borderColor: "coolGray.300",
+                            }}
+                            _dark={{
+                                bg: "muted.800",
+                                borderColor: "muted.500",
+                            }}
                             borderRadius={10}
-                            borderWidth={1}
-                            borderColor={"coolGray.300"}>
+                            borderWidth={1}>
                             <Flex
                                 direction="row"
                                 justifyContent={"space-between"}

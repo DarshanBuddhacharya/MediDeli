@@ -23,7 +23,8 @@ export const CheckoutCard = ({item}: {item: ProductProps["results"][0]}) => {
             <Box
                 rounded="lg"
                 overflow="hidden"
-                backgroundColor={"white"}
+                _light={{bg: "white", borderColor: "coolGray.200"}}
+                _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
                 p={4}
                 shadow={5}
                 mb={4}

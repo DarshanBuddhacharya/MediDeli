@@ -40,9 +40,9 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
             rounded="lg"
             overflow="hidden"
             mb={3}
-            backgroundColor={"white"}
+            _light={{bg: "white", borderColor: "coolGray.200"}}
+            _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
             shadow={3}
-            borderColor="coolGray.200"
             borderWidth="1">
             <Pressable
                 android_ripple={{
@@ -56,14 +56,13 @@ export const ItemCard = ({data}: {data: ProductProps["results"][0]}) => {
                     })
                 }>
                 {image && (
-                    <Box w={"100%"} justifyContent="center">
+                    <Box w={"100%"} justifyContent="center" bg={"white"}>
                         <SharedElement id={`product.${id}.image`}>
                             <Image
                                 h={160}
                                 resizeMode="contain"
                                 source={{uri: `${image}`}}
                                 alt={image}
-                                background="white"
                             />
                         </SharedElement>
                     </Box>

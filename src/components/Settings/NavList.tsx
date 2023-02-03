@@ -10,17 +10,18 @@ export const NavList = ({
     link,
     iconColor,
     secondaryText,
+    onPress,
 }: NavListProps) => {
-    const navigation: any = useNavigation();
     return (
-        <Pressable onPress={() => navigation.push("PrimaryLocation")}>
+        <Pressable onPress={onPress}>
             <Box
                 flexDirection={"row"}
                 justifyContent={"space-between"}
                 borderBottomWidth={1}
                 pt={4}
                 pb={5}
-                borderBottomColor={"gray.300"}
+                _light={{borderBottomColor: "gray.300"}}
+                _dark={{borderBottomColor: "coolGray.400"}}
                 alignItems={"center"}>
                 <Flex direction="row" alignItems={"center"}>
                     <Icon name={iconName} color={iconColor} size={28} />

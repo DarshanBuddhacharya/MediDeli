@@ -21,9 +21,15 @@ export const SortButton = ({
         <Box
             flexDirection={"row"}
             alignItems="center"
-            borderColor="coolGray.200"
+            _light={{
+                bg: isAssending !== null ? "primary.500" : "white",
+                borderColor: "coolGray.200",
+            }}
+            _dark={{
+                bg: isAssending !== null ? "primary.500" : "muted.800",
+                borderColor: "coolGray.600",
+            }}
             borderWidth="1"
-            background={isAssending !== null ? "primary.500" : "white"}
             rounded={"lg"}
             pr={1}
             mr={2}>
@@ -42,7 +48,12 @@ export const SortButton = ({
                     />
                     <Text
                         px={1}
-                        color={isAssending !== null ? "white" : "black"}>
+                        _light={{
+                            color: isAssending !== null ? "white" : "black",
+                        }}
+                        _dark={{
+                            color: isAssending !== null ? "white" : "white",
+                        }}>
                         {title}
                     </Text>
                     {isAssending !== null && (

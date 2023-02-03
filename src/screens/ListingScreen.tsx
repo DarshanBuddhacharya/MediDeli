@@ -1,13 +1,4 @@
-import {
-    Box,
-    Button,
-    FlatList,
-    Flex,
-    HStack,
-    ScrollView,
-    Select,
-    View,
-} from "native-base";
+import {Box, Button, Flex, HStack, ScrollView, Select, View} from "native-base";
 import React, {useEffect, useMemo, useState} from "react";
 import {Animated, Dimensions, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,8 +9,7 @@ import SearchBar from "../components/common/SearchBar";
 import {SortButton} from "../components/common/SortButton";
 import {ItemCard} from "../components/ItemCard";
 import {ProductSkeleton} from "../components/skeletons/ProductSkeleton";
-import {axiosClient} from "../utils/axiosClient";
-import {FlashList, MasonryFlashList} from "@shopify/flash-list";
+import {FlashList} from "@shopify/flash-list";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {productGet} from "../features/product/productSlice";
 
@@ -73,8 +63,6 @@ export const ListingScreen = () => {
         outputRange: [0, -200],
     });
 
-    // const memoedRender = useMemo(() => renderItem, [products]);
-
     return (
         <Container>
             <Animated.View
@@ -85,7 +73,8 @@ export const ListingScreen = () => {
                 }}>
                 <Box
                     rounded="lg"
-                    backgroundColor={"white"}
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
                     shadow={3}
                     px={2}
                     mx={1}
@@ -94,7 +83,6 @@ export const ListingScreen = () => {
                     left={0}
                     right={0}
                     pt={2}
-                    borderColor="coolGray.200"
                     borderWidth="1">
                     <GoBackBtn is_relative />
                     <Flex

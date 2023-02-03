@@ -12,12 +12,13 @@ import {useAppSelector} from "../features/hooks";
 import {useCategory} from "../hooks/use-category";
 import {useProduct} from "../hooks/use-products";
 import {CategoryProps} from "../../types/CategoryProps";
+import {CategorySkeleton} from "../components/skeletons/CategorySkeleton";
 
 const HomeScreen = () => {
     const {loading: productLoading, data: productData} =
         useProduct<ProductProps>({query: "limit=8"});
 
-    const {data: categoryData} = useCategory();
+    const {data: categoryData, loading} = useCategory();
 
     const renderItem = ({
         item,
@@ -55,6 +56,12 @@ const HomeScreen = () => {
                 </Flex>
 
                 <Title title={"Top Categories"} />
+                <Stack direction={"row"} mb="2.5" mt="1.5" space={1}>
+                    {loading &&
+                        Array.from({length: 4}).map((_, index) => (
+                            <CategorySkeleton key={index} />
+                        ))}
+                </Stack>
                 <FlatList
                     data={categoryData?.results}
                     keyExtractor={item => item?.id}

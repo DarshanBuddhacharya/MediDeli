@@ -71,147 +71,144 @@ const CategoryScreen = () => {
                     ]}
                 />
             </SharedElement>
-            <ScrollView>
-                <Container>
-                    <CrossBtn />
-                    <SharedElement id={`category.${id}.title`}>
-                        <Heading
-                            fontSize={"24"}
-                            mb={2}
-                            color={"white"}
-                            alignItems={"flex-start"}>
-                            {name}
-                        </Heading>
+            <ScrollView mb={20} p={3}>
+                <CrossBtn />
+                <SharedElement id={`category.${id}.title`}>
+                    <Heading
+                        fontSize={"24"}
+                        mb={2}
+                        color={"white"}
+                        alignItems={"flex-start"}>
+                        {name}
+                    </Heading>
+                </SharedElement>
+                <SharedElement id={`category.${id}.desc`}>
+                    <Text
+                        noOfLines={2}
+                        adjustsFontSizeToFit
+                        color={"white"}
+                        alignSelf={"flex-start"}
+                        fontSize={16}>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Culpa, dolorem?
+                    </Text>
+                </SharedElement>
+                <Box alignSelf={"center"} mt={8}>
+                    <SharedElement id={`category.${id}.image`}>
+                        <Image
+                            source={{uri: icon}}
+                            style={{width: 150, height: 150}}
+                            alt="category-image"
+                        />
                     </SharedElement>
-                    <SharedElement id={`category.${id}.desc`}>
-                        <Text
-                            noOfLines={2}
-                            adjustsFontSizeToFit
-                            color={"white"}
-                            alignSelf={"flex-start"}
-                            fontSize={16}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Culpa, dolorem?
-                        </Text>
-                    </SharedElement>
-                    <Box alignSelf={"center"} mt={8}>
-                        <SharedElement id={`category.${id}.image`}>
-                            <Image
-                                source={{uri: icon}}
-                                style={{width: 150, height: 150}}
-                                alt="category-image"
+                </Box>
+                <Animated.View
+                    entering={StretchInX.duration(400)}
+                    layout={Layout.springify()}>
+                    <Box
+                        flexDirection={"row"}
+                        justifyContent={"space-evenly"}
+                        my={4}>
+                        <Flex alignItems={"center"}>
+                            <Avatar
+                                bg="green.500"
+                                source={require("../../../assets/Images/file.png")}
                             />
-                        </SharedElement>
+                            <Text fontSize={18} color={"white"}>
+                                200
+                            </Text>
+                            <Text fontSize={14} color={"white"}>
+                                Different Products
+                            </Text>
+                        </Flex>
+                        <Flex alignItems={"center"} mx={4}>
+                            <Avatar
+                                bg="green.500"
+                                source={require("../../../assets/Images/boxes.png")}
+                            />
+                            <Text fontSize={18} color={"white"}>
+                                100
+                            </Text>
+                            <Text fontSize={14} color={"white"}>
+                                stocks Available
+                            </Text>
+                        </Flex>
+                        <Flex alignItems={"center"}>
+                            <Avatar
+                                bg="green.500"
+                                source={require("../../../assets/Images/customer-service.png")}
+                            />
+                            <Text fontSize={18} color={"white"}>
+                                20+
+                            </Text>
+                            <Text fontSize={14} color={"white"}>
+                                Satisfied Costumers
+                            </Text>
+                        </Flex>
                     </Box>
-                    <Animated.View
-                        entering={StretchInX.duration(400)}
-                        layout={Layout.springify()}>
-                        <Box
-                            flexDirection={"row"}
-                            justifyContent={"space-evenly"}
-                            my={4}>
-                            <Flex alignItems={"center"}>
-                                <Avatar
-                                    bg="green.500"
-                                    source={require("../../../assets/Images/file.png")}
-                                />
-                                <Text fontSize={18} color={"white"}>
-                                    200
-                                </Text>
-                                <Text fontSize={14} color={"white"}>
-                                    Different Products
-                                </Text>
-                            </Flex>
-                            <Flex alignItems={"center"} mx={4}>
-                                <Avatar
-                                    bg="green.500"
-                                    source={require("../../../assets/Images/boxes.png")}
-                                />
-                                <Text fontSize={18} color={"white"}>
-                                    100
-                                </Text>
-                                <Text fontSize={14} color={"white"}>
-                                    stocks Available
-                                </Text>
-                            </Flex>
-                            <Flex alignItems={"center"}>
-                                <Avatar
-                                    bg="green.500"
-                                    source={require("../../../assets/Images/customer-service.png")}
-                                />
-                                <Text fontSize={18} color={"white"}>
-                                    20+
-                                </Text>
-                                <Text fontSize={14} color={"white"}>
-                                    Satisfied Costumers
-                                </Text>
-                            </Flex>
-                        </Box>
-                    </Animated.View>
+                </Animated.View>
 
-                    <Animated.ScrollView
-                        entering={ZoomInRight.duration(400)}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}>
-                        <HStack>
+                <Animated.ScrollView
+                    entering={ZoomInRight.duration(400)}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    <HStack>
+                        <TouchableOpacity onPress={() => setSelectedTab("")}>
+                            <View px={1}>
+                                <Text
+                                    color={"white"}
+                                    px={2}
+                                    rounded={"md"}
+                                    bg={
+                                        selectedTab === ""
+                                            ? "primary.500"
+                                            : "transparent"
+                                    }>
+                                    Recommended
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {child?.map((item, index) => (
                             <TouchableOpacity
-                                onPress={() => setSelectedTab("")}>
-                                <View px={1}>
-                                    <Text
-                                        color={"white"}
-                                        px={2}
-                                        rounded={"md"}
-                                        bg={
-                                            selectedTab === ""
-                                                ? "primary.500"
-                                                : "transparent"
-                                        }>
-                                        Recommended
-                                    </Text>
-                                </View>
+                                key={index}
+                                onPress={() => setSelectedTab(item.id)}>
+                                <Text
+                                    color={"white"}
+                                    px={2}
+                                    rounded={"md"}
+                                    bg={
+                                        selectedTab === item.id
+                                            ? "primary.500"
+                                            : "transparent"
+                                    }>
+                                    {item?.name}
+                                </Text>
                             </TouchableOpacity>
-                            {child?.map((item, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    onPress={() => setSelectedTab(item.id)}>
-                                    <Text
-                                        color={"white"}
-                                        px={2}
-                                        rounded={"md"}
-                                        bg={
-                                            selectedTab === item.id
-                                                ? "primary.500"
-                                                : "transparent"
-                                        }>
-                                        {item?.name}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))}
-                        </HStack>
-                    </Animated.ScrollView>
-                    <HStack
-                        space={1.5}
-                        justifyContent={"center"}
-                        flexWrap={"wrap"}
-                        mt={4}>
-                        {!selectedTab &&
-                            !loading &&
-                            product?.map((item, index) => (
-                                <VStack key={index}>
-                                    <ItemCard data={item} />
-                                </VStack>
-                            ))}
-                        {!subLoading &&
-                            subCategory?.product?.map((item, index) => (
-                                <ItemCard data={item} key={index} />
-                            ))}
-                        {selectedTab &&
-                            subLoading &&
-                            Array.from({length: 4}).map((_, index) => (
-                                <ProductSkeleton key={index} />
-                            ))}
+                        ))}
                     </HStack>
-                </Container>
+                </Animated.ScrollView>
+                <HStack
+                    space={1.5}
+                    justifyContent={"center"}
+                    flexWrap={"wrap"}
+                    mt={4}>
+                    {!selectedTab &&
+                        !loading &&
+                        product?.map((item, index) => (
+                            <VStack key={index}>
+                                <ItemCard data={item} />
+                            </VStack>
+                        ))}
+                    {!subLoading &&
+                        subCategory?.product?.map((item, index) => (
+                            <ItemCard data={item} key={index} />
+                        ))}
+                    {selectedTab &&
+                        subLoading &&
+                        Array.from({length: 4}).map((_, index) => (
+                            <ProductSkeleton key={index} />
+                        ))}
+                </HStack>
             </ScrollView>
         </>
     );

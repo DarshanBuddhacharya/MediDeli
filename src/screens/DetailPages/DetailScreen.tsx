@@ -96,6 +96,12 @@ const DetailScreen = () => {
                     shadowOpacity: 1,
                     shadowOffset: {width: 0, height: 0},
                     shadowRadius: 20,
+                }}
+                _dark={{
+                    bg: "coolGray.800",
+                }}
+                _light={{
+                    bg: "white",
                 }}>
                 <CrossBtn with_back />
                 {/* <Animated.FlatList
@@ -147,7 +153,12 @@ const DetailScreen = () => {
                         />
                     </SharedElement>
                 </Box>
-                <Box background={"white"} rounded="xl" mx={2} mb={100}>
+                <Box
+                    _light={{bg: "white", borderColor: "coolGray.200"}}
+                    _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
+                    rounded="xl"
+                    mx={2}
+                    mb={100}>
                     <Stack p="4" space={3}>
                         <Flex
                             direction="row"

@@ -7,12 +7,15 @@ import {CustomTabButton} from "../screens/Navigation/CustomTabButton";
 import CheckoutStack from "./CheckoutStack";
 import AccountStack from "./AccountStack";
 import {NotFound} from "../components/NotFound";
+import {useColorMode} from "native-base";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
     const countCart = useAppSelector(state => state.cart.totalItems);
     const countWishList = useAppSelector(state => state.wishList.totalWishList);
+
+    const {colorMode} = useColorMode();
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -42,6 +45,7 @@ const TabNavigation = () => {
                     left: 15,
                     right: 15,
                     elevation: 0,
+                    backgroundColor: colorMode === "dark" ? "#262626" : "white",
                     borderRadius: 15,
                     height: 70,
                     paddingBottom: 10,

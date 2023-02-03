@@ -5,6 +5,7 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import LandingScreen from "../screens/LandingScreen";
 import TabNavigation from "./TabNavigation";
+import {Container} from "native-base";
 
 const Stack = createNativeStackNavigator();
 

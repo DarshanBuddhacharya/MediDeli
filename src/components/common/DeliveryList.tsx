@@ -9,7 +9,8 @@ export const DeliveryList = ({item}: {item: ProductProps["results"][0]}) => {
             p={4}
             mt={2}
             mx={2}
-            bg={"coolGray.100"}
+            _light={{bg: "coolGray.100", borderColor: "coolGray.300"}}
+            _dark={{bg: "coolGray.800", borderColor: "coolGray.600"}}
             borderWidth={1}
             borderColor={"coolGray.300"}>
             <Flex

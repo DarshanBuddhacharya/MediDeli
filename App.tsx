@@ -1,7 +1,7 @@
 import {StatusBar, useColorScheme} from "react-native";
 
 import {Colors} from "react-native/Libraries/NewAppScreen";
-import {NativeBaseProvider, Text} from "native-base";
+import {Container, NativeBaseProvider, Text, useColorMode} from "native-base";
 import {theme} from "./src/utils/Theme";
 import {useEffect, useState} from "react";
 
@@ -42,19 +42,20 @@ const Root = () => {
 };
 
 const App = () => {
-    const isDarkMode = useColorScheme() === "dark";
+    const {colorMode} = useColorMode();
 
     const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+        backgroundColor: colorMode ? Colors.darker : Colors.lighter,
     };
     return (
         <Provider store={store}>
             <NativeBaseProvider theme={theme}>
                 <StatusBar
-                    barStyle={isDarkMode ? "light-content" : "dark-content"}
+                    barStyle={colorMode ? "light-content" : "dark-content"}
                     hidden
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
+
                 <Root />
             </NativeBaseProvider>
         </Provider>

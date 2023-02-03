@@ -61,8 +61,8 @@ export const SummeryCard = ({
             <View
                 rounded="lg"
                 overflow="hidden"
-                borderColor="coolGray.200"
-                backgroundColor={"coolGray.50"}
+                _light={{bg: "white", borderColor: "coolGray.200"}}
+                _dark={{bg: "muted.800", borderColor: "coolGray.600"}}
                 borderWidth="1"
                 mx={2}
                 p={5}>
@@ -97,19 +97,29 @@ export const SummeryCard = ({
                                 direction="row"
                                 justifyContent={"space-between"}>
                                 <Text>Gross Total</Text>
-                                <Text color={"gray.500"}>
+                                <Text
+                                    _light={{
+                                        color: "gray.500",
+                                    }}
+                                    _dark={{
+                                        color: "gray.400",
+                                    }}>
                                     Rs. {gross_total}
                                 </Text>
                             </Flex>
-                            {/* <Flex direction="row" justifyContent={"space-between"}>
-                    <Text>Delivery fee</Text>
-                    <Text color={"gray.500"}>Rs. {delivery_fee}</Text>
-                </Flex> */}
                             <Flex
                                 direction="row"
                                 justifyContent={"space-between"}>
                                 <Text>Discount</Text>
-                                <Text color={"gray.500"}>Rs. {discount}</Text>
+                                <Text
+                                    _light={{
+                                        color: "gray.500",
+                                    }}
+                                    _dark={{
+                                        color: "gray.400",
+                                    }}>
+                                    Rs. {discount}
+                                </Text>
                             </Flex>
                         </Box>
                     </Animated.View>
