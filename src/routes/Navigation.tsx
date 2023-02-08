@@ -5,14 +5,28 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import LandingScreen from "../screens/LandingScreen";
 import TabNavigation from "./TabNavigation";
-import {Container} from "native-base";
+import {Container, useColorMode} from "native-base";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
+
+    const {colorMode} = useColorMode();
+
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            theme={{
+                dark: true,
+                colors: {
+                    background: colorMode === "dark" ? "#1f2937" : "#f4f4f5",
+                    text: "inherit",
+                    border: colorMode === "dark" ? "#1f2937" : "#f4f4f5",
+                    primary: "red",
+                    card: "red",
+                    notification: "red",
+                },
+            }}>
             <Stack.Navigator>
                 {!auth && (
                     <>

@@ -54,6 +54,7 @@ export const refresh = createAsyncThunk('auth/refresh', async (value: LoginRespo
         return await authService.refresh(value)
     } catch (error: any) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        authService.logout()
         return thunkAPI.rejectWithValue(message)
     }
 })

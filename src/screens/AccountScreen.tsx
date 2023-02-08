@@ -9,7 +9,7 @@ import {
     useColorMode,
 } from "native-base";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import {logout} from "../features/auth/authSlice";
 import {useAppDispatch, useAppSelector} from "../features/hooks";
 import {Container} from "../components/common/Container";
@@ -23,7 +23,6 @@ import {
 import Button from "../components/common/Button";
 import {accountGet, reset} from "../features/account/accountSlice";
 import {useNavigation} from "@react-navigation/native";
-import {TouchableOpacity} from "react-native";
 
 const Account = () => {
     const dispatch = useAppDispatch();
@@ -37,11 +36,7 @@ const Account = () => {
 
     const navigation: any = useNavigation();
 
-    const {colorMode, toggleColorMode} = useColorMode();
-    console.log(
-        "🚀 ~ file: AccountScreen.tsx:41 ~ Account ~ colorMode",
-        colorMode,
-    );
+    const {toggleColorMode} = useColorMode();
 
     return (
         <Container>

@@ -1,4 +1,4 @@
-import {Avatar, Box, Flex, Heading, Stack, Text} from "native-base";
+import {Avatar, Badge, Box, Flex, Heading, Stack, Text} from "native-base";
 import React from "react";
 import {FlatList, Image, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -36,23 +36,44 @@ const HomeScreen = () => {
             <ScrollView>
                 <Flex
                     alignSelf="center"
+                    alignItems={"center"}
                     justifyContent={"space-between"}
                     direction="row"
-                    bg="primary.600"
-                    shadow={2}
+                    _light={{bg: "white"}}
+                    _dark={{bg: "muted.800"}}
+                    shadow={4}
                     p={5}
                     rounded="xl"
                     width="100%"
                     display={"flex"}>
-                    <Box _text={{color: "white"}}>
-                        Hello There, {user?.user?.full_name}
+                    <Box _text={{color: "primary.500"}}>
+                        Hello There,
+                        <Heading fontWeight={500} mt={2}>
+                            {user?.user?.full_name}
+                        </Heading>
                     </Box>
-                    <Avatar
-                        bg="green.500"
-                        source={{
-                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                        }}
-                    />
+                    <Box alignItems="center">
+                        <Badge // bg="red.400"
+                            colorScheme="danger"
+                            position={"absolute"}
+                            rounded="full"
+                            zIndex={5}
+                            variant="solid"
+                            left={"70%"}
+                            bottom={"70%"}
+                            _text={{
+                                fontSize: 12,
+                            }}>
+                            2
+                        </Badge>
+                        <Avatar
+                            bg="green.500"
+                            size={"lg"}
+                            source={{
+                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                            }}
+                        />
+                    </Box>
                 </Flex>
 
                 <Title title={"Top Categories"} />
