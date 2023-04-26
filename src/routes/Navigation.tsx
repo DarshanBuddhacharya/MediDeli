@@ -6,6 +6,7 @@ import SignupScreen from "../screens/auth/SignupScreen";
 import LandingScreen from "../screens/LandingScreen";
 import TabNavigation from "./TabNavigation";
 import {Container, useColorMode} from "native-base";
+import {OnBoardingScreen} from "../screens/OnBoardingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,11 @@ const Navigation = () => {
             <Stack.Navigator>
                 {!auth && (
                     <>
+                        <Stack.Screen
+                            name="OnBoarding"
+                            component={OnBoardingScreen}
+                            options={{headerShown: false}}
+                        />
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}

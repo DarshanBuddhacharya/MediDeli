@@ -35,9 +35,6 @@ const Root = () => {
         fetchToken();
     }, []);
 
-    if (isTryingLogin) {
-        return <Text>Loading</Text>;
-    }
     return <Navigation />;
 };
 
@@ -55,7 +52,6 @@ const App = () => {
                     hidden
                     backgroundColor={backgroundStyle.backgroundColor}
                 />
-
                 <Root />
             </NativeBaseProvider>
         </Provider>
