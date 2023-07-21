@@ -1,7 +1,7 @@
 import {Flex, Input, Pressable} from "native-base";
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import {useAppDispatch, useAppSelector} from "../../features/hooks";
+import {useAppDispatch} from "../../features/hooks";
 import {add, remove, update} from "../../features/cartSlice";
 import {useCart} from "../../hooks/use-cart";
 import {ProductProps} from "../../../types/ProductProps";

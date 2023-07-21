@@ -1,8 +1,10 @@
-import {Box, Flex, Image, Text} from "native-base";
-import React, {useRef} from "react";
-import {Animated, Dimensions} from "react-native";
-import {View} from "react-native";
+import {Box, Flex, Image, Pressable, Text} from "native-base";
+import React, {useRef, useState} from "react";
+import {Animated, Dimensions, FlatList, ViewToken} from "react-native";
 import Button from "../components/common/Button";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import {useAppDispatch} from "../features/hooks";
+import {onBoarding} from "../features/auth/authSlice";
 const {width, height} = Dimensions.get("screen");
 
 const DATA = [
@@ -34,19 +36,6 @@ const DATA = [
             "Use the optical SAS system, then you can navigate the auxiliary alarm!",
         image: require("../../assets/Images/OnBoarding/onBoarding4.jpg"),
     },
-    // {
-    //     key: "3571680",
-    //     title: "Inverse attitude-oriented system engine",
-    //     description:
-    //         "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
-    //     image: "https://image.flaticon.com/icons/png/256/3571/3571680.png",
-    // },
-    // {
-    //     key: "3571603",
-    //     title: "Monitored global data-warehouse",
-    //     description: "We need to program the open-source IB interface!",
-    //     image: "https://image.flaticon.com/icons/png/256/3571/3571603.png",
-    // },
 ];
 
 const Indicator = ({scrollX}: {scrollX: Animated.Value}) => {
@@ -54,7 +43,7 @@ const Indicator = ({scrollX}: {scrollX: Animated.Value}) => {
         <Flex
             position={"absolute"}
             flexDirection={"row"}
-            bottom={height / 2.7}
+            bottom={height / 2.5}
             mx={"auto"}>
             {DATA.map((_, index) => {
                 const inputRange = [
@@ -70,7 +59,7 @@ const Indicator = ({scrollX}: {scrollX: Animated.Value}) => {
                 });
                 const opacity = scrollX.interpolate({
                     inputRange,
-                    outputRange: [0.6, 0.9, 0.6],
+                    outputRange: [0.6, 0.9, 0.2],
                     extrapolate: "clamp",
                 });
                 return (
@@ -94,6 +83,18 @@ const Indicator = ({scrollX}: {scrollX: Animated.Value}) => {
 
 export const OnBoardingScreen = () => {
     const scrollX = useRef(new Animated.Value(0)).current;
+
+    const slideRef = useRef<FlatList>(null);
+
+    const [currentIndex, setCurrentIndex] = useState<number | null>(0);
+
+    const onViewableItemsChanged = useRef(
+        ({viewableItems}: {viewableItems: ViewToken[]}) =>
+            setCurrentIndex(viewableItems[0].index),
+    ).current;
+
+    const dispatch = useAppDispatch();
+
     return (
         <Box
             position={"relative"}
@@ -112,6 +113,8 @@ export const OnBoardingScreen = () => {
                 )}
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled
+                ref={slideRef}
+                onViewableItemsChanged={onViewableItemsChanged}
                 renderItem={({item}) => (
                     <Box
                         position={"relative"}
@@ -128,32 +131,66 @@ export const OnBoardingScreen = () => {
                             h={height}
                             mb={280}
                         />
+                        <Box
+                            position={"absolute"}
+                            rounded={"2xl"}
+                            shadow={8}
+                            p={6}
+                            bg={"white"}
+                            w={width}
+                            alignItems={"center"}
+                            bottom={50}>
+                            <Text fontSize={"20"} color={"primary.500"}>
+                                {item.title}
+                            </Text>
+                            <Text fontSize={"24"} mb={5}>
+                                Ultimate Shopping Experience
+                            </Text>
+                            <Text mb={50}>
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Autem, accusantium. Odio sequi
+                                nulla alias dolorum atque officia impedit nihil
+                                veniam rem
+                            </Text>
+                        </Box>
                     </Box>
                 )}
             />
-            <Box
-                position={"absolute"}
-                rounded={"2xl"}
-                shadow={8}
-                p={6}
-                mb={6}
-                bg={"white"}
-                w={width}
+
+            <Flex
+                justifyContent={"space-between"}
                 alignItems={"center"}
-                bottom={0}>
-                <Text fontSize={"20"} color={"primary.500"}>
-                    Welcome To
-                </Text>
-                <Text fontSize={"24"} mb={5}>
-                    Ultimate Shopping Experience
-                </Text>
-                <Text mb={5}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Autem, accusantium. Odio sequi nulla alias dolorum atque
-                    officia impedit nihil veniam rem
-                </Text>
-                <Button size={"xs"}>sdssdsds</Button>
-            </Box>
+                flexDirection={"row"}
+                bottom={"20"}
+                w={"full"}>
+                <Text ml={6}>Skip</Text>
+                {currentIndex === 3 ? (
+                    <Button
+                        onPress={() => dispatch(onBoarding())}
+                        rounded={"full"}
+                        LeftIcon={
+                            <Icon
+                                name="arrow-forward"
+                                size={20}
+                                color={"white"}
+                            />
+                        }>
+                        Log me In
+                    </Button>
+                ) : (
+                    <Button
+                        rounded={"full"}
+                        onPress={() =>
+                            slideRef.current &&
+                            slideRef.current.scrollToIndex({
+                                index: currentIndex ? currentIndex + 1 : 1,
+                            })
+                        }>
+                        <Icon name="arrow-forward" size={20} color={"white"} />
+                    </Button>
+                )}
+            </Flex>
+
             <Indicator scrollX={scrollX} />
         </Box>
     );

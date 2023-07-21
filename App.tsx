@@ -15,8 +15,6 @@ import {refresh} from "./src/features/auth/authSlice";
 import Navigation from "./src/routes/Navigation";
 
 const Root = () => {
-    const [isTryingLogin, setIsTryingLogin] = useState(true);
-
     const dispatch = useAppDispatch();
     const cartItems = useAppSelector(state => state.cart.cartItems);
     const auth = useAppSelector(state => state.auth.user);
@@ -30,7 +28,6 @@ const Root = () => {
             if (auth?.token) {
                 dispatch(refresh(auth.token.refresh));
             }
-            setIsTryingLogin(false);
         };
         fetchToken();
     }, []);

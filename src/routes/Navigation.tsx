@@ -5,13 +5,19 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
 import LandingScreen from "../screens/LandingScreen";
 import TabNavigation from "./TabNavigation";
-import {Container, useColorMode} from "native-base";
+import {useColorMode} from "native-base";
 import {OnBoardingScreen} from "../screens/OnBoardingScreen";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
     const auth = useAppSelector(state => state.auth.user?.token);
+
+    const boarded = useAppSelector(state => state.auth.onBoard);
+    console.log(
+        "🚀 ~ file: Navigation.tsx:18 ~ Navigation ~ boarded:",
+        boarded,
+    );
 
     const {colorMode} = useColorMode();
 
@@ -29,13 +35,15 @@ const Navigation = () => {
                 },
             }}>
             <Stack.Navigator>
+                {!boarded && (
+                    <Stack.Screen
+                        name="OnBoarding"
+                        component={OnBoardingScreen}
+                        options={{headerShown: false}}
+                    />
+                )}
                 {!auth && (
                     <>
-                        <Stack.Screen
-                            name="OnBoarding"
-                            component={OnBoardingScreen}
-                            options={{headerShown: false}}
-                        />
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}
@@ -48,20 +56,16 @@ const Navigation = () => {
                         />
                     </>
                 )}
-                {auth && (
-                    <>
-                        <Stack.Screen
-                            name="Home"
-                            component={LandingScreen}
-                            options={{headerShown: false}}
-                        />
-                        <Stack.Screen
-                            name="BottomNavi"
-                            component={TabNavigation}
-                            options={{headerShown: false}}
-                        />
-                    </>
-                )}
+                <Stack.Screen
+                    name="Home"
+                    component={LandingScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="BottomNavi"
+                    component={TabNavigation}
+                    options={{headerShown: false}}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

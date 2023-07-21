@@ -1,17 +1,20 @@
 import {useNavigation} from "@react-navigation/native";
-import {Pressable, Text} from "native-base";
+import {Box, Pressable, Text} from "native-base";
 import {InterfacePressableProps} from "native-base/lib/typescript/components/primitives/Pressable/types";
-import React from "react";
+import React, {ReactNode} from "react";
+import {IconProps} from "react-native-vector-icons/Icon";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const Button = ({
     children,
     link,
+    LeftIcon,
     ...rest
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
+    LeftIcon?: ReactNode;
     link?: string;
 } & InterfacePressableProps) => {
-    const navigation: any = useNavigation();
     return (
         <Pressable
             {...rest}
@@ -20,15 +23,16 @@ const Button = ({
                 radius: 160,
             }}
             bg={"primary.500"}
+            display={"flex"}
+            flexDirection={"row"}
             alignItems={"center"}
             justifyContent={"center"}
             borderRadius={10}
             mx={4}
             h={10}
-            onPress={() => navigation.push(link)}>
-            <Text color={"white"} px={3}>
-                {children}
-            </Text>
+            px={3}>
+            <Text color={"white"}>{children}</Text>
+            {LeftIcon && LeftIcon}
         </Pressable>
     );
 };

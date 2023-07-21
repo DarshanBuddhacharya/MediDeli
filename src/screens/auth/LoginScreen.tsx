@@ -50,7 +50,7 @@ const LoginScreen = ({
                     Welcome
                 </Heading>
                 <Formik
-                    initialValues={{phone: "", password: ""}}
+                    initialValues={{username: "", password: ""}}
                     validationSchema={loginFormSchema}
                     onSubmit={value => {
                         dispatch(login(value));
@@ -65,15 +65,13 @@ const LoginScreen = ({
                     }) => (
                         <>
                             <InputField
-                                onChangeText={handleChange("phone")}
-                                onBlur={() => setFieldTouched("phone")}
-                                value={values.phone}
+                                onChangeText={handleChange("username")}
+                                onBlur={() => setFieldTouched("username")}
+                                value={values.username}
                                 icon={"phone"}
                                 placeHolder={"Phone Number"}
-                                keyboardType={"number-pad"}
-                                touch={touched.phone}
-                                error={errors.phone}
-                                maxLength={10}
+                                touch={touched.username}
+                                error={errors.username}
                             />
                             <PasswordField
                                 icon={"key-variant"}
